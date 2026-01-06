@@ -564,10 +564,14 @@ html[data-theme="dark"] .hero__overlay{
    ========================= */
 @media (max-width: 980px){
 
+  /* ✅ Put defaults on :root, and override ONLY in dark mode */
   :root{
     --mobilebarH: 72px;
-    --heroCream: #fbf2e8;
+    --heroCream: #fbf2e8;                 /* light mode cream */
     --capH: clamp(220px, 34vh, 300px);
+  }
+  html[data-theme="dark"]{
+    --heroCream: var(--cream);            /* ✅ dark mode cream */
   }
 
   /* IMPORTANT: mobile layout is single column and no sidebar */
@@ -588,7 +592,7 @@ html[data-theme="dark"] .hero__overlay{
     min-height: 0;
     position: relative;
     overflow: clip;
-    background: var(--heroCream) !important;
+    background: var(--heroCream) !important; /* ✅ now swaps in dark mode */
     padding: 0;
   }
 
@@ -616,7 +620,7 @@ html[data-theme="dark"] .hero__overlay{
     left: 50%;
     transform: translateX(-50%);
     top: calc(var(--capH) - 50vw);
-    background: var(--heroCream);
+    background: var(--heroCream); /* ✅ now swaps in dark mode */
     border-radius: 50%;
     box-shadow: 0 -1px 0 rgba(11,18,32,.08);
     z-index: 1;
@@ -667,7 +671,7 @@ html[data-theme="dark"] .hero__overlay{
     border: 1px solid rgba(11,18,32,.10);
     box-shadow: 0 10px 24px rgba(11,18,32,.12);
     text-decoration:none;
-    transform: translateY(50%)
+    transform: translateY(50%);
   }
 
   .mobileHeroWrap .hero__mobileLogo img{
@@ -683,7 +687,7 @@ html[data-theme="dark"] .hero__overlay{
     flex-direction: column;
     justify-content: center; /* center vertically */
     align-items: center;
-    padding: 20vh 0 10px;
+    padding: 12vh 0 10px;
     min-height: 0;
   }
 
@@ -711,7 +715,7 @@ html[data-theme="dark"] .hero__overlay{
   }
 
   .mobileHeroWrap .hero__sub{
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 1.55;
     margin: 8px 0 22px;
     max-width: 38ch;
@@ -752,7 +756,7 @@ html[data-theme="dark"] .hero__overlay{
     top: auto;
     z-index: 60;
 
-    background: color-mix(in srgb, var(--heroCream) 92%, #fff);
+    background: color-mix(in srgb, var(--bg) 92%, #fff);
     border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
     border-bottom: 0;
 
@@ -761,13 +765,6 @@ html[data-theme="dark"] .hero__overlay{
     justify-content: space-between;
     gap: 10px;
   }
-
-  /* When the user scrolls past the hero, we want it to stick to the TOP.
-     Pure CSS cannot “switch” sticky edge mid-scroll, but this achieves the UX:
-     - It is bottom-docked while the hero is on screen (sticky bottom).
-     - After hero leaves, it continues sticking (still visible) and effectively
-       behaves like a persistent nav. If you want true top-sticky after hero,
-       add one tiny JS class toggle (see note below). */
 
   /* Keep your existing dropdown positioning */
   .mobileHeroWrap .mobilebar__menu{
@@ -781,14 +778,7 @@ html[data-theme="dark"] .hero__overlay{
     backdrop-filter: blur(10px);
   }
 
-  /* Dark mode mobile hero surfaces */
-  html[data-theme="dark"] .mobileHeroWrap .hero{
-    background: var(--sky);
-  }
-  html[data-theme="dark"] .mobileHeroWrap .hero::after{
-    background: var(--sky);
-    box-shadow: 0 -1px 0 rgba(238,242,255,.12);
-  }
+  /* ✅ Dark mode logo surface stays as you had it */
   html[data-theme="dark"] .mobileHeroWrap .hero__mobileLogo{
     background: color-mix(in srgb, var(--card) 85%, transparent);
     border: 1px solid rgba(238,242,255,.14);
