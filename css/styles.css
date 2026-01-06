@@ -37,14 +37,14 @@
   --cream2: #ffffff;
 
   /* Light blue “banner” background for Hero + Footer */
-  --sky: #e6f0ff;
+  --sky: #a9dcf998;
 
   /* Section tint colors */
   --tint-red:    rgba(239, 68, 68, 0.18);
   --tint-orange: rgba(249, 115, 22, 0.18);
   --tint-yellow: rgba(234, 179, 8, 0.20);
   --tint-green:  rgba(34, 197, 94, 0.18);
-  --tint-blue:   rgba(59, 130, 246, 0.18);
+  --tint-blue:   rgba(59, 131, 246, 0.18);
   --tint-purple: rgba(168, 85, 247, 0.18);
 
   /* Matching darker outline colors */
@@ -445,6 +445,11 @@ html[data-theme="dark"] .themeToggle:hover{ background: var(--surface); }
   --sectionTint: var(--tint-blue);
   --sectionOutline: var(--outline-blue);
 }
+/* Blog section extra color (requested) */
+:root main .section:nth-of-type(8){
+  --sectionTint: var(--tint-yellow);
+  --sectionOutline: var(--outline-yellow);
+}
 
 /* Do NOT tint in dark mode */
 html[data-theme="dark"] main .section{
@@ -477,6 +482,10 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 .hero{
   position: relative;
   overflow: clip;
+}
+
+.hero__title {
+  margin-top: 4px;
 }
 
 /* Background image */
@@ -553,79 +562,110 @@ html[data-theme="dark"] .hero__overlay{
 
 /* =========================
    MOBILE/TABLET — SIMPLE HERO (NO IMAGE)
-   When sidebar disappears, hero becomes a clean landing block.
    ========================= */
 @media (max-width: 980px){
 
-  /* Hero becomes a simple section (no image, no overlay) */
+  /* Hero becomes a simple full-screen landing (no image, no overlay) */
   .hero{
-    min-height: unset;
+    min-height: 60vh;
     background: var(--sky);
-    padding: 56px 0 44px;
+    padding: 0;
+    display: block;            /* simpler than flex here */
   }
 
   .hero__bg,
   .hero__overlay{
-    display:none;
+    display: none;
   }
 
-  /* Content centered and “professional card-like” */
-  .hero__content{
-    min-height: unset;
-    transform: none;
-    margin: 0 auto;
+  /* ✅ Force the hero container to truly center on mobile */
+  .hero .container{
+    max-width: none;           /* remove 1080px constraint */
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    display:flex;
+  /* Content: aligned center horizontally, pushed upward vertically */
+  .hero__content{
+    min-height: 60vh;
+    transform: none;
+
+    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+
+    justify-content: flex-start;   /* ✅ move up */
+    gap: 0;
+
+    /* ✅ less space from the sticky mobilebar */
+    padding-top: 84px;             /* try 72px if you want tighter */
+    padding-bottom: 28px;
+
+    max-width: 52ch;
+    margin: 0 auto;
+  }
+
+  /* Mobile hero logo */
+  .hero__mobileLogo{
+    display: inline-flex !important;
+    align-items: center;
     justify-content: center;
 
-    max-width: 54ch;
-    padding: 0 18px;
+    margin: 0 0 10px;          /* ✅ tighter */
   }
 
-  /* Show logo only on mobile/tablet */
-  .hero__mobileLogo{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
+  .hero__mobileLogo img{
+    width: 210px;
+    max-width: 76vw;
+    height: auto;
+    display: block;
   }
 
-  /* Tighten spacing and make it feel intentional */
+  /* Fixed sizes, centered */
   .hero .eyebrow{
-    margin: 12px 0 6px;
-    opacity: 0.9;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    margin: 8px 0 4px;
+    opacity: 0.85;
+    text-transform: uppercase;
   }
 
   .hero__title{
-    margin: 0 0 6px;
+    font-size: 1.75rem;
+    line-height: 1.15;
+    margin: 0 0 8px;
   }
 
   .hero__sub{
-    margin: 0 0 18px;
-    max-width: 42ch;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    max-width: 38ch;
+    margin: 0 0 16px;
   }
 
-  /* Buttons centered, consistent sizing */
+  /* Buttons */
   .actions{
     width: 100%;
     justify-content: center;
     gap: 10px;
+    margin-top: 4px;
   }
 
   .actions .btn{
-    min-width: 160px;
-    padding: 12px 16px;
-    font-size: 0.98rem;
+    min-width: 150px;
+    padding: 11px 16px;
+    font-size: 0.95rem;
   }
 
-  /* Ghost button should still read well on blue background */
   .btn--ghost{
     background: color-mix(in srgb, var(--card) 92%, transparent);
   }
 
-  /* Hero text in mobile should match normal text colors (not white-only) */
+  /* Ensure mobile hero text uses normal text color */
   .hero .eyebrow,
   .hero__title,
   .hero__sub{
@@ -633,7 +673,6 @@ html[data-theme="dark"] .hero__overlay{
     text-shadow: none;
   }
 
-  /* In dark mode, your --sky already becomes dark; ensure the logo button still looks good */
   html[data-theme="dark"] .hero__mobileLogo{
     background: color-mix(in srgb, var(--card) 85%, transparent);
     border-color: var(--border);
@@ -966,8 +1005,8 @@ html:not([data-theme="dark"]) .process{
 .footer{
   position: relative;
   padding: 56px 0;
-  background: var(--sky); /* light blue footer (requested) */
-  border-top: 1px solid color-mix(in srgb, var(--outline-blue) 35%, transparent);
+  background-color: var(--sky);
+  border: 1px solid var(--outline-blue);
 }
 html[data-theme="dark"] .footer{
   background: linear-gradient(180deg, var(--bg), var(--cream2));
