@@ -463,28 +463,25 @@
 
 
 /* =========================================================
-   SET mobileHeroWrap max-height = CTA button Y + px
+   SET mobileHeroWrap max-height = 100vh - mobilebar height
 ========================================================= */
 (() => {
   const wrap = document.querySelector(".mobileHeroWrap");
-  const btn  = document.querySelector(".hero .actions .btn"); // adjust selector if needed
+  const nav  = document.querySelector(".mobileHeroWrap .mobilebar");
 
-  if (!wrap || !btn) return;
+  if (!wrap || !nav) return;
 
   const update = () => {
-    const btnRect  = btn.getBoundingClientRect();
-    const wrapRect = wrap.getBoundingClientRect();
+    const navH = nav.getBoundingClientRect().height;
+    const maxH = window.innerHeight - navH;
 
-    // Button Y relative to the wrap, plus 32px
-    const maxH = (btnRect.bottom - wrapRect.top) + 240;
-
-    wrap.style.setProperty("--heroMaxH", `${Math.ceil(maxH)}px`);
+    wrap.style.setProperty("--heroMaxH", `${Math.max(0, Math.ceil(maxH))}px`);
   };
 
-  // Run on load + resize (mobile orientation changes)
+  // Run on load + resize (orientation changes)
   window.addEventListener("load", update);
   window.addEventListener("resize", update);
 
-  // Optional: run once fonts are ready (prevents jump)
+  // Recalc after fonts load (nav height can change slightly)
   document.fonts?.ready?.then(update);
 })();
