@@ -392,37 +392,59 @@
 })();
 
 /* =========================================================
-   LOCK NAVBAR AT TOP, UNLOCK WHEN HERO IS REACHED
+   LOCK NAVBAR AT TOP, UNLOCK WHEN HERO IS REACHED (NO FLICKER)
+   - Uses hysteresis + rAF to prevent lock/unlock ping-pong
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
-  const hero = document.getElementById("home"); // hero section
+  const hero = document.getElementById("home");
   if (!nav || !hero) return;
 
   let locked = false;
+  let ticking = false;
 
-  const onScroll = () => {
-    const navRect = nav.getBoundingClientRect();
+  // Tune these if needed (px)
+  const UNLOCK_BUFFER = 24; // require hero to be "meaningfully" visible to unlock
+  const LOCK_BUFFER = 0;    // lock exactly when it hits top (can set to 2-4 if desired)
+
+  function setLocked(next) {
+    if (next === locked) return;
+    locked = next;
+    nav.classList.toggle("is-lockedTop", locked);
+  }
+
+  function update() {
+    ticking = false;
+
     const heroRect = hero.getBoundingClientRect();
 
-    // Lock when nav hits top
-    if (!locked && navRect.top <= 0) {
-      nav.classList.add("is-lockedTop");
-      locked = true;
+    // Define "hero reached" as hero being in view near the top with a buffer.
+    // Buffer prevents rapid toggling when you're right at the boundary.
+    const heroReached =
+      heroRect.bottom > UNLOCK_BUFFER && heroRect.top <= UNLOCK_BUFFER;
+
+    if (locked) {
+      // Once locked, ONLY unlock when hero is clearly reached again.
+      if (heroReached) setLocked(false);
       return;
     }
 
-    // Unlock when hero is visible again
-    // (hero's top is at or below viewport top)
-    if (
-      locked &&
-      heroRect.top <= 0 &&
-      heroRect.bottom > 0
-    ) {
-      nav.classList.remove("is-lockedTop");
-      locked = false;
-    }
-  };
+    // Not locked: lock when nav's normal-flow position reaches the top.
+    // navRect can be noisy once class toggles, but here we only read it when unlocked.
+    const navRect = nav.getBoundingClientRect();
+    if (navRect.top <= LOCK_BUFFER) setLocked(true);
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
 
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+
+  // Initialize once on load
+  requestAnimationFrame(update);
 })();
+
