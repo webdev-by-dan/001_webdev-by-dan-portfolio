@@ -589,8 +589,12 @@ html[data-theme="dark"] .hero__overlay{
   }
 
   .hero__title {
-    margin-top: 8px;
+    margin-top: 4px;
     margin-bottom: 4px;
+  }
+
+  .eyebrow {
+    font-size: 16px!important;
   }
 
   /* Text spacing */
