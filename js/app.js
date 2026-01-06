@@ -1,72 +1,242 @@
+/* =========================================================
+   THEME TOGGLE + IMAGE SWAP (robust click handling)
+   - toggles html[data-theme]="light|dark"
+   - persists to localStorage("theme")
+   - swaps <img data-src-light data-src-dark> and <source data-srcset-light data-srcset-dark>
+========================================================= */
+(function () {
+  const STORAGE_KEY = "theme"; // "light" | "dark"
+  const root = document.documentElement;
+
+  const toggles = () =>
+    Array.from(document.querySelectorAll("[data-theme-toggle]"));
+
+  function getPreferredTheme() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  function swapThemeAssets(theme) {
+    const isDark = theme === "dark";
+
+    // <img data-src-light data-src-dark>
+    document
+      .querySelectorAll("img[data-src-light][data-src-dark]")
+      .forEach((img) => {
+        const nextSrc = isDark
+          ? img.getAttribute("data-src-dark")
+          : img.getAttribute("data-src-light");
+
+        if (nextSrc && img.getAttribute("src") !== nextSrc) {
+          img.setAttribute("src", nextSrc);
+        }
+
+        // Optional: <img data-srcset-light data-srcset-dark>
+        const lightSet = img.getAttribute("data-srcset-light");
+        const darkSet = img.getAttribute("data-srcset-dark");
+        if (lightSet && darkSet) {
+          const nextSet = isDark ? darkSet : lightSet;
+          if (img.getAttribute("srcset") !== nextSet) {
+            img.setAttribute("srcset", nextSet);
+          }
+        }
+      });
+
+    // <source data-srcset-light data-srcset-dark> inside <picture>
+    document
+      .querySelectorAll("source[data-srcset-light][data-srcset-dark]")
+      .forEach((source) => {
+        const nextSet = isDark
+          ? source.getAttribute("data-srcset-dark")
+          : source.getAttribute("data-srcset-light");
+
+        if (nextSet && source.getAttribute("srcset") !== nextSet) {
+          source.setAttribute("srcset", nextSet);
+        }
+
+        // Force picture refresh (some browsers cache selection)
+        const pic = source.closest("picture");
+        const img = pic && pic.querySelector("img");
+        if (img) {
+          img.style.display = "none";
+          img.offsetHeight; // reflow
+          img.style.display = "";
+        }
+      });
+
+    // Optional helper attribute for CSS hooks
+    root.toggleAttribute("data-theme-dark", isDark);
+  }
+
+  function syncButtons(theme) {
+    const isDark = theme === "dark";
+
+    toggles().forEach((btn) => {
+      btn.setAttribute("aria-pressed", String(isDark));
+      btn.setAttribute(
+        "aria-label",
+        isDark ? "Disable dark mode" : "Enable dark mode"
+      );
+
+      const icon = btn.querySelector(".themeToggle__icon");
+      if (icon) icon.textContent = isDark ? "☀️" : "🌙";
+
+      const text = btn.querySelector(".themeToggle__text");
+      if (text) text.textContent = isDark ? "Light mode" : "Dark mode";
+    });
+  }
+
+  function setTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    localStorage.setItem(STORAGE_KEY, theme);
+    syncButtons(theme);
+    swapThemeAssets(theme);
+  }
+
+  // Init
+  setTheme(getPreferredTheme());
+
+  // Toggle click (robust: prevents link navigation / other click handlers hijacking)
+  document.addEventListener("click", (e) => {
+    const toggleBtn = e.target.closest("[data-theme-toggle]");
+    if (!toggleBtn) return;
+
+    // If the toggle is inside/near a link, prevent navigation
+    e.preventDefault();
+    e.stopPropagation();
+
+    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    setTheme(current === "dark" ? "light" : "dark");
+  });
+
+  // OS theme changes (if no stored pref)
+  const mql = window.matchMedia
+    ? window.matchMedia("(prefers-color-scheme: dark)")
+    : null;
+
+  if (mql) {
+    mql.addEventListener("change", () => {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored !== "light" && stored !== "dark") {
+        setTheme(mql.matches ? "dark" : "light");
+      }
+    });
+  }
+})();
+
+/* =========================================================
+   SITE INTERACTIONS
+========================================================= */
 (function () {
   "use strict";
 
   const qs = (sel, root) => (root || document).querySelector(sel);
-  const qsa = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  const qsa = (sel, root) =>
+    Array.prototype.slice.call((root || document).querySelectorAll(sel));
 
   // Year
   const yearEl = qs("#year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // Active nav on scroll
-  const navLinks = qsa(".nav__link");
-  const sections = navLinks
-    .map(a => qs(a.getAttribute("href")))
-    .filter(Boolean);
+  // Mobile menu
+  const btn = qs("#mobileMenuBtn");
+  const menu = qs("#mobileMenu");
+
+  if (btn && menu) {
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+      menu.hidden = expanded;
+
+      if (!expanded) {
+        const firstLink = qs("a", menu);
+        firstLink && firstLink.focus();
+      } else {
+        btn.focus();
+      }
+    });
+
+    // Close menu on link click
+    menu.addEventListener("click", (e) => {
+      const a = e.target.closest("a");
+      if (!a) return;
+      btn.setAttribute("aria-expanded", "false");
+      menu.hidden = true;
+    });
+  }
+
+  // Active nav highlighting
+  const navLinks = qsa(".navlink, .mobilebar__menu a");
+  const sections = qsa("main .section, footer").filter((el) => el.id);
 
   function setActiveLink() {
-    const y = window.scrollY + 120;
+    const y = window.scrollY + 140;
     let activeId = "home";
-    sections.forEach(sec => {
+
+    sections.forEach((sec) => {
       if (sec.offsetTop <= y) activeId = sec.id;
     });
-    navLinks.forEach(a => {
+
+    navLinks.forEach((a) => {
       const id = (a.getAttribute("href") || "").replace("#", "");
       a.classList.toggle("is-active", id === activeId);
     });
   }
+
   window.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("load", setActiveLink);
 
-  // Portfolio filtering
+  // Portfolio filter
   const filterWrap = qs("#myBtnContainer");
   const columns = qsa(".column");
 
   function filterSelection(c) {
-    const cat = (c === "all") ? "" : c;
-    columns.forEach(col => {
+    const cat = c === "all" ? "" : c;
+    columns.forEach((col) => {
       col.classList.remove("show");
-      if (!cat || col.className.indexOf(cat) > -1) col.classList.add("show");
+      if (!cat || col.className.indexOf(cat) > -1) {
+        col.classList.add("show");
+      }
     });
   }
+
   filterSelection("all");
 
   if (filterWrap) {
     filterWrap.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-filter]");
-      if (!btn) return;
+      const b = e.target.closest("button[data-filter]");
+      if (!b) return;
 
-      qsa(".filter__btn", filterWrap).forEach(b => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
-
-      filterSelection(btn.getAttribute("data-filter") || "all");
+      qsa(".filterBtn", filterWrap).forEach((x) =>
+        x.classList.remove("is-active")
+      );
+      b.classList.add("is-active");
+      filterSelection(b.getAttribute("data-filter") || "all");
     });
   }
 
-  // Accessible modal (focus trap + ESC)
+  // Accessible modal
   const modal = qs("#modal");
   const modalContent = qs("#modalContent");
   let lastFocus = null;
 
-  function getFocusable(container) {
-    return qsa([
-      "a[href]",
-      "button:not([disabled])",
-      "input:not([disabled])",
-      "textarea:not([disabled])",
-      "select:not([disabled])",
-      "[tabindex]:not([tabindex='-1'])"
-    ].join(","), container).filter(el => el.offsetParent !== null);
+  function focusables(container) {
+    return qsa(
+      [
+        "a[href]",
+        "button:not([disabled])",
+        "input:not([disabled])",
+        "textarea:not([disabled])",
+        "select:not([disabled])",
+        "[tabindex]:not([tabindex='-1'])",
+      ].join(","),
+      container
+    ).filter((el) => el.offsetParent !== null);
   }
 
   function onModalKeydown(e) {
@@ -79,11 +249,11 @@
     }
 
     if (e.key === "Tab") {
-      const focusables = getFocusable(modal);
-      if (!focusables.length) return;
+      const f = focusables(modal);
+      if (!f.length) return;
 
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
+      const first = f[0];
+      const last = f[f.length - 1];
 
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
@@ -98,13 +268,12 @@
   function openModal(html) {
     lastFocus = document.activeElement;
     modalContent.innerHTML = html;
-
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
 
-    const focusables = getFocusable(modal);
-    (focusables[0] || qs(".modal__dialog")).focus?.();
+    const f = focusables(modal);
+    (f[0] || qs(".modal__dialog"))?.focus?.();
 
     document.addEventListener("keydown", onModalKeydown);
   }
@@ -116,34 +285,60 @@
     document.body.style.overflow = "";
 
     document.removeEventListener("keydown", onModalKeydown);
-    lastFocus && lastFocus.focus && lastFocus.focus();
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 
   document.addEventListener("click", (e) => {
-    const openBtn = e.target.closest("button[data-content]");
-    if (openBtn) {
-      const tplSel = openBtn.getAttribute("data-content");
-      const tpl = qs(tplSel);
-      if (tpl && tpl.content) openModal(tpl.innerHTML);
+    const close = e.target.closest("[data-modal-close]");
+    if (close) {
+      closeModal();
       return;
     }
-    if (e.target.closest("[data-modal-close]")) closeModal();
+
+    const openBtn = e.target.closest("button[data-modal]");
+    if (openBtn) {
+      const sel = openBtn.getAttribute("data-modal");
+      const tpl = sel ? qs(sel) : null;
+      if (tpl && tpl.content) openModal(tpl.innerHTML);
+    }
   });
 
-  // Contact form validation (Netlify does the submission)
+  // Newsletter demo (no backend)
+  const newsForm = qs("#newsletterForm");
+  const newsMsg = qs("#newsletterMsg");
+
+  if (newsForm && newsMsg) {
+    newsForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = (qs("#newsletterEmail")?.value || "").trim();
+      newsMsg.className = "formMsg";
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        newsMsg.textContent = "Please enter a valid email address.";
+        newsMsg.classList.add("is-error");
+        return;
+      }
+
+      newsMsg.textContent = "Thanks! (Static demo — wire to Netlify if desired.)";
+      newsMsg.classList.add("is-success");
+      newsForm.reset();
+    });
+  }
+
+  // Contact form validation (Netlify handles submit)
   const contactForm = qs("#contactForm");
   const contactMsg = qs("#contactMsg");
-
   const mapErr = { name: "#nameErr", email: "#emailErr", message: "#msgErr" };
+
+  function setErr(input, msg) {
+    if (!input) return;
+    const err = qs(mapErr[input.name]);
+    if (err) err.textContent = msg || "";
+    input.setAttribute("aria-invalid", msg ? "true" : "false");
+  }
 
   function isEmail(v) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  }
-
-  function setFieldError(input, msg) {
-    const errEl = qs(mapErr[input.name]);
-    if (errEl) errEl.textContent = msg || "";
-    input.setAttribute("aria-invalid", msg ? "true" : "false");
   }
 
   if (contactForm) {
@@ -157,25 +352,33 @@
       const emailEl = qs("#email");
       const msgEl = qs("#message");
 
-      const name = nameEl.value.trim();
-      const email = emailEl.value.trim();
-      const message = msgEl.value.trim();
+      setErr(nameEl, "");
+      setErr(emailEl, "");
+      setErr(msgEl, "");
 
       let ok = true;
 
-      setFieldError(nameEl, "");
-      setFieldError(emailEl, "");
-      setFieldError(msgEl, "");
-
-      if (!name) { setFieldError(nameEl, "Please enter your name."); ok = false; }
-      if (!email) { setFieldError(emailEl, "Please enter your email."); ok = false; }
-      else if (!isEmail(email)) { setFieldError(emailEl, "Please enter a valid email address."); ok = false; }
-      if (!message) { setFieldError(msgEl, "Please enter a message."); ok = false; }
+      if (!nameEl || !nameEl.value.trim()) {
+        setErr(nameEl, "Please enter your name.");
+        ok = false;
+      }
+      if (!emailEl || !emailEl.value.trim()) {
+        setErr(emailEl, "Please enter your email.");
+        ok = false;
+      } else if (!isEmail(emailEl.value.trim())) {
+        setErr(emailEl, "Please enter a valid email address.");
+        ok = false;
+      }
+      if (!msgEl || !msgEl.value.trim()) {
+        setErr(msgEl, "Please enter a message.");
+        ok = false;
+      }
 
       if (!ok) {
         e.preventDefault();
         const firstInvalid = qs('[aria-invalid="true"]', contactForm);
         firstInvalid && firstInvalid.focus();
+
         if (contactMsg) {
           contactMsg.textContent = "Please fix the highlighted fields.";
           contactMsg.classList.add("is-error");
@@ -183,39 +386,8 @@
         return;
       }
 
-      // Allow Netlify to submit normally.
-      // Optional: show a message immediately (Netlify will redirect unless you set action)
-      if (contactMsg) {
-        contactMsg.textContent = "Sending…";
-      }
+      // allow Netlify submit normally
+      if (contactMsg) contactMsg.textContent = "Sending…";
     });
   }
-
-  // Subscribe form (static demo)
-  const subscribeForm = qs("#subscribeForm");
-  const subscribeMsg = qs("#subscribeMsg");
-  if (subscribeForm) {
-    subscribeForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      subscribeMsg.textContent = "";
-      subscribeMsg.className = "formMsg";
-
-      const emailEl = qs("#subscribeEmail");
-      const email = emailEl.value.trim();
-      emailEl.setAttribute("aria-invalid", "false");
-
-      if (!email || !isEmail(email)) {
-        subscribeMsg.textContent = "Please enter a valid email address.";
-        subscribeMsg.classList.add("is-error");
-        emailEl.setAttribute("aria-invalid", "true");
-        emailEl.focus();
-        return;
-      }
-
-      subscribeMsg.textContent = "Static demo (no backend).";
-      subscribeMsg.classList.add("is-success");
-      subscribeForm.reset();
-    });
-  }
-
 })();

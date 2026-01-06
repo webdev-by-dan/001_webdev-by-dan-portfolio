@@ -4,288 +4,520 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mers-style Site (Static, Accessible)</title>
-  <link rel="stylesheet" href="assets/styles.css" />
+  <title>Web Dev by Dan | Website Design & Development</title>
+  <meta name="description" content="Web Dev by Dan — custom websites, design, hosting, SEO." />
+  <link rel="icon" type="image/x-icon" href="./img/logo/icon.png" />
+
+  <!-- Fonts (keep if you want them) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-  <!-- Skip link (WCAG 2.4.1) -->
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Accessible Modal -->
+  <!-- Accessible modal -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
-
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal__close" type="button" aria-label="Close dialog" data-modal-close>×</button>
       <div class="modal__content" id="modalContent"></div>
     </div>
   </div>
 
-  <div class="app">
-    <header class="sidebar" role="banner">
-      <div class="sidebar__inner">
-        <a class="brand" href="#home" aria-label="Home">
-          <span class="brand__mark" aria-hidden="true">◆</span>
-          <span class="brand__text">
-            <span class="brand__name">Mers</span>
-            <span class="brand__tag">Web • Data • Design</span>
-          </span>
-        </a>
+  <!-- Wrapper -->
+  <div class="site" id="top">
+    <!-- Mobile header -->
+    <header class="mobilebar" role="banner">
+      <a class="mobilebar__brand" href="#home" aria-label="Web Dev by Dan – Home">
+      <img
+        class="siteLogo"
+        src="img/logo/Web-Graphics-05.png"
+        data-src-light="img/logo/Web-Graphics-05.png"
+        data-src-dark="img/logo/Web-Graphics-06.png"
+        alt="Web Dev by Dan"
+        width="160"
+        height="44"
+        decoding="async"
+      />
+    </a>
 
-        <nav class="nav" aria-label="Primary">
-          <a class="nav__link is-active" href="#home">Home</a>
-          <a class="nav__link" href="#about">About</a>
-          <a class="nav__link" href="#services">Services</a>
-          <a class="nav__link" href="#portfolio">Portfolio</a>
-          <a class="nav__link" href="#news">News</a>
-          <a class="nav__link" href="#footer">Contact</a>
-        </nav>
+      <div class="mobilebar__actions">
+        <button
+          class="themeToggle"
+          type="button"
+          data-theme-toggle
+          aria-label="Enable dark mode"
+          aria-pressed="false"
+        >
+          <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+          <span class="sr-only">Toggle dark mode</span>
+        </button>
 
-        <section class="sidebar__card" aria-labelledby="subscribeTitle">
-          <h2 class="sidebar__cardTitle" id="subscribeTitle">Subscribe</h2>
-
-          <!-- OPTIONAL: static subscribe (you can wire to Netlify forms too if you want) -->
-          <form class="subscribe" id="subscribeForm" novalidate aria-describedby="subscribeHelp">
-            <label for="subscribeEmail">Email address</label>
-            <input
-              id="subscribeEmail"
-              name="email"
-              type="email"
-              inputmode="email"
-              autocomplete="email"
-              placeholder="you@example.com"
-              required
-              aria-describedby="subscribeHelp subscribeMsg"
-            />
-            <p class="help" id="subscribeHelp">Static demo (no backend). Remove or wire to Netlify.</p>
-            <button type="submit">Join</button>
-            <p class="formMsg" id="subscribeMsg" aria-live="polite"></p>
-          </form>
-        </section>
-
-        <div class="sidebar__footer">
-          <div class="social" aria-label="Social links">
-            <a href="#" aria-label="Twitter">Tw</a>
-            <a href="#" aria-label="GitHub">Gh</a>
-            <a href="#" aria-label="LinkedIn">In</a>
-          </div>
-          <p class="tiny">© <span id="year"></span> Your Name</p>
-        </div>
+        <button
+          class="mobilebar__toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+          id="mobileMenuBtn"
+        >
+          <span class="mobilebar__toggleLines" aria-hidden="true"></span>
+        </button>
       </div>
+
+      <nav class="mobilebar__menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+        <ul class="navlist">
+          ...
+        </ul>
+
+        <!-- Optional: social links at bottom of the mobile menu -->
+        <div class="mobileMenu__footer" aria-label="Social links">
+          <a class="iconLink" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener noreferrer">
+            <!-- GitHub SVG -->
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"/>
+            </svg>
+            <span class="sr-only">GitHub</span>
+          </a>
+
+          <a class="iconLink" href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener noreferrer">
+            <!-- LinkedIn SVG -->
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
+            </svg>
+            <span class="sr-only">LinkedIn</span>
+          </a>
+        </div>
+      </nav>
     </header>
 
-    <main class="main" id="main" tabindex="-1">
-      <!-- Hero -->
-      <section class="section hero" id="home" aria-labelledby="homeTitle">
-        <div class="container">
-          <div class="hero__grid">
-            <div>
-              <h1 class="hero__title" id="homeTitle">Beautiful, fast sites for real work.</h1>
-              <p class="hero__lead">
-                Static HTML/CSS/JS with accessible modal + filtering and a Netlify-ready footer form.
-              </p>
-              <div class="hero__actions">
-                <a class="btn" href="#portfolio">View work</a>
-                <a class="btn btn--ghost" href="#footer">Contact</a>
-              </div>
-            </div>
 
-            <div class="hero__card" aria-label="Highlights">
-              <dl class="stats">
-                <div class="stat">
-                  <dt class="stat__k">WCAG</dt>
-                  <dd class="stat__v">2.2 AA minded</dd>
-                </div>
-                <div class="stat">
-                  <dt class="stat__k">0</dt>
-                  <dd class="stat__v">Backend required</dd>
-                </div>
-                <div class="stat">
-                  <dt class="stat__k">Netlify</dt>
-                  <dd class="stat__v">Form submissions</dd>
-                </div>
-              </dl>
-            </div>
+    <!-- Left sidebar -->
+    <aside class="left" aria-label="Sidebar">
+      <div class="left__inner">
+        <a class="logo" href="#home" aria-label="Home">
+          <img src="./img/logo/Web-Graphics-05.png" alt="Web Dev by Dan logo" />
+        </a>
+
+        <nav class="sideNav" aria-label="Primary">
+          <ul class="navlist" id="sideNav">
+            <li><a class="navlink is-active" href="#home">Home</a></li>
+            <li><a class="navlink" href="#about">About</a></li>
+            <li><a class="navlink" href="#service">Service</a></li>
+            <li><a class="navlink" href="#pricing">Pricing</a></li>
+            <li><a class="navlink" href="#process">The Process</a></li>
+            <li><a class="navlink" href="#portfolio">Portfolio</a></li>
+            <li><a class="navlink" href="#blog">Blog</a></li>
+            <li><a class="navlink" href="#footer">Contact</a></li>
+          </ul>
+        </nav>
+
+      <div class="sideFooter">
+        <div class="sideFooter__row" aria-label="Theme">
+          <button
+            class="themeToggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Enable dark mode"
+            aria-pressed="false"
+          >
+            <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+            <span class="themeToggle__text">Dark mode</span>
+          </button>
+        </div>
+
+        <div class="sideFooter__row" aria-label="Social links">
+          <a class="iconLink" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener noreferrer">
+            <!-- GitHub SVG (same as above) -->
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"/>
+            </svg>
+            <span class="sr-only">GitHub</span>
+          </a>
+
+          <a class="iconLink" href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener noreferrer">
+            <!-- LinkedIn SVG (same as above) -->
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
+            </svg>
+            <span class="sr-only">LinkedIn</span>
+          </a>
+        </div>
+
+        <p class="copyright">© <span id="year"></span> by Daniel Scheuermann.</p>
+      </div>
+
+
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="right" id="main" tabindex="-1">
+      <!-- HERO -->
+      <section class="section hero" id="home" aria-labelledby="homeTitle">
+        <div class="hero__bg" style="--bgimg:url('img/hero/Hero_04.png');">
+          <div class="hero__overlay" aria-hidden="true"></div>
+        </div>
+
+        <div class="container hero__content">
+          <p class="eyebrow">Hi, I'm</p>
+          <h1 class="hero__title" id="homeTitle">Dan</h1>
+          <p class="hero__sub">
+            Your favorite freelance <span class="accent">Web Developer.</span>
+          </p>
+
+          <div class="actions">
+            <a class="btn" href="#footer">
+              Let’s Chat
+              <span class="btn__icon" aria-hidden="true">▶</span>
+            </a>
+            <a class="btn btn--ghost" href="#about">Learn more</a>
           </div>
         </div>
       </section>
 
-      <!-- About -->
+      <!-- ABOUT -->
       <section class="section" id="about" aria-labelledby="aboutTitle">
         <div class="container">
-          <div class="section__head">
-            <h2 id="aboutTitle">About</h2>
-            <p>Replace this with your bio. Keep it short and scannable.</p>
+          <header class="sectionHead">
+            <p class="kicker">Introductions</p>
+            <h2 id="aboutTitle">About Me</h2>
+          </header>
+
+          <div class="aboutGrid">
+            <div class="aboutMedia">
+              <img src="img/about/1.jpg" alt="Portrait of Dan" loading="lazy" />
+            </div>
+
+            <div class="aboutText">
+              <p>
+                Hi, I’m Dan — a web developer with 5+ years of experience helping small businesses succeed online.
+                I blend technical skill with creative insight to build standout websites that reflect your brand.
+                Let’s bring your vision to life!
+              </p>
+
+              <h3 class="subhead">Based in <span class="accent">Burlington, Vermont.</span></h3>
+
+              <ul class="contactList">
+                <li>
+                  <span class="contactList__label">Phone</span>
+                  <a href="tel:+18608345235">+1 (860) 834 5235</a>
+                </li>
+                <li>
+                  <span class="contactList__label">Email</span>
+                  <a href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          <div class="cards">
-            <article class="card">
-              <h3>What I do</h3>
-              <p>Frontend builds, accessibility, and maintainable UI systems.</p>
+          <div class="facts" aria-label="Quick facts">
+            <article class="factCard">
+              <h3>🌱 Nature Lover</h3>
+              <p>Dan has hiked all of the 4000ft mountains in Vermont!</p>
             </article>
-            <article class="card">
-              <h3>How I work</h3>
-              <p>Clear scope, clean handoffs, and thoughtful documentation.</p>
+            <article class="factCard">
+              <h3>📊 Data Expert</h3>
+              <p>Dan obtained his master's degree from the UVM in 2025.</p>
             </article>
-            <article class="card">
-              <h3>Focus</h3>
-              <p>WCAG-friendly patterns, keyboard support, reduced motion.</p>
+            <article class="factCard">
+              <h3>☕ Coffee Enthusiast</h3>
+              <p>Dan loves spending his time at the local coffee shop!</p>
+            </article>
+            <article class="factCard">
+              <h3>🎃 Pumpkin Head</h3>
+              <p>Dan loves apple cider, pumpkin carving, and all things fall.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- Services -->
-      <section class="section" id="services" aria-labelledby="servicesTitle">
+      <!-- SERVICE -->
+      <section class="section" id="service" aria-labelledby="serviceTitle">
         <div class="container">
-          <div class="section__head">
-            <h2 id="servicesTitle">Services</h2>
-            <p>Click any service to open an accessible modal (keyboard + ESC supported).</p>
+          <header class="sectionHead sectionHead--center">
+            <p class="kicker">Why Choose Me</p>
+            <h2 id="serviceTitle">Work Services</h2>
+          </header>
+
+          <div class="grid4">
+            <!-- Service 1 -->
+            <article class="serviceCard">
+              <img class="serviceCard__icon" src="img/svg/laptop.svg" alt="" />
+              <h3>Web Development</h3>
+              <p>Bring your business to life with custom website design & development!</p>
+              <button class="linkBtn" type="button" data-modal="#svc1">
+                Read more<span class="sr-only"> about Web Development</span>
+              </button>
+
+              <template id="svc1">
+                <h2 id="modalTitle">Web Development</h2>
+                <img class="modalImg" src="img/service/web-dev-service.jpg" alt="Web development service image" />
+                <p>In today's digital-first world, having a professionally developed website is essential...</p>
+                <p>When choosing someone to handle your web development, trust is key—and that's where Dan comes in...</p>
+                <p>From initial planning to final launch and beyond, Dan ensures a seamless process...</p>
+              </template>
+            </article>
+
+            <!-- Service 2 -->
+            <article class="serviceCard">
+              <img class="serviceCard__icon" src="img/svg/mouse.svg" alt="" />
+              <h3>Graphic Design</h3>
+              <p>With logo & graphic design, your business will truly stand out!</p>
+              <button class="linkBtn" type="button" data-modal="#svc2">
+                Read more<span class="sr-only"> about Graphic Design</span>
+              </button>
+
+              <template id="svc2">
+                <h2 id="modalTitle">Graphic Design</h2>
+                <img class="modalImg" src="img/service/graphic-design-service.jpg" alt="Graphic design service image" />
+                <p>Graphic design is more than just aesthetics—it's a powerful tool that communicates your brand’s identity...</p>
+                <p>Dan brings passion, creativity, and precision to every project...</p>
+                <p>Trust Dan to craft exceptional visuals that make your brand unforgettable.</p>
+              </template>
+            </article>
+
+            <!-- Service 3 -->
+            <article class="serviceCard">
+              <img class="serviceCard__icon" src="img/svg/monitor.svg" alt="" />
+              <h3>Domain Hosting</h3>
+              <p>Get the domain which best fits your business and forget your hosting worries!</p>
+              <button class="linkBtn" type="button" data-modal="#svc3">
+                Read more<span class="sr-only"> about Domain Hosting</span>
+              </button>
+
+              <template id="svc3">
+                <h2 id="modalTitle">Domain Hosting</h2>
+                <img class="modalImg" src="img/service/domain-hosting-service.jpg" alt="Domain hosting service image" />
+                <p>Reliable domain hosting is the backbone of any successful website...</p>
+                <p>Dan prioritizes security, speed, and uptime...</p>
+                <p>Trust Dan to keep your website running optimally.</p>
+              </template>
+            </article>
+
+            <!-- Service 4 -->
+            <article class="serviceCard">
+              <img class="serviceCard__icon" src="img/svg/layer.svg" alt="" />
+              <h3>SEO Optimization</h3>
+              <p>Get your business to the top of search engines with SEO optimization!</p>
+              <button class="linkBtn" type="button" data-modal="#svc4">
+                Read more<span class="sr-only"> about SEO Optimization</span>
+              </button>
+
+              <template id="svc4">
+                <h2 id="modalTitle">SEO Optimization</h2>
+                <img class="modalImg" src="img/service/seo-service.jpg" alt="SEO service image" />
+                <p>Effective SEO increases visibility, attracts quality traffic, and drives organic growth...</p>
+                <p>Dan tailors a custom approach designed to deliver measurable results...</p>
+                <p>Trust Dan to elevate your online presence and help your business thrive.</p>
+              </template>
+            </article>
           </div>
 
-          <div class="grid">
-            <article class="tile">
-              <h3>Website Builds</h3>
-              <p>Launch-ready pages with clean UX and accessibility.</p>
-              <button class="linklike" type="button" data-content="#service1">
-                Learn more<span class="sr-only"> about Website Builds</span>
-              </button>
-              <template id="service1">
-                <h2 id="modalTitle">Website Builds</h2>
-                <p>Fast, responsive builds with accessible components and clean styling.</p>
-                <ul>
-                  <li>Semantic structure</li>
-                  <li>Keyboard-friendly</li>
-                  <li>Performance-minded</li>
-                </ul>
-              </template>
-            </article>
+          <div class="center">
+            <a class="btn" href="#footer">Let’s Chat</a>
+          </div>
 
-            <article class="tile">
-              <h3>Accessibility Fixes</h3>
-              <p>Audit and remediation for common AA issues.</p>
-              <button class="linklike" type="button" data-content="#service2">
-                Learn more<span class="sr-only"> about Accessibility Fixes</span>
-              </button>
-              <template id="service2">
-                <h2 id="modalTitle">Accessibility Fixes</h2>
-                <p>Focus styles, contrast, labels, headings, and interactive controls.</p>
-              </template>
-            </article>
-
-            <article class="tile">
-              <h3>Content Layout</h3>
-              <p>Clean sections and reusable patterns.</p>
-              <button class="linklike" type="button" data-content="#service3">
-                Learn more<span class="sr-only"> about Content Layout</span>
-              </button>
-              <template id="service3">
-                <h2 id="modalTitle">Content Layout</h2>
-                <p>Cards, grids, and typography systems that stay consistent.</p>
-              </template>
-            </article>
+          <!-- Partners marquee (static, accessible) -->
+          <div class="tags" aria-label="Service qualities">
+            <span class="tag">Custom-Coded</span>
+            <span class="tag">Responsive</span>
+            <span class="tag">Mobile-First</span>
+            <span class="tag">Accessible</span>
+            <span class="tag">Unique</span>
+            <span class="tag">Intuitive</span>
+            <span class="tag">Professional</span>
+            <span class="tag">Dynamic</span>
           </div>
         </div>
       </section>
 
-      <!-- Portfolio -->
+      <!-- PRICING -->
+      <section class="section" id="pricing" aria-labelledby="pricingTitle">
+        <div class="container">
+          <header class="sectionHead sectionHead--center">
+            <p class="kicker">Choose your plan</p>
+            <h2 id="pricingTitle">Price Table</h2>
+          </header>
+
+          <div class="pricingGrid">
+            <article class="priceCard">
+              <h3 class="priceCard__kicker">One-Time</h3>
+              <p class="priceCard__price">One Payment of <span class="accent">$3200</span></p>
+              <ul class="checkList">
+                <li><span aria-hidden="true">✓</span> $40 / Month Hosting Fee</li>
+                <li><span aria-hidden="true">✓</span> $20 / Hour Edits</li>
+                <li><span aria-hidden="true">✓</span> Premium Website</li>
+                <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
+                <li><span aria-hidden="true">✓</span> Customized SEO</li>
+              </ul>
+            </article>
+
+            <article class="priceCard">
+              <h3 class="priceCard__kicker">Monthly</h3>
+              <p class="priceCard__price"><span class="accent">$120</span> Monthly</p>
+              <ul class="checkList">
+                <li><span aria-hidden="true">✓</span> $120 / Month Hosting Fee</li>
+                <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
+                <li><span aria-hidden="true">✓</span> Premium Website</li>
+                <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
+                <li><span aria-hidden="true">✓</span> Customized SEO</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="center">
+            <a class="btn" href="#footer">Let’s Chat</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
+      <section class="section process" id="process" aria-labelledby="processTitle">
+        <div class="container">
+          <div class="processGrid">
+            <div>
+              <header class="sectionHead">
+                <p class="kicker">Take a look at</p>
+                <h2 id="processTitle">The Process</h2>
+              </header>
+              <p>
+                Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
+                process—from our first conversation to the final launch.
+              </p>
+
+              <ol class="steps">
+                <li><strong>Initial Meetup & Planning</strong> — 20%</li>
+                <li><strong>Website Design & Feedback</strong> — 40%</li>
+                <li><strong>Web Development</strong> — 75%</li>
+                <li><strong>Final Feedback & Launch</strong> — 100%</li>
+              </ol>
+            </div>
+
+            <div class="processMedia">
+              <img src="img/skills/TheProcess.png" alt="Web development process illustration" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PORTFOLIO -->
       <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
         <div class="container">
-          <div class="section__head">
-            <h2 id="portfolioTitle">Portfolio</h2>
-            <p>Filter items. Buttons + clear focus states.</p>
-          </div>
+          <header class="sectionHead">
+            <p class="kicker">Check out my past work!</p>
+            <h2 id="portfolioTitle">Dan’s Portfolio</h2>
+          </header>
 
           <div class="filter" role="group" aria-label="Portfolio filters" id="myBtnContainer">
-            <button class="filter__btn is-active" type="button" data-filter="all">All</button>
-            <button class="filter__btn" type="button" data-filter="web">Web</button>
-            <button class="filter__btn" type="button" data-filter="data">Data</button>
-            <button class="filter__btn" type="button" data-filter="design">Design</button>
+            <button class="filterBtn is-active" type="button" data-filter="all">Show all</button>
+            <button class="filterBtn" type="button" data-filter="mockups">Mockups</button>
+            <button class="filterBtn" type="button" data-filter="projects">Projects</button>
+            <button class="filterBtn" type="button" data-filter="pastwork">Past Work</button>
           </div>
 
-          <div class="grid portfolio" id="portfolioGrid">
-            <article class="tile column web show">
-              <h3>Municipal Site</h3>
-              <p>Template-based accessible layout.</p>
-              <button class="linklike" type="button" data-content="#p1">
-                View details<span class="sr-only"> for Municipal Site</span>
+          <div class="portfolioGrid" id="portfolioGrid">
+            <!-- Example item; duplicate for your real items -->
+            <article class="portfolioItem column mockups show">
+              <img src="img/portfolio/1.jpg" alt="Mockup preview" loading="lazy" />
+              <h3>Mockup</h3>
+              <p>Lorem ipsum…</p>
+              <button class="linkBtn" type="button" data-modal="#p1">
+                View details<span class="sr-only"> for Mockup</span>
               </button>
+
               <template id="p1">
-                <h2 id="modalTitle">Municipal Site</h2>
-                <p>Add screenshots/details here.</p>
-              </template>
-            </article>
-
-            <article class="tile column data show">
-              <h3>Dashboards</h3>
-              <p>Data-driven UI patterns.</p>
-              <button class="linklike" type="button" data-content="#p2">
-                View details<span class="sr-only"> for Dashboards</span>
-              </button>
-              <template id="p2">
-                <h2 id="modalTitle">Dashboards</h2>
-                <p>Add screenshots/details here.</p>
-              </template>
-            </article>
-
-            <article class="tile column design show">
-              <h3>Brand Kit</h3>
-              <p>Typography + color system.</p>
-              <button class="linklike" type="button" data-content="#p3">
-                View details<span class="sr-only"> for Brand Kit</span>
-              </button>
-              <template id="p3">
-                <h2 id="modalTitle">Brand Kit</h2>
-                <p>Add screenshots/details here.</p>
+                <h2 id="modalTitle">Mockup</h2>
+                <img class="modalImg" src="img/portfolio/1.jpg" alt="Mockup preview large" />
+                <p>Add your real project details here.</p>
               </template>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- News -->
-      <section class="section" id="news" aria-labelledby="newsTitle">
+      <!-- TESTIMONIALS -->
+      <section class="section" id="testimonials" aria-labelledby="testimonialsTitle">
         <div class="container">
-          <div class="section__head">
-            <h2 id="newsTitle">News</h2>
-            <p>Optional section.</p>
-          </div>
+          <header class="sectionHead sectionHead--center">
+            <p class="kicker">What Clients Say</p>
+            <h2 id="testimonialsTitle">Testimonials</h2>
+          </header>
 
-          <div class="grid">
-            <article class="tile">
-              <h3>Post Title</h3>
-              <p class="meta">Jan 5, 2026</p>
-              <p>Short teaser text goes here.</p>
-              <button class="linklike" type="button" data-content="#n1">
-                Read more<span class="sr-only"> about Post Title</span>
-              </button>
-              <template id="n1">
-                <h2 id="modalTitle">Post Title</h2>
-                <p>Full post content goes here.</p>
+          <div class="testimonialCard">
+            <div class="testimonialMedia">
+              <img src="img/testimonials/Testimonials.png" alt="" loading="lazy" />
+            </div>
+            <blockquote class="quote">
+              <p>“Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened…”</p>
+              <footer>
+                <strong>Dylan Koval</strong><br />
+                <span class="muted">Technical Writer</span>
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOG -->
+      <section class="section" id="blog" aria-labelledby="blogTitle">
+        <div class="container">
+          <header class="sectionHead">
+            <p class="kicker">Curious About Web-Dev?</p>
+            <h2 id="blogTitle">Blog Posts</h2>
+          </header>
+
+          <div class="blogGrid">
+            <article class="blogCard">
+              <div class="blogCard__img" style="--bgimg:url('img/news/website-news.jpg');" aria-hidden="true"></div>
+              <h3>The Importance of a website for small businesses</h3>
+              <p class="muted">By Daniel Scheuermann</p>
+              <button class="linkBtn" type="button" data-modal="#b1">Read more</button>
+
+              <template id="b1">
+                <h2 id="modalTitle">The Importance of a website for small businesses</h2>
+                <p>In today's digital age, having a website is crucial for small businesses looking to compete…</p>
+                <p>Websites can level the playing field…</p>
+              </template>
+            </article>
+
+            <article class="blogCard">
+              <div class="blogCard__img" style="--bgimg:url('img/news/colors-news.jpg');" aria-hidden="true"></div>
+              <h3>Understanding Color Psychology in Web Design</h3>
+              <p class="muted">By Daniel Scheuermann</p>
+              <button class="linkBtn" type="button" data-modal="#b2">Read more</button>
+
+              <template id="b2">
+                <h2 id="modalTitle">Understanding Color Psychology in Web Design</h2>
+                <p>Color is a powerful tool in web design, influencing both aesthetics and user behavior…</p>
+                <p>Blue represents trust and security…</p>
+                <p>Green symbolizes growth and balance…</p>
               </template>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- Footer + Netlify contact form -->
+      <!-- FOOTER + NETLIFY CONTACT FORM -->
       <footer class="footer" id="footer">
-        <div class="container footer__grid">
-          <div class="footer__about">
-            <h2>Contact</h2>
+        <div class="container footerGrid">
+          <div>
+            <h2>Want to work together? <span class="accent">Let’s Chat!</span></h2>
+            <p class="muted">Send a message — submissions are stored in Netlify Forms.</p>
+
             <p class="muted">
-              Send a message — submissions go to Netlify Forms.
+              Based in <span class="accent">Burlington, Vermont.</span><br />
+              <a href="tel:+18608345235">+1 (860) 834 5235</a><br />
+              <a href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a>
             </p>
           </div>
 
-          <!-- NETLIFY FORMS:
-               1) netlify attribute
-               2) form name
-               3) hidden form-name input
-               4) optional honeypot -->
           <form
-            class="contact"
+            class="contactForm"
             id="contactForm"
             name="contact"
             method="POST"
@@ -295,46 +527,54 @@
           >
             <input type="hidden" name="form-name" value="contact" />
 
-            <!-- honeypot -->
             <p class="sr-only">
               <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
             </p>
 
-            <div class="formRow">
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameErr" />
-              <p class="fieldErr" id="nameErr" aria-live="polite"></p>
+            <div class="twoCol">
+              <div>
+                <label for="name">Full Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameErr" />
+                <p class="fieldErr" id="nameErr" aria-live="polite"></p>
+              </div>
+
+              <div>
+                <label for="email">Your Email</label>
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailErr" />
+                <p class="fieldErr" id="emailErr" aria-live="polite"></p>
+              </div>
             </div>
 
-            <div class="formRow">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailErr" />
-              <p class="fieldErr" id="emailErr" aria-live="polite"></p>
+            <div class="twoCol">
+              <div>
+                <label for="subject">Subject <span class="muted">(optional)</span></label>
+                <input id="subject" name="subject" type="text" />
+              </div>
+
+              <div>
+                <label for="phone">Phone <span class="muted">(optional)</span></label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+              </div>
             </div>
 
-            <div class="formRow">
-              <label for="subject">Subject <span class="muted">(optional)</span></label>
-              <input id="subject" name="subject" type="text" autocomplete="off" />
-            </div>
-
-            <div class="formRow">
+            <div>
               <label for="message">Message</label>
               <textarea id="message" name="message" rows="6" required aria-describedby="msgErr"></textarea>
               <p class="fieldErr" id="msgErr" aria-live="polite"></p>
             </div>
 
-            <button type="submit">Send message</button>
+            <button class="btn" type="submit">Submit Now</button>
             <p class="formMsg" id="contactMsg" aria-live="polite"></p>
           </form>
         </div>
 
-        <div class="container footer__bottom">
-          <p class="tiny">Built with semantic HTML + accessible interactions.</p>
+        <div class="footerBg" aria-hidden="true">
+          <img src="img/contact/1.png" alt="" />
         </div>
       </footer>
     </main>
   </div>
 
-  <script src="assets/app.js" defer></script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
