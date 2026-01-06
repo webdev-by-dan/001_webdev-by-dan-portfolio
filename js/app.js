@@ -391,3 +391,66 @@
     });
   }
 })();
+
+// Sticky mobile nav behavior for the "mobileHeroWrap" layout.
+// Goal:
+// - While the hero is in view: mobilebar is docked to the BOTTOM of the screen.
+// - After you scroll past the hero: mobilebar becomes sticky at the TOP.
+//
+// Assumptions:
+// - Your hero section has id="home" (already does).
+// - Your mobile navbar is: <header class="mobilebar"> ... </header>
+// - On mobile, that mobilebar is inside .mobileHeroWrap (per your HTML changes).
+//
+// Add this CSS class hook (already handled in this JS):
+// .mobilebar.is-stickyTop { top: 0; bottom: auto; border-bottom: 1px solid var(--border); border-top: 0; }
+
+(() => {
+  const mql = window.matchMedia("(max-width: 980px)");
+  const hero = document.getElementById("home");
+  const mobilebar = document.querySelector(".mobileHeroWrap .mobilebar");
+
+  if (!hero || !mobilebar) return;
+
+  let io = null;
+
+  const setTopSticky = (on) => {
+    if (on) mobilebar.classList.add("is-stickyTop");
+    else mobilebar.classList.remove("is-stickyTop");
+  };
+
+  const setup = () => {
+    // Clean up any previous observer
+    if (io) io.disconnect();
+
+    // If not mobile, ensure class is removed
+    if (!mql.matches) {
+      setTopSticky(false);
+      return;
+    }
+
+    // Observe the hero's visibility.
+    // If the hero is NOT intersecting (scrolled past), switch bar to top-sticky.
+    io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const heroVisible = entry.isIntersecting;
+        setTopSticky(!heroVisible);
+      },
+      {
+        root: null,
+        // Trigger once the hero is basically gone from view
+        threshold: 0.01,
+      }
+    );
+
+    io.observe(hero);
+  };
+
+  // Run once + respond to viewport changes
+  setup();
+  mql.addEventListener?.("change", setup);
+
+  // Optional: iOS Safari can be weird on orientation changes
+  window.addEventListener("orientationchange", () => setTimeout(setup, 150));
+})();
