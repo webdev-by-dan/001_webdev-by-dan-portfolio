@@ -1121,10 +1121,20 @@ html[data-theme="dark"] .footer{
   .twoCol{ grid-template-columns: 1fr; }
 }
 
-.mobilebar.is-lockedTop{
+.mobilebar.is-lockedBottom{
   position: fixed;
-  top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  top: auto;
+  z-index: 999;
+}
+
+.mobilebar.is-lockedTop{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: auto;
   z-index: 999;
 }
