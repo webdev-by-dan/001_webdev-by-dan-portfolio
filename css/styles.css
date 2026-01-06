@@ -452,7 +452,7 @@ html[data-theme="dark"] .hero__overlay{
 
   /* Wrap contains ONLY hero + mobilebar */
   .mobileHeroWrap{
-    max-height: 80vh;
+    max-height: 700px;
     height: auto;          /* change from 100vh */
     display:flex;
     flex-direction: column;
