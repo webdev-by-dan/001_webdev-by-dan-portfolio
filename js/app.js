@@ -460,3 +460,31 @@
   // Init
   requestAnimationFrame(update);
 })();
+
+
+/* =========================================================
+   SET mobileHeroWrap max-height = CTA button Y + px
+========================================================= */
+(() => {
+  const wrap = document.querySelector(".mobileHeroWrap");
+  const btn  = document.querySelector(".hero .actions .btn"); // adjust selector if needed
+
+  if (!wrap || !btn) return;
+
+  const update = () => {
+    const btnRect  = btn.getBoundingClientRect();
+    const wrapRect = wrap.getBoundingClientRect();
+
+    // Button Y relative to the wrap, plus 32px
+    const maxH = (btnRect.bottom - wrapRect.top) + 240;
+
+    wrap.style.setProperty("--heroMaxH", `${Math.ceil(maxH)}px`);
+  };
+
+  // Run on load + resize (mobile orientation changes)
+  window.addEventListener("load", update);
+  window.addEventListener("resize", update);
+
+  // Optional: run once fonts are ready (prevents jump)
+  document.fonts?.ready?.then(update);
+})();
