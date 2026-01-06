@@ -392,23 +392,25 @@
 })();
 
 /* =========================================================
-   BOTTOM->TOP STICKY NAV (WITH SAME UNLOCK METHOD)
-   Behavior:
-   - While hero is visible / before nav reaches its "spot":
-       nav is FIXED to the BOTTOM (is-lockedBottom)
-   - Once the nav reaches its original spot in the document flow:
-       nav becomes STUCK to the TOP (is-lockedTop)
-   - Unlock method is the same idea as before:
-       when scrolling back up, we ONLY unlock when the nav's original spot
-       returns to the bottom threshold (so it can safely re-enter flow)
+   BOTTOM->TOP STICKY NAV (transition based on nav TOP vs its "spot" TOP)
+
+   Your requested rules:
+   - Stop being bottom-sticky when:
+       navTop === spotTop  (i.e., it has reached its normal position)
+   - Start being top-sticky when:
+       navTop > spotTop    (i.e., it has scrolled past its spot)
+
+   Unlock method stays the same concept as before:
+   - Only release the top-lock when the placeholder (spot) returns to y >= 0
    Notes:
-   - Uses a placeholder (ph) to track nav's original "spot" in the flow.
+   - Uses an in-flow placeholder (ph) to represent nav's "spot" in the document flow.
+   - Adds a small EPS to avoid flicker from sub-pixel rounding.
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
   if (!nav) return;
 
-  // Placeholder to preserve layout when nav is fixed (top or bottom)
+  // Placeholder to preserve layout when nav is fixed
   const ph = document.createElement("div");
   ph.className = "mobilebar-placeholder";
   ph.style.height = `${nav.offsetHeight}px`;
@@ -418,6 +420,8 @@
   // Modes: "flow" | "bottom" | "top"
   let mode = "flow";
   let ticking = false;
+
+  const EPS = 0.5; // sub-pixel tolerance to prevent flicker
 
   const setMode = (next) => {
     if (next === mode) return;
@@ -433,23 +437,17 @@
   const update = () => {
     ticking = false;
 
-    const navH = nav.getBoundingClientRect().height;
-
-    // If placeholder is shown, its rect represents the nav's original spot in the flow.
-    // If placeholder is hidden (mode === "flow"), ph still exists and can be measured,
-    // but its display:none rect is not useful—so we rely on navRect in flow mode.
     const navRect = nav.getBoundingClientRect();
 
     if (mode === "flow") {
-      // Start fixed-bottom once the nav would go below the viewport bottom.
-      // (i.e., it’s not fully visible at the bottom anymore)
-      if (navRect.bottom > window.innerHeight) {
+      // Enter bottom-sticky if nav would slip below viewport bottom
+      if (navRect.bottom > window.innerHeight + EPS) {
         setMode("bottom");
         return;
       }
 
-      // If, in flow, it’s already at/above top, just go top-locked.
-      if (navRect.top <= 0) {
+      // If it reaches/overlaps the top, go top-sticky
+      if (navRect.top <= 0 + EPS) {
         setMode("top");
         return;
       }
@@ -457,32 +455,37 @@
       return;
     }
 
-    // From fixed-bottom:
+    // When fixed (bottom/top) we can measure the placeholder's spot.
+    const phRect = ph.getBoundingClientRect();
+
+    // From bottom-sticky:
     if (mode === "bottom") {
-      // When the nav's original spot reaches the viewport bottom, it has "reached its spot".
-      // Switch from bottom-fixed to top-sticky mode.
-      const phRect = ph.getBoundingClientRect();
-      if (phRect.bottom <= window.innerHeight) {
+      // Stop bottom-sticky when the nav's top meets the spot's top
+      // and start top-sticky once navTop is LOWER than spotTop.
+      // In bottom-fixed, navTop is usually (viewportH - navH).
+      // Compare those in viewport coordinates:
+      const navTop = navRect.top;
+      const spotTop = phRect.top;
+
+      // When nav has reached/passed its spot, switch to top lock.
+      if (navTop >= spotTop - EPS) {
         setMode("top");
       }
       return;
     }
 
-    // From top-locked:
+    // From top-sticky:
     if (mode === "top") {
-      const phRect = ph.getBoundingClientRect();
-
-      // Unlock method (same concept as before): only release when the nav's original spot
-      // has returned to where it belongs relative to the viewport.
-      // Here: release top lock only when the placeholder is back at/above the top edge.
-      if (phRect.top >= 0) {
+      // Unlock method unchanged: only release when the spot returns to y >= 0
+      if (phRect.top >= 0 - EPS) {
         setMode("flow");
         return;
       }
 
-      // If user scrolls down and the placeholder indicates the nav would sit below the viewport bottom,
-      // revert to bottom-fixed (rare but prevents weird transitions on short viewports).
-      if (phRect.top > window.innerHeight - navH) {
+      // (Optional safety) If viewport is very short and spot drops below bottom, allow bottom mode.
+      // This avoids weirdness on extreme small heights / keyboard open.
+      const navH = navRect.height;
+      if (phRect.top > window.innerHeight - navH + EPS) {
         setMode("bottom");
       }
     }
