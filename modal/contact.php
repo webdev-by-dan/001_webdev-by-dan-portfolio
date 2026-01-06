@@ -1,51 +1,43 @@
 <?php
+// api/contact.php
+header('Content-Type: application/json; charset=utf-8');
 
-// Put contacting email here
-$php_main_email = "webdev.by.dan@gmail.com";
-
-//Fetching Values from URL
-$php_name = $_POST['ajax_name'];
-$php_email = $_POST['ajax_email'];
-$php_message = $_POST['ajax_message'];
-
-
-
-//Sanitizing email
-$php_email = filter_var($php_email, FILTER_SANITIZE_EMAIL);
-
-
-//After sanitization Validation is performed
-if (filter_var($php_email, FILTER_VALIDATE_EMAIL)) {
-	
-	
-		$php_subject = "Message from contact form";
-		
-		// To send HTML mail, the Content-type header must be set
-		$php_headers = 'MIME-Version: 1.0' . "\r\n";
-		$php_headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$php_headers .= 'From:' . $php_email. "\r\n"; // Sender's Email
-		$php_headers .= 'Cc:' . $php_email. "\r\n"; // Carbon copy to Sender
-		
-		$php_template = '<div style="padding:50px;">Hello ' . $php_name . ',<br/>'
-		. 'Thank you for contacting us.<br/><br/>'
-		. '<strong style="color:#f00a77;">Name:</strong>  ' . $php_name . '<br/>'
-		. '<strong style="color:#f00a77;">Email:</strong>  ' . $php_email . '<br/>'
-		. '<strong style="color:#f00a77;">Message:</strong>  ' . $php_message . '<br/><br/>'
-		. 'This is a Contact Confirmation mail.'
-		. '<br/>'
-		. 'We will contact you as soon as possible .</div>';
-		$php_sendmessage = "<div style=\"background-color:#f5f5f5; color:#333;\">" . $php_template . "</div>";
-		
-		// message lines should not exceed 70 characters (PHP rule), so wrap it
-		$php_sendmessage = wordwrap($php_sendmessage, 70);
-		
-		// Send mail by PHP Mail Function
-		mail($php_main_email, $php_subject, $php_sendmessage, $php_headers);
-		echo "";
-	
-	
-} else {
-	echo "<span class='contact_error'>* Invalid email *</span>";
+function bad($msg, $code = 400) {
+  http_response_code($code);
+  echo json_encode(['ok' => false, 'error' => $msg]);
+  exit;
 }
 
-?>
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  bad('Method not allowed', 405);
+}
+
+$name = trim((string)($_POST['name'] ?? ''));
+$email = trim((string)($_POST['email'] ?? ''));
+$subject = trim((string)($_POST['subject'] ?? ''));
+$message = trim((string)($_POST['message'] ?? ''));
+
+if ($name === '') bad('Name required');
+if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) bad('Valid email required');
+if ($message === '') bad('Message required');
+
+$to = 'YOUR_INBOX@example.com'; // <-- change this
+$subj = $subject !== '' ? $subject : 'New contact form message';
+$body =
+  "Name: {$name}\n" .
+  "Email: {$email}\n\n" .
+  "Message:\n{$message}\n";
+
+$headers = [];
+$headers[] = 'MIME-Version: 1.0';
+$headers[] = 'Content-Type: text/plain; charset=UTF-8';
+// Using Reply-To so you can reply directly:
+$headers[] = 'Reply-To: ' . $email;
+
+$ok = @mail($to, $subj, $body, implode("\r\n", $headers));
+
+if (!$ok) {
+  bad('Mail failed', 500);
+}
+
+echo json_encode(['ok' => true]);

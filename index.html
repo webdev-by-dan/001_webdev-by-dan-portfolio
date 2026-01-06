@@ -1,724 +1,338 @@
-<!DOCTYPE html>
-
-<!-- https://coolors.co/669900-99cc33-ccee66-006699-3399cc-990066-cc3399-ff6600-ff9900-ffcc00 -->
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-
+<?php
+// index.php
+?>
+<!doctype html>
+<html lang="en">
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-<meta name="description" content="Name of your web site">
-<meta name="author" content="Marketify">
-
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-<title>Web Dev by Dan | Website Design & Development</title>
-<link rel="icon" type="image/x-icon" href="./img/logo/icon.png">
-
-<!-- STYLES -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" type="text/css" href="css/plugins.css" />
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<!--[if lt IE 9]> <script type="text/javascript" src="js/modernizr.custom.js"></script> <![endif]-->
-<!-- /STYLES -->
-
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mers-style Site (No jQuery, Accessible)</title>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 
-<body> 
-	
+<body>
+  <!-- Skip link (WCAG 2.4.1) -->
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-	<!-- PRELOADER -->
-	<div id="preloader">
-		<div class="loader_line"></div>
-	</div>
-	<!-- /PRELOADER -->
+  <!-- Modal (accessible) -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-modal-close></div>
 
-	<!-- WRAPPER ALL -->
-	
-	<div class="mers_tm_all_wrap" data-magic-cursor="show">
-	
-		<!-- MOBILE MENU -->
-		<div class="mers_tm_mobile_menu">
-			<div class="mobile_menu_inner">
-				<div class="mobile_in">
-					<div class="logo">
-						<p>Dans</p>
-					</div>
-					<div class="trigger">
-						<div class="hamburger hamburger--slider">
-							<div class="hamburger-box">
-								<div class="hamburger-inner"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="dropdown">
-				<div class="dropdown_inner">
-					<ul class="anchor_nav">
-						<li><a href="#home">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#service">Service</a></li>
-						<li><a href="#portfolio">Portfolio</a></li>
-						<li><a href="#news">News</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!-- /MOBILE MENU -->
-		
-		<!-- LEFTPART -->
-		<div class="mers_tm_leftpart">
-			<div class="leftpart_inner">
-				<div class="logo">
-					<!-- <a href="#"><img src="img/logo/Logo.png" alt="" /></a> -->
-					<a href="#"><img src="./img/logo/Web-Graphics-05.png"></a>
-				</div>
-				<div class="menu scrollable">
-					<ul class="anchor_nav">
-						<li class="current"><a href="#home">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#service">Service</a></li>
-						<li><a href="#pricing">Pricing</a></li>
-						<li><a href="#process">The Process</a></li>
-						<li><a href="#portfolio">Portfolio</a></li>
-						<li><a href="#blog">Blog</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div>
-				<div class="subscribe_wrap">
-					<div class="title">
-						<h3>Newsletter</h3>
-					</div>
-					<div class="mers_tm_subscribe">
-						<div class="sub_form">
-							<input type="text" placeholder="john.doe@gmail.com" />
-							<a href="#">
-								<img src="img/svg/newsletter.svg" alt="" class="svg">
-							</a>
-						</div>
-						<div class="returnmessage" data-success="Your message has been received, We will contact you soon." data-message="You have subscribed to our updates. Thank you"></div>
-						<div class="empty_notice"><span>Please enter your Email</span></div>
-					</div>
-				</div>
-				<div class="copyright">
-					<p>&copy; 2025 by Daniel Scheuermann.</a></p>
-				</div>
-			</div>
-		</div>
-		<!-- /LEFTPART -->
-		
-		<!-- RIGHTPART -->
-		<div class="mers_tm_rightpart">
-			<div class="rightpart_inner">
-			
-				<!-- HERO -->
-				<div class="mers_tm_section" id="home">
-					<div class="mers_tm_hero">
-						<div class="background">
-							<div class="image" data-img-url="img/hero/Hero_04.png"></div>
-							<div class="overlay"></div>
-						</div>
-						<div class="container">
-							<div class="content">
-								<div class="in">
-									<span class="hello">Hi, I'm</span>
-									<h3 class="name">Dan</h3>
-									<p class="text">Your favorite freelance <span class="colored">Web Developer.</span></p>
-									<div class="mers_tm_button">
-										<a class="anchor" href="#contact">
-											<span>Let's Chat</span>
-											<span class="icon"><img class="svg" src="img/svg/play.svg" alt="" /></span>
-										</a>
-									</div>
-								</div>
-								<div class="mers_tm_down">
-									<a class="anchor" href="#about"><img class="svg" src="img/svg/down_button.svg" alt="" /></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /HERO -->
-				
-				<!-- ABOUT -->
-				<div class="mers_tm_section" id="about">
-					<div class="mers_tm_about">
-						<div class="container">
-							<div class="about_inner">
-								<div class="left parallax" data-relative-input="true">
-									<img class="self" class="layer" data-depth="0.04" src="img/about/1.jpg" alt="" />
-								</div>
-								<div class="right">
-									<div class="mers_tm_title" data-text-align="left">
-										<span>Introductions</span>
-										<h3>About Me</h3>
-									</div>
-									<div class="text">
-										<p>Hi, I’m Dan — a web developer with 5+ years of experience helping small businesses succeed online. I blend technical skill with creative insight to build standout websites that reflect your brand. Let’s bring your vision to life!</p>
-									</div>
-									<div class="info">
-										<h3 class="address">Based in <span class="colored">Burlington, Vermont.</span></h3>
-										<div class="list">
-											<ul>
-												<li>
-													<div class="list_inner">
-														<div class="icon">
-															<img class="svg" src="img/svg/call.svg" alt="" />
-														</div>
-														<div class="short">
-															<span>Phone</span>
-															<h3>+1 (860) 834 5235</em></h3>
-														</div>
-													</div>
-												</li>
-												<li>
-													<div class="list_inner">
-														<div class="icon">
-															<img class="svg" src="img/svg/mail.svg" alt="" />
-														</div>
-														<div class="short">
-															<span>eMail</span>
-															<h3><a class="animation_link" href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a></h3>
-														</div>
-													</div>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="mers_tm_social">
-								<ul>
-									<li>
-										<div class="list_inner tilt-effect">
-											<div class="title">
-												<h3>🌱 Nature Lover</h3>
-											</div>
-											<p>Dan has hiked all of the 4000ft mountains in Vermont!</p></div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<div class="title">
-												<h3>📊 Data Expert</h3>
-											</div>
-											<p>Dan obtained his master's degree from the UVM in 2025.</p>
-										</div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<div class="title">
-												<h3>☕ Coffee Enthusiast</h3>
-											</div>
-											<p>Dan loves spending his time at the local coffee shop!</p>
-										</div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<div class="title">
-												<h3>🎃 Pumpkin Head</h3>
-											</div>
-											<p>Dan loves apple cider, pumpkin carving, and all things fall.</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /ABOUT -->
-				
-				<!-- SERVICE -->
-				<div class="mers_tm_section" id="service">
-					<div class="mers_tm_service">
-						<div class="container">
-							<div class="mers_tm_title" data-text-align="center">
-								<span>Why Choose Us</span>
-								<h3 class="work-services">Our Work Services</h3>
-							</div>
-							<div class="service_list">
-								<ul>
-									<li>
-										<div class="list_inner tilt-effect">
-											<span class="icon"><img class="svg" src="img/svg/laptop.svg" alt="" /></span>
-											<h3 class="title">Web Development</h3>
-											<p class="text">Bring your business to life with custom website design & development!</p>
-											<span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span>
-											<a class="mers_tm_full_link" href="#"></a>
-											
-											<!-- Modalbox Info Start -->
-											<img class="popup_service_image" src="img/service/web-dev-service.jpg" alt="" />
-											<div class="service_hidden_details">
-												<div class="service_popup_informations">
-													<div class="descriptions">
-														<p>In today's digital-first world, having a professionally developed website is essential. It's more than just your online presence; it's often the first impression customers get of your business. Good web development ensures your site is responsive, user-friendly, and optimized for conversions, giving your visitors the best possible experience and driving your business forward.</p>
-														<p>When choosing someone to handle your web development, trust is key—and that's where Dan comes in. With over five years of hands-on experience, Dan combines technical expertise with creative insights to build websites that truly resonate with your audience. He takes pride in understanding your vision and transforming it into an effective, engaging online platform tailored specifically to your needs.</p>
-														<p>When you partner with Dan, you're working with someone dedicated, passionate, and committed to your success. From initial planning to final launch and beyond, Dan ensures a seamless development process, clear communication, and a final product that exceeds your expectations. Trust Dan to make your website a standout asset for your business.</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-										</div>
-									</li>
-									<li>
-										<div class="list_inner  tilt-effect">
-											<span class="icon"><img class="svg" src="img/svg/mouse.svg" alt="" /></span>
-											<h3 class="title">Graphic Design</h3>
-											<p class="text">With our logo & graphic design, your business will truly stand out!</p>
-											<span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span>
-											<a class="mers_tm_full_link" href="#"></a>
-											
-											<!-- Modalbox Info Start -->
-											<img class="popup_service_image" src="img/service/graphic-design-service.jpg" alt="" />
-											<div class="service_hidden_details">
-												<div class="service_popup_informations">
-													<div class="descriptions">
-														<p>Graphic design is more than just aesthetics—it's a powerful tool that communicates your brand’s identity, values, and message. Exceptional graphic design captures attention, leaves lasting impressions, and turns casual viewers into engaged customers. Whether it’s logos, branding, print materials, or digital graphics, thoughtful design can elevate your business, setting you apart in a crowded marketplace.</p>
-														<p>When it comes to choosing a graphic designer you can trust, Dan brings passion, creativity, and precision to every project. With over five years of design experience, he knows exactly how to translate your vision into visually compelling graphics. Dan works collaboratively, taking the time to understand your goals, ensuring each design authentically reflects your unique brand identity.</p>
-														<p>Partnering with Dan means gaining a dedicated designer committed to excellence at every stage—from brainstorming concepts to delivering polished final designs. His approachable style, professionalism, and attention to detail guarantee results that not only look great but also drive meaningful engagement. Trust Dan to craft exceptional visuals that make your brand unforgettable.</p>	
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-											
-										</div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<span class="icon"><img class="svg" src="img/svg/monitor.svg" alt="" /></span>
-											<h3 class="title">Domain Hosting</h3>
-											<p class="text">Get the domain which best fits your business and forget your hosting worries!</p>
-											<span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span>
-											<a class="mers_tm_full_link" href="#"></a>
-											
-											<!-- Modalbox Info Start -->
-											<img class="popup_service_image" src="img/service/domain-hosting-service.jpg" alt="" />
-											<div class="service_hidden_details">
-												<div class="service_popup_informations">
-													<div class="descriptions">
-														<p>Reliable domain hosting is the backbone of any successful website. It ensures your site stays accessible, fast, and secure, creating a positive experience for visitors every time. Whether you're running a small business, launching an online store, or showcasing a personal portfolio, the right hosting solution guarantees your website performs seamlessly, building trust and credibility with your audience.</p>
-														<p>When it comes to domain hosting, Dan offers dependable service backed by extensive expertise. With over five years in web development and hosting management, he understands the intricacies of maintaining a high-quality online presence. Dan prioritizes security, speed, and uptime, providing personalized hosting solutions tailored specifically to meet your unique needs and budget.</p>
-														<p>By partnering with Dan for your domain hosting, you can rest easy knowing your website is in capable, reliable hands. He takes pride in delivering exceptional customer support, proactive maintenance, and transparent communication, making sure your online presence remains smooth, secure, and stress-free. Trust Dan to keep your website running optimally so you can focus on growing your business.</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-											
-										</div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<span class="icon"><img class="svg" src="img/svg/layer.svg" alt="" /></span>
-											<h3 class="title">SEO Optimization</h3>
-											<p class="text">Get your business to the top of search engine with our SEO Optimization!</p>
-											<span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span>
-											<a class="mers_tm_full_link" href="#"></a>
-											
-											<!-- Modalbox Info Start -->
-											<img class="popup_service_image" src="img/service/seo-service.jpg" alt="" />
-											<div class="service_hidden_details">
-												<div class="service_popup_informations">
-													<div class="descriptions">
-														<p>In today's competitive digital landscape, effective SEO (Search Engine Optimization) is essential for your business to stand out. SEO increases your visibility on search engines, attracts quality traffic, and drives organic growth by placing your website directly in front of customers searching for your products or services. With strategic SEO, you not only improve rankings but also strengthen your brand's credibility and trustworthiness online.</p>
-														<p>When choosing someone to handle your SEO optimization, you can rely on Dan’s expertise and dedication. With over five years of experience in web development and digital marketing, Dan understands the complexities of SEO, from keyword optimization to technical improvements and content strategies. He takes the time to understand your unique business goals and tailors a custom SEO approach designed to deliver measurable results.</p>
-														<p>Working with Dan means you'll receive personalized attention, clear communication, and transparent reporting every step of the way. He proactively adapts to industry trends and algorithm updates, ensuring your website remains visible, competitive, and relevant. Trust Dan to elevate your online presence, drive more traffic to your site, and ultimately help your business thrive.</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-											
-										</div>
-									</li>
-								</ul>
-							</div>
-							<button class="button-perspective" onclick="window.scrollTo({top: document.body.scrollHeight,behavior: 'smooth'});">Let's Chat</button>
+    <!-- role=dialog + aria-modal + labelledby -->
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__close" type="button" aria-label="Close dialog" data-modal-close>×</button>
+      <div class="modal__content" id="modalContent">
+        <!-- injected -->
+      </div>
+    </div>
+  </div>
 
-							<div class="mers_tm_partners">
-								<ul class="owl-carousel">
-									<li class="item">Custom-Coded</li>
-									<li class="item">Responsive</li>
-									<li class="item">Mobile-First</li>
-									<li class="item">Accessible</li>
-									<li class="item">Unique</li>
-									<li class="item">Intuitive</li>
-									<li class="item">Professional</li>
-									<li class="item">Dynamic</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /SERVICE -->
+  <div class="app">
+    <header class="sidebar" role="banner">
+      <div class="sidebar__inner">
+        <a class="brand" href="#home" aria-label="Home">
+          <span class="brand__mark" aria-hidden="true">◆</span>
+          <span class="brand__text">
+            <span class="brand__name">Mers</span>
+            <span class="brand__tag">Web • Data • Design</span>
+          </span>
+        </a>
 
-				<!-- PRICING -->
-				<div class="mers_tm_section" id="pricing">
-					<div class="mers_tm_pricing">
-						<div class="container">
-							<div class="mers_tm_title" data-text-align="center">
-								<span>Choose your plan</span>
-								<h3>Our Price Table</h3>
-							</div>
-							<div class="price_list">
-								<ul>
-									<li>
-										<div class="list_inner tilt-effect">
-											<h3 class="price"><span>One-Time</span></h3>
-											<h3 class="plan">One Payment of <span class="colored">$3200</span></h3>
-											<div class="item_list">
-												<ul>
-													<li><p><i class="icon-right-open-1"></i><span>40$ / Month Hosting Fee</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>20$ / Hour Edits</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Premium Website</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Custom Graphic Designs</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Customized SEO</span></p></li>
-												</ul>
-											</div>
-											
-										</div>
-									</li>
-									<li>
-										<div class="list_inner tilt-effect">
-											<h3 class="price">Monthly</span></h3>
-											<h3 class="plan"><span class="colored">120$</span> Monthly</h3>
-											<div class="item_list">
-												<ul>
-													<li><p><i class="icon-right-open-1"></i><span>120$ / Month Hosting Fee</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>40$ / Hour Edits</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Premium Website</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Custom Graphic Designs</span></p></li>
-													<li><p><i class="icon-right-open-1"></i><span>Customized SEO</span></p></li>
-												</ul>
-											</div>
-											
-										</div>
-									</li>
-								</ul>
-							</div>
-							<button class="button-perspective" onclick="window.scrollTo({top: document.body.scrollHeight,behavior: 'smooth'});">Let's Chat</button>
-						</div>
-					</div>
-				</div>
-				<!-- /PRICING -->
-				
-				<!-- SKILLS -->
-				<div class="mers_tm_skills" id="process">
-					<div class="container">
-						<div class="skills_inner">
-							<div class="left">
-								<div class="mers_tm_title" data-text-align="left">
-									<span>Take a look at</span>
-									<h3 class="floral-white">The Process</h3>
-								</div>
-								<div class="text">
-									<p>Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative process—from our first conversation to the final launch. Here's a quick look at how we’ll bring your vision to life:</p>
-								</div>
-								<div class="dodo_progress">
-									<div class="progress_inner" data-value="20" data-color="#988C86">
-										<span><span class="label">Initial Meetup & Planning</span><span class="number">20%</span></span>
-										<div class="background"><div class="bar"><div class="bar_in"></div></div></div>
-									</div>
-									<div class="progress_inner" data-value="40" data-color="#988C86">
-										<span><span class="label">Website Design & Feedback</span><span class="number">40%</span></span>
-										<div class="background"><div class="bar"><div class="bar_in"></div></div></div>
-									</div>
-									<div class="progress_inner" data-value="75" data-color="#988C86">
-										<span><span class="label">Web Development</span><span class="number">75%</span></span>
-										<div class="background"><div class="bar"><div class="bar_in"></div></div></div>
-									</div>
-									<div class="progress_inner" data-value="100" data-color="#988C86">
-										<span><span class="label">Final Feedback & Launch</span><span class="number">100%</span></span>
-										<div class="background"><div class="bar"><div class="bar_in"></div></div></div>
-									</div>
-								</div>
-							</div>
-							<div class="right" data-relative-input="true">
-								<div class="border">
-									<img class="layer process" data-depth="0.04" src="img/skills/TheProcess.png" alt="Web development process illustration" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /SKILLS -->
+        <nav class="nav" aria-label="Primary">
+          <a class="nav__link is-active" href="#home">Home</a>
+          <a class="nav__link" href="#about">About</a>
+          <a class="nav__link" href="#services">Services</a>
+          <a class="nav__link" href="#portfolio">Portfolio</a>
+          <a class="nav__link" href="#news">News</a>
+          <a class="nav__link" href="#contact">Contact</a>
+        </nav>
 
-				
-				<!-- PORTFOLIO -->
-				<div class="mers_tm_section" id="portfolio">
-					<div class="mers_tm_portfolio">
-					<div class="container">
-						<div class="mers_tm_title" data-text-align="left">
-						<span>Check out my past work!</span>
-						<h3>Dan's Portfolio</h3>
-							<div id="myBtnContainer">
-								<button class="btn active" onclick="filterSelection('all')">Show all</button>
-								<button class="btn" onclick="filterSelection('mockups')">Mockups</button>
-								<button class="btn" onclick="filterSelection('projects')">Projects</button>
-								<button class="btn" onclick="filterSelection('pastwork')">Past Work</button>
-							</div>
-						</div>
-				
-						<div class="portfolio-container">
-							<!-- The “row” is now a horizontally scrollable 2-row grid -->
-							<div class="row">
-								<div class="column mockups show">
-								<div class="content">
-									<img src="img/portfolio/1.jpg" alt="Nature" style="width:100%">
-									<h4>Mockup</h4>
-									<p>Lorem ipsum dolor..</p>
-								</div>
-								</div>
-							</div><!-- .row -->
-							</div><!-- .portfolio-container -->
-						</div><!-- .container -->
-					</div>
-				</div>
-				<!-- /PORTFOLIO -->
+        <section class="sidebar__card" aria-labelledby="subscribeTitle">
+          <h2 class="sidebar__cardTitle" id="subscribeTitle">Subscribe</h2>
 
-				<!-- TESTIMONIALS -->
-				<div class="dodo_tm_section" id="testimonials">
-					<div class="mers_tm_testimonials">
-						<div class="container">
-							<div class="testimonials_inner">
-								<div class="avatar">
-									<div class="border">
-										<img  class="testimonials" src="img/testimonials/Testimonials.png" alt="" />
-									</div>
-								</div>
-								<div class="testimonials_list">
-									<ul class="owl-carousel">
-										<li>
-											<div class="left-align mers_tm_title" data-text-align="center">
-												<span>What Clients Say</span>
-												<h3 class="floral-white">Our Testimonials</h3>
-											</div>
-											<div class="text">
-												<p>"Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened to what I needed for my portfolio website. My new website exceeded all expectations and looks fantastic. Highly recommended!"</p>
-											</div>
-											<div class="author">
-												<div class="image">
-													<div class="main" data-img-url="img/testimonials/dylan.jpg"></div>
-												</div>
-												<div class="short">
-													<h3 class="author"><span>Dylan Koval</span></h3>
-													<h3 class="job"><span>Technical Writer</span></h3>
-												</div>
-											</div>
-										</li>
-									</ul>
-									<!--<div class="my_nav">
-										<a class="next_button" href="#"><span><img class="svg" src="img/svg/arrow.svg" alt="" /></span></a>
-										<a class="prev_button" href="#"><span><img class="svg" src="img/svg/left-arrow.svg" alt="" /></span></a>
-									</div> -->
-								</div>
-								<span class="quote"><img class="svg" src="img/svg/quote.svg" alt="" /></span>
-							</div>
-						</div>
-						<div class="background_stroke_text">
-							<h3>Testimonials</h3>
-						</div>
-					</div>
-				</div>
-				<!-- /TESTIMONIALS -->
-				
-				<!-- NEWS -->
-				<div class="mers_tm_section" id="blog">
-					<div class="mers_tm_news">
-						<div class="container">
-							<div class="mers_tm_title" data-text-align="left">
-								<div class="text">
-									<span>Curious About Web-Dev?</span>
-									<h3>Blog Posts</h3>
-								</div>
-								<div class="navs">
-									<a class="my_nav prev_button" href="#"><span><img class="svg black" src="img/svg/left-arrow.svg" alt="" /></span></a>
-									<a class="my_nav next_button" href="#"><span><img class="svg black" src="img/svg/arrow.svg" alt="" /></span></a>
-								</div>
-							</div>
-							<div class="news_list">
-								<ul class="owl-carousel">
-									<li>
-										<div class="list_inner">
-											<div class="image">
-												<img src="img/thumbs/37-25.jpg" alt="" />
-												<div class="main" data-img-url="img/news/website-news.jpg"></div>
-												<a class="mers_tm_full_link" href="#"></a>
-											</div>
-											<div class="details">
-												<div class="metabox">
-													<span><img class="svg" src="img/svg/user.svg" alt="" /><a class="animation_link" href="#">Daniel Scheuermann</a></span>
-												</div>	
-												<div class="title">
-													<h3><a href="#">The Importance of a website for small businesses</a></h3>
-													<a href="#"><span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span></a>
-												</div>
-											</div>
-											
-											<!-- Modalbox Info Start -->
-											<div class="news_hidden_details">
-												<div class="news_popup_informations">
-													<div class="text">
-														<p>In today's digital age, having a website is crucial for small businesses looking to compete. A well-designed online presence not only helps you reach more customers, but also builds trust, showcases products or services, and serves as a hub for all your marketing efforts.</p>
-														<p>Websites can level the playing field, offering small businesses the chance to appear just as professional and accessible as larger competitors. With consistent branding, clear messaging, and easy navigation, a website can transform your business, making it easier for customers to find and engage with you.</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-											
-										</div>
-									</li>
-									<li>
-										<div class="list_inner">
-											<div class="image">
-												<img src="img/thumbs/37-25.jpg" alt="" />
-												<div class="main" data-img-url="img/news/colors-news.jpg"></div>
-												<a class="mers_tm_full_link" href="#"></a>
-											</div>
-											<div class="details">
-												<div class="metabox">
-													<span><img class="svg" src="img/svg/user.svg" alt="" /><a class="animation_link" href="#">Daniel Scheuermann</a></span>
-												</div>	
-												<div class="title">
-													<h3><a href="#">Understanding Color Psychology in Web Design</a></h3>
-													<a href="#"><span class="arrow_icon"><img class="svg" src="img/svg/arrow.svg" alt="" /></span></a>
-												</div>
-											</div>
-											
-											<!-- Modalbox Info Start -->
-											<div class="news_hidden_details">
-												<div class="news_popup_informations">
-													<div class="text">
-														<p>Color is a powerful tool in web design, influencing both aesthetics and user behavior. Different hues evoke various emotions and perceptions, making the choice of color critical in branding and user engagement.</p>
-														<p>For example, blue is often used to represent trust and security, which is why it’s a favorite among financial and tech companies. Red, on the other hand, can stimulate excitement and urgency, perfect for drawing attention to calls to action or limited-time offers.</p>
-														<p>Additionally, green typically symbolizes growth and balance, ideal for eco-friendly and wellness sites, while yellow exudes optimism and energy. By understanding these color associations, designers can craft websites that not only look appealing but also resonate emotionally with their audience.</p>
-													</div>
-												</div>
-											</div>
-											<!-- /Modalbox Info End -->
-										</div>
-									</li>
-									
-									
-								</ul>
-							</div>
-						</div>	
-					</div>
-				</div>
-				<!-- /NEWS -->
-				
-				<!-- CONTACT -->
-				<div class="mers_tm_section" id="contact">
-					<div class="mers_tm_contact">
-						<div class="container">
-							<div class="contact_inner">
-								<div class="main_title">
-									<div class="text">
-										<h3>Want to work together? <span class="colored">Let's Chat!</span></h3>
-									</div>
-								</div>
-								<div class="main_details">
-									<div class="fields">
-										<form action="/" method="post" class="contact_form" id="contact_form" autocomplete="off">
-											<div class="returnmessage" data-success="Your message has been received, We will contact you soon."></div>
-											<div class="empty_notice"><span>Please Fill Required Fields</span></div>
-											<div class="input_list">
-												<ul>
-													<li>
-														<label for="name">Full Name:</label>
-														<input id="name" type="text" placeholder="Your Name" />
-													</li>
-													<li>
-														<label for="name">Subject:</label>
-														<input id="subject" type="text" placeholder="Your Subject" />
-													</li>
-													<li>
-														<label for="name">Your Email:</label>
-														<input id="email" type="text" placeholder="Your Email" />
-													</li>
-													<li>
-														<label for="name">Phone Number:</label>
-														<input id="phone" type="number" placeholder="+0 (000) 000 0000" />
-													</li>
-												</ul>
-											</div>
-											<div class="message_area">
-												<label for="name">Message:</label>
-												<textarea id="message" placeholder="Write your message here"></textarea>
-											</div>
-											<div class="mers_tm_button">
-												<a id="send_message" href="#">
-													<span>Submit Now</span>
-													<span class="icon"><img class="svg" src="img/svg/play.svg" alt="" /></span>
-												</a>
-											</div>
-										</form>
-									</div>
-									<div class="infos">
-										<div class="address">
-											<h3>Based in <span class="colored">Burlington, Vermont.</span></h3>
-										</div>
-										<div class="list">
-											<ul>
-												<li>
-													<div class="list_inner">
-														<div class="icon">
-															<img class="svg" src="img/svg/call.svg" alt="" />
-														</div>
-														<div class="short">
-															<span class="colored">Phone</span>
-															<h3><a class="animation_link" href="#">+1 (860) 834 5235</a></h3>
-														</div>
-													</div>
-												</li>
-												<li>
-													<div class="list_inner">
-														<div class="icon">
-															<img class="svg" src="img/svg/mail.svg" alt="" />
-														</div>
-														<div class="short">
-															<span class="colored">eMail</span>
-															<h3><a class="animation_link" href="mailto:info.maya@gmail.com">webdev.by.dan@gmail.com</a></h3>
-														</div>
-													</div>
-												</li>
-											</ul>
-										</div>
-										
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="background_image">
-							<img src="img/contact/1.png" alt="" />
-						</div>
-					</div>
-				</div>
-				<!-- /CONTACT -->
-				
-			</div>
-			
-		</div>
-		<!-- /RIGHTPART -->
-		
-		<!-- CURSOR -->
-		<div class="mouse-cursor cursor-outer"></div>
-		<div class="mouse-cursor cursor-inner"></div>
-		<!-- /CURSOR -->
-		
-	</div>
-	<!-- / WRAPPER ALL -->
-	
-<!-- SCRIPTS -->
-<script src="js/jquery.js"></script>
-<!--[if lt IE 10]> <script type="text/javascript" src="js/ie8.js"></script> <![endif]-->	
-<script src="js/plugins.js"></script>
-<script src="js/init.js"></script>
-<!-- /SCRIPTS -->
+          <!-- associate labels + helper text -->
+          <form class="subscribe" id="subscribeForm" novalidate>
+            <label for="subscribeEmail">Email address</label>
+            <input
+              id="subscribeEmail"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+              aria-describedby="subscribeHelp subscribeMsg"
+            />
+            <p class="help" id="subscribeHelp">We’ll only email when there’s something worth sharing.</p>
 
+            <button type="submit">Join</button>
+
+            <!-- live region for status (WCAG 4.1.3) -->
+            <p class="formMsg" id="subscribeMsg" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <div class="sidebar__footer">
+          <div class="social" aria-label="Social links">
+            <a href="#" aria-label="Twitter">Tw</a>
+            <a href="#" aria-label="GitHub">Gh</a>
+            <a href="#" aria-label="LinkedIn">In</a>
+          </div>
+          <p class="tiny">© <?= date('Y') ?> Your Name</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" id="main" tabindex="-1">
+      <!-- Hero -->
+      <section class="section hero" id="home" aria-labelledby="homeTitle">
+        <div class="container">
+          <div class="hero__grid">
+            <div>
+              <h1 class="hero__title" id="homeTitle">Beautiful, fast sites for real work.</h1>
+              <p class="hero__lead">
+                Vanilla JS, accessible modal/filtering, and PHP forms. No jQuery.
+              </p>
+              <div class="hero__actions">
+                <a class="btn" href="#portfolio">View work</a>
+                <a class="btn btn--ghost" href="#contact">Contact</a>
+              </div>
+            </div>
+
+            <div class="hero__card" aria-label="Highlights">
+              <dl class="stats">
+                <div class="stat">
+                  <dt class="stat__k">40+</dt>
+                  <dd class="stat__v">Projects</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__k">WCAG</dt>
+                  <dd class="stat__v">2.2 AA minded</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__k">0</dt>
+                  <dd class="stat__v">jQuery required</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="section" id="about" aria-labelledby="aboutTitle">
+        <div class="container">
+          <div class="section__head">
+            <h2 id="aboutTitle">About</h2>
+            <p>Replace this with your bio. Keep it short and scannable.</p>
+          </div>
+
+          <div class="cards">
+            <article class="card">
+              <h3>What I do</h3>
+              <p>Frontend builds, backend integration, accessibility, and performance.</p>
+            </article>
+            <article class="card">
+              <h3>How I work</h3>
+              <p>Clear scope, clean handoffs, and maintainable code you can own.</p>
+            </article>
+            <article class="card">
+              <h3>Tools</h3>
+              <p>HTML/CSS/JS, PHP, and modern hosting/deploy workflows.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="section" id="services" aria-labelledby="servicesTitle">
+        <div class="container">
+          <div class="section__head">
+            <h2 id="servicesTitle">Services</h2>
+            <p>Click any service to open an accessible modal (keyboard-friendly).</p>
+          </div>
+
+          <div class="grid">
+            <article class="tile">
+              <h3>Website Builds</h3>
+              <p>Launch-ready pages with strong UX and accessibility.</p>
+
+              <!-- Button (not a link) for modal triggers -->
+              <button
+                class="linklike"
+                type="button"
+                data-modal="service"
+                data-title="Website Builds"
+                data-content="#service1"
+              >
+                Learn more<span class="sr-only"> about Website Builds</span>
+              </button>
+
+              <template id="service1">
+                <h2 id="modalTitle">Website Builds</h2>
+                <p>Fast, responsive builds with accessible components and clean styling.</p>
+                <ul>
+                  <li>Semantic structure + ARIA where needed</li>
+                  <li>Keyboard + reduced motion friendly</li>
+                  <li>Performance-minded assets</li>
+                </ul>
+              </template>
+            </article>
+
+            <article class="tile">
+              <h3>Accessibility Fixes</h3>
+              <p>Audit and remediation for common AA issues.</p>
+              <button class="linklike" type="button" data-modal="service" data-title="Accessibility Fixes" data-content="#service2">
+                Learn more<span class="sr-only"> about Accessibility Fixes</span>
+              </button>
+              <template id="service2">
+                <h2 id="modalTitle">Accessibility Fixes</h2>
+                <p>Focus states, color contrast, form labels, headings, and more.</p>
+              </template>
+            </article>
+
+            <article class="tile">
+              <h3>Content Layout</h3>
+              <p>Clean sections and reusable patterns.</p>
+              <button class="linklike" type="button" data-modal="service" data-title="Content Layout" data-content="#service3">
+                Learn more<span class="sr-only"> about Content Layout</span>
+              </button>
+              <template id="service3">
+                <h2 id="modalTitle">Content Layout</h2>
+                <p>Cards, grids, and typography systems that stay consistent.</p>
+              </template>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portfolio with Filter -->
+      <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
+        <div class="container">
+          <div class="section__head">
+            <h2 id="portfolioTitle">Portfolio</h2>
+            <p>Filter items. Fully keyboard accessible.</p>
+          </div>
+
+          <div class="filter" role="group" aria-label="Portfolio filters" id="myBtnContainer">
+            <button class="filter__btn is-active" type="button" data-filter="all">All</button>
+            <button class="filter__btn" type="button" data-filter="web">Web</button>
+            <button class="filter__btn" type="button" data-filter="data">Data</button>
+            <button class="filter__btn" type="button" data-filter="design">Design</button>
+          </div>
+
+          <div class="grid portfolio" id="portfolioGrid">
+            <article class="tile column web show">
+              <h3>Municipal Site</h3>
+              <p>Template-based, accessible layout.</p>
+              <button class="linklike" type="button" data-modal="portfolio" data-title="Municipal Site" data-content="#p1">
+                View details<span class="sr-only"> for Municipal Site</span>
+              </button>
+              <template id="p1">
+                <h2 id="modalTitle">Municipal Site</h2>
+                <p>Details and screenshots here.</p>
+              </template>
+            </article>
+
+            <article class="tile column data show">
+              <h3>Dashboards</h3>
+              <p>Data-driven UI patterns.</p>
+              <button class="linklike" type="button" data-modal="portfolio" data-title="Dashboards" data-content="#p2">
+                View details<span class="sr-only"> for Dashboards</span>
+              </button>
+              <template id="p2">
+                <h2 id="modalTitle">Dashboards</h2>
+                <p>Details and screenshots here.</p>
+              </template>
+            </article>
+
+            <article class="tile column design show">
+              <h3>Brand Kit</h3>
+              <p>Typography + color system.</p>
+              <button class="linklike" type="button" data-modal="portfolio" data-title="Brand Kit" data-content="#p3">
+                View details<span class="sr-only"> for Brand Kit</span>
+              </button>
+              <template id="p3">
+                <h2 id="modalTitle">Brand Kit</h2>
+                <p>Details and screenshots here.</p>
+              </template>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- News -->
+      <section class="section" id="news" aria-labelledby="newsTitle">
+        <div class="container">
+          <div class="section__head">
+            <h2 id="newsTitle">News</h2>
+            <p>Optional section with modal details.</p>
+          </div>
+
+          <div class="grid">
+            <article class="tile">
+              <h3>Post Title</h3>
+              <p class="meta">Jan 5, 2026</p>
+              <p>Short teaser text goes here.</p>
+              <button class="linklike" type="button" data-modal="news" data-title="Post Title" data-content="#n1">
+                Read more<span class="sr-only"> about Post Title</span>
+              </button>
+              <template id="n1">
+                <h2 id="modalTitle">Post Title</h2>
+                <p>Full post content here.</p>
+              </template>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact (PHP email) -->
+      <section class="section" id="contact" aria-labelledby="contactTitle">
+        <div class="container">
+          <div class="section__head">
+            <h2 id="contactTitle">Contact</h2>
+            <p>Accessible form with inline validation + server validation.</p>
+          </div>
+
+          <form class="contact" id="contactForm" method="post" action="api/contact.php" novalidate>
+            <div class="formRow">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameErr" />
+              <p class="fieldErr" id="nameErr" aria-live="polite"></p>
+            </div>
+
+            <div class="formRow">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailErr" />
+              <p class="fieldErr" id="emailErr" aria-live="polite"></p>
+            </div>
+
+            <div class="formRow">
+              <label for="subject">Subject <span class="muted">(optional)</span></label>
+              <input id="subject" name="subject" type="text" autocomplete="off" />
+            </div>
+
+            <div class="formRow">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="6" required aria-describedby="msgErr"></textarea>
+              <p class="fieldErr" id="msgErr" aria-live="polite"></p>
+            </div>
+
+            <button type="submit">Send message</button>
+            <p class="formMsg" id="contactMsg" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="container">
+          <p class="tiny">Built with semantic HTML + accessible interactions.</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="assets/app.js" defer></script>
 </body>
 </html>
