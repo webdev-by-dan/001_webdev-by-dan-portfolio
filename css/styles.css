@@ -4,7 +4,6 @@
    Light mode: colorful section tints + matching outlines,
    solid white sidebar/nav with orange highlighting.
 ========================================================= */
-
 /* =========================
    THEME TOKENS — LIGHT
    ========================= */
@@ -13,8 +12,8 @@
 
   /* Brand accent (logo / buttons) */
   --orange:  #c2410c;
-  --orange2: #ea580c;
-  --orange3: #9a3412;
+  --orange2: #ea580c; /* bright orange */
+  --orange3: #9a3412; /* dark orange */
 
   /* Foundation */
   --bg:      #f6f7fb;
@@ -65,14 +64,13 @@
   --heroShadow: none;
 
   /* =========================================================
-     WCAG BUTTON TOKENS (fix WAVE contrast)
-     - Keeps your orange background (orange2)
-     - Uses dark text on the orange (passes more reliably)
+     WCAG BUTTON TOKENS (PASS WAVE)
+     Light mode: bright orange + DARK text (reliable AA)
   ========================================================= */
-  --btnBg: var(--orange2);
-  --btnHover: var(--orange3);
-  --btnText: var(--text);
-  --btnBorder: rgba(11,18,32,.25);
+  --btnBg:     var(--orange2);  /* bright orange */
+  --btnHover:  var(--orange3);  /* darker on hover */
+  --btnText:   #0b1220;         /* dark text to pass on bright orange */
+  --btnBorder: rgba(11,18,32,.28);
 }
 
 /* =========================
@@ -109,12 +107,17 @@ html[data-theme="dark"]{
   /* Dark hero/footer banner */
   --sky: #0b0f17;
 
-  /* Buttons in dark mode can keep white text */
-  --btnBg: var(--orange2);
-  --btnHover: var(--orange3);
-  --btnText: #ffffff;
+  /* =========================================================
+     WCAG BUTTON TOKENS (PASS WAVE)
+     Dark mode: keep ORANGE buttons + WHITE text by using a
+     DARKER orange background (white-on-bright-orange fails)
+  ========================================================= */
+  --btnBg:     #9a3412;  /* dark orange (still orange, passes with white) */
+  --btnHover:  #7c2d12;  /* darker hover */
+  --btnText:   #ffffff;  /* white text (now AA/AAA-friendly) */
   --btnBorder: rgba(238,242,255,.18);
 }
+
 
 /* ---------- Base ---------- */
 *{ box-sizing:border-box; }
@@ -601,7 +604,6 @@ html[data-theme="dark"] .hero__overlay{
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
-
 
 .btn--ghost{
   background: var(--card);
