@@ -129,7 +129,14 @@
 })();
 
 /* =========================================================
-   SITE INTERACTIONS
+   SITE INTERACTIONS (NEAT)
+   - year
+   - fullscreen mobile menu (hamburger <-> X animation hook)
+   - active nav highlighting
+   - portfolio filter
+   - accessible modal
+   - newsletter demo
+   - contact form validation
 ========================================================= */
 (function () {
   "use strict";
@@ -142,31 +149,100 @@
   const yearEl = qs("#year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // Mobile menu
-  const btn = qs("#mobileMenuBtn");
+  /* =========================================================
+     Fullscreen Mobile Menu (desktop-like vertical nav)
+     Requires:
+     - button#mobileMenuBtn
+     - nav#mobileMenu [hidden] (fullscreen overlay in CSS)
+     - optional close button inside menu: [data-menu-close]
+     Hamburger->X animation:
+     - toggles .is-open on #mobileMenuBtn
+  ========================================================= */
+  const menuBtn = qs("#mobileMenuBtn");
   const menu = qs("#mobileMenu");
 
-  if (btn && menu) {
-    btn.addEventListener("click", () => {
-      const expanded = btn.getAttribute("aria-expanded") === "true";
-      btn.setAttribute("aria-expanded", String(!expanded));
-      menu.hidden = expanded;
+  if (menuBtn && menu) {
+    const closeBtn = qs("[data-menu-close]", menu); // optional, but recommended
+    let lastFocus = null;
 
-      if (!expanded) {
-        const firstLink = qs("a", menu);
-        firstLink && firstLink.focus();
+    const focusables = (container) =>
+      qsa(
+        [
+          "a[href]",
+          "button:not([disabled])",
+          "input:not([disabled])",
+          "textarea:not([disabled])",
+          "select:not([disabled])",
+          "[tabindex]:not([tabindex='-1'])",
+        ].join(","),
+        container
+      ).filter((el) => el.offsetParent !== null);
+
+    const isOpen = () => menuBtn.getAttribute("aria-expanded") === "true";
+
+    const setOpen = (open) => {
+      menuBtn.setAttribute("aria-expanded", String(open));
+      menuBtn.classList.toggle("is-open", open); // for hamburger->X CSS
+      menu.hidden = !open;
+
+      if (open) {
+        lastFocus = document.activeElement;
+        document.body.style.overflow = "hidden";
+
+        // focus first link or close button
+        const f = focusables(menu);
+        (qs("a[href]", menu) || closeBtn || f[0])?.focus?.();
+
+        document.addEventListener("keydown", onMenuKeydown);
       } else {
-        btn.focus();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onMenuKeydown);
+        lastFocus?.focus?.();
       }
-    });
+    };
+
+    const onMenuKeydown = (e) => {
+      if (menu.hidden) return;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        return;
+      }
+
+      // Focus trap
+      if (e.key === "Tab") {
+        const f = focusables(menu);
+        if (!f.length) return;
+
+        const first = f[0];
+        const last = f[f.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    // Toggle open/close
+    menuBtn.addEventListener("click", () => setOpen(!isOpen()));
+
+    // Close button in corner (if present)
+    closeBtn?.addEventListener("click", () => setOpen(false));
 
     // Close menu on link click
     menu.addEventListener("click", (e) => {
       const a = e.target.closest("a");
       if (!a) return;
-      btn.setAttribute("aria-expanded", "false");
-      menu.hidden = true;
+      setOpen(false);
     });
+
+    // Ensure correct initial state
+    menu.hidden = !isOpen();
   }
 
   // Active nav highlighting
@@ -457,36 +533,23 @@
     const phRect = ph.getBoundingClientRect();
 
     if (mode === "bottom") {
-      /*
-        Stop bottom-sticky when:
-        "top of the nav bar = top of its area"
-        => when the placeholder's TOP reaches the viewport bottom minus nav height.
-        (That is the y-position where the nav would naturally sit with its top aligned
-        to its own spot, while remaining fully visible.)
-      */
+      // Stop bottom-sticky when placeholder top reaches the "natural" flow top position
       const flowTopY = vh - navH;
 
       if (phRect.top <= flowTopY + EPS) {
-        // Release to normal flow (NOT top-sticky yet)
-        setMode("flow");
+        setMode("flow"); // release to normal flow (NOT top-sticky yet)
       }
       return;
     }
 
     if (mode === "top") {
-      /*
-        Unlock method (same concept as before): only release top lock when the nav's
-        original spot is back at/above the top edge.
-      */
+      // Unlock only when the placeholder (nav's original spot) is back at/above viewport top
       if (phRect.top >= 0 - EPS) {
         setMode("flow");
         return;
       }
 
-      /*
-        If user scrolls down enough that the nav's original spot is below the bottom
-        boundary for flow, switch to bottom lock.
-      */
+      // If scrolling down and original spot drops below bottom boundary, go bottom-fixed
       const flowTopY = vh - navH;
       if (phRect.top > flowTopY + EPS) {
         setMode("bottom");
@@ -513,4 +576,3 @@
 
   requestAnimationFrame(update);
 })();
-

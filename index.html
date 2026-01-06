@@ -4,34 +4,56 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Web Dev by Dan | Website Design & Development</title>
   <meta name="description" content="Web Dev by Dan — custom websites, design, hosting, SEO." />
   <link rel="icon" type="image/x-icon" href="./img/logo/icon.png" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- ######## FONTS ######## -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
+  <!-- ######## STYLES ######## -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-  <!-- Accessible modal -->
+  <!-- ######## SKIP LINK (A11Y) ######## -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ######## MODAL (A11Y) ######## -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
-    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="modal__close" type="button" aria-label="Close dialog" data-modal-close>×</button>
+    <div
+      class="modal__dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      tabindex="-1"
+    >
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Close dialog"
+        data-modal-close
+      >
+        ×
+      </button>
       <div class="modal__content" id="modalContent"></div>
     </div>
   </div>
 
-  <!-- Wrapper -->
   <div class="site" id="top">
 
-    <!-- Left sidebar -->
+    <!-- ######## SIDEBAR (DESKTOP) ######## -->
     <aside class="left" aria-label="Sidebar">
       <div class="left__inner">
+
+        <!-- # Logo -->
         <a class="logo" href="#home" aria-label="Home">
           <img
             class="siteLogo"
@@ -39,9 +61,10 @@
             data-src-light="img/logo/Web-Graphics-05.png"
             data-src-dark="img/logo/Web-Graphics-06.png"
             alt="Web Dev by Dan"
-          >
+          />
         </a>
 
+        <!-- # Primary Nav -->
         <nav class="sideNav" aria-label="Primary">
           <ul class="navlist" id="sideNav">
             <li><a class="navlink is-active" href="#home">Home</a></li>
@@ -55,7 +78,10 @@
           </ul>
         </nav>
 
+        <!-- # Footer Controls -->
         <div class="sideFooter">
+
+          <!-- # Theme Toggle Button -->
           <div class="sideFooter__row" aria-label="Theme">
             <button
               class="themeToggle"
@@ -69,158 +95,219 @@
             </button>
           </div>
 
+          <!-- # Social Links -->
           <div class="sideFooter__row" aria-label="Social links">
-            <a class="iconLink" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener noreferrer">
+            <a
+              class="iconLink"
+              href="https://github.com/YOUR_GITHUB"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <!-- GitHub SVG -->
-              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-                <path d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"/>
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"
+                />
               </svg>
               <span class="sr-only">GitHub</span>
             </a>
 
-            <a class="iconLink" href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener noreferrer">
+            <a
+              class="iconLink"
+              href="https://www.linkedin.com/in/YOUR_LINKEDIN"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <!-- LinkedIn SVG -->
-              <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-                <path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"
+                />
               </svg>
               <span class="sr-only">LinkedIn</span>
             </a>
           </div>
 
+          <!-- # Copyright -->
           <p class="copyright">© <span id="year"></span> by Daniel Scheuermann.</p>
         </div>
       </div>
     </aside>
 
-    <!-- Main content -->
-<main class="right" id="main" tabindex="-1">
+    <!-- ######## MAIN CONTENT ######## -->
+    <main class="right" id="main" tabindex="-1">
 
-  <!-- ✅ Mobile: hero + nav combined so nav sits at bottom of the opening screen -->
-  <div class="mobileHeroWrap">
-    <!-- HERO -->
-    <section
-      class="section hero"
-      id="home"
-      aria-labelledby="homeTitle"
-      style="--bgimg: url('../img/hero/Hero_04.png');"
-    >
-      <!-- Background image -->
-      <div class="hero__bg" aria-hidden="true"></div>
+      <!-- ######## MOBILE HERO + MOBILE BAR WRAP ######## -->
+      <div class="mobileHeroWrap">
 
-      <!-- Contrast overlay -->
-      <div class="hero__overlay" aria-hidden="true"></div>
+        <!-- ######## HERO ######## -->
+        <section
+          class="section hero"
+          id="home"
+          aria-labelledby="homeTitle"
+          style="--bgimg: url('../img/hero/Hero_04.png');"
+        >
+          <!-- # Background image -->
+          <div class="hero__bg" aria-hidden="true"></div>
 
-      <!-- Content -->
-      <div class="container hero__content">
+          <!-- # Contrast overlay -->
+          <div class="hero__overlay" aria-hidden="true"></div>
 
-        <!-- ✅ Mobile-only logo (hidden on desktop via CSS) -->
-        <a class="hero__mobileLogo" href="#home" aria-label="Web Dev by Dan – Home">
-          <img
-            class="siteLogo"
-            src="img/logo/Web-Graphics-05.png"
-            data-src-light="img/logo/Web-Graphics-05.png"
-            data-src-dark="img/logo/Web-Graphics-06.png"
-            alt="Web Dev by Dan"
-            width="220"
-            height="60"
-            decoding="async"
-          />
-        </a>
+          <!-- # Content -->
+          <div class="container hero__content">
 
-        <!-- ✅ Middle block for perfect vertical centering (mobile CSS targets this) -->
-        <div class="hero__mid">
-          <p class="eyebrow">Nice to meet you, I'm</p>
-
-          <h1 class="hero__title" id="homeTitle">Dan</h1>
-
-          <p class="hero__sub">
-            I make fast, accessible, mobile-first sites that look great and help your business convert visitors into customers.
-          </p>
-
-          <div class="actions">
-            <a class="btn" href="#footer">
-              Let’s Chat
-              <span class="btn__icon" aria-hidden="true">▶</span>
+            <!-- # Mobile-only logo (CSS shows on mobile) -->
+            <a class="hero__mobileLogo" href="#home" aria-label="Web Dev by Dan – Home">
+              <img
+                class="siteLogo"
+                src="img/logo/Web-Graphics-05.png"
+                data-src-light="img/logo/Web-Graphics-05.png"
+                data-src-dark="img/logo/Web-Graphics-06.png"
+                alt="Web Dev by Dan"
+                width="220"
+                height="60"
+                decoding="async"
+              />
             </a>
 
-            <a class="btn btn--ghost" href="#about">
-              Learn more
-            </a>
+            <!-- # Centered block (mobile layout targets this) -->
+            <div class="hero__mid">
+              <p class="eyebrow">Nice to meet you, I'm</p>
+              <h1 class="hero__title" id="homeTitle">Dan</h1>
+
+              <p class="hero__sub">
+                I make fast, accessible, mobile-first sites that look great and help your business convert visitors into customers.
+              </p>
+
+              <div class="actions">
+                <a class="btn" href="#footer">
+                  Let’s Chat <span class="btn__icon" aria-hidden="true">▶</span>
+                </a>
+                <a class="btn btn--ghost" href="#about">Learn more</a>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
+
+        <!-- ######## MOBILE BAR (BOTTOM / TOP LOCKED BY JS) ######## -->
+        <header class="mobilebar" role="banner">
+          <!-- # Brand -->
+          <a class="mobilebar__brand" href="#home" aria-label="Web Dev by Dan – Home">
+            <img
+              class="siteLogo"
+              src="img/logo/Web-Graphics-05.png"
+              data-src-light="img/logo/Web-Graphics-05.png"
+              data-src-dark="img/logo/Web-Graphics-06.png"
+              alt="Web Dev by Dan"
+              width="160"
+              height="44"
+              decoding="async"
+            />
+          </a>
+
+          <div class="mobilebar__actions">
+
+            <!-- # Theme Toggle Button (icon-only on mobile) -->
+            <button
+              class="themeToggle"
+              type="button"
+              data-theme-toggle
+              aria-label="Enable dark mode"
+              aria-pressed="false"
+            >
+              <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+              <span class="sr-only">Toggle dark mode</span>
+            </button>
+
+            <!-- # Hamburger Toggle Button -->
+            <button
+              class="mobilebar__toggle"
+              type="button"
+              aria-label="Open menu"
+              aria-controls="mobileMenu"
+              aria-expanded="false"
+              id="mobileMenuBtn"
+            >
+              <span class="mobilebar__toggleLines" aria-hidden="true"></span>
+            </button>
+
+            <!-- ######## FULLSCREEN MOBILE MENU ######## -->
+            <nav class="mobilebar__menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+
+              <!-- # Close Button -->
+              <button
+                class="mobileMenu__close"
+                type="button"
+                aria-label="Close menu"
+                data-menu-close
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+
+              <!-- # Center Panel -->
+              <div class="mobileMenu__panel" role="document">
+                <ul class="navlist">
+                  <li><a class="navlink" href="#home">Home</a></li>
+                  <li><a class="navlink" href="#about">About</a></li>
+                  <li><a class="navlink" href="#service">Service</a></li>
+                  <li><a class="navlink" href="#pricing">Pricing</a></li>
+                  <li><a class="navlink" href="#process">The Process</a></li>
+                  <li><a class="navlink" href="#portfolio">Portfolio</a></li>
+                  <li><a class="navlink" href="#blog">Blog</a></li>
+                  <li><a class="navlink" href="#footer">Contact</a></li>
+                </ul>
+
+                <!-- # Social Links (optional) -->
+                <div class="mobileMenu__footer" aria-label="Social links">
+                  <a
+                    class="iconLink"
+                    href="https://github.com/YOUR_GITHUB"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <!-- GitHub SVG -->
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                      <path
+                        d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"
+                      />
+                    </svg>
+                    <span class="sr-only">GitHub</span>
+                  </a>
+
+                  <a
+                    class="iconLink"
+                    href="https://www.linkedin.com/in/YOUR_LINKEDIN"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <!-- LinkedIn SVG -->
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                      <path
+                        d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"
+                      />
+                    </svg>
+                    <span class="sr-only">LinkedIn</span>
+                  </a>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </header>
       </div>
-    </section>
 
-    <!-- ✅ Mobile header BELOW hero.
-         IMPORTANT: keep this INSIDE .mobileHeroWrap so it renders at the bottom of the opening screen.
-         (Your CSS should make .mobileHeroWrap a column flex container and .hero flex:1 so the bar sits at the bottom.) -->
-    <header class="mobilebar" role="banner">
-      <a class="mobilebar__brand" href="#home" aria-label="Web Dev by Dan – Home">
-        <img
-          class="siteLogo"
-          src="img/logo/Web-Graphics-05.png"
-          data-src-light="img/logo/Web-Graphics-05.png"
-          data-src-dark="img/logo/Web-Graphics-06.png"
-          alt="Web Dev by Dan"
-          width="160"
-          height="44"
-          decoding="async"
-        />
-      </a>
-
-      <div class="mobilebar__actions">
-        <button
-          class="themeToggle"
-          type="button"
-          data-theme-toggle
-          aria-label="Enable dark mode"
-          aria-pressed="false"
-        >
-          <span class="themeToggle__icon" aria-hidden="true">🌙</span>
-          <span class="sr-only">Toggle dark mode</span>
-        </button>
-
-        <button
-          class="mobilebar__toggle"
-          type="button"
-          aria-label="Open menu"
-          aria-controls="mobileMenu"
-          aria-expanded="false"
-          id="mobileMenuBtn"
-        >
-          <span class="mobilebar__toggleLines" aria-hidden="true"></span>
-        </button>
-      </div>
-    </header>
-  </div>
-
-  <!-- ✅ Mobile menu (positioned by CSS; JS toggles [hidden]) -->
-  <nav class="mobilebar__menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-    <ul class="navlist">
-      ...
-    </ul>
-
-    <!-- Optional: social links at bottom of the mobile menu -->
-    <div class="mobileMenu__footer" aria-label="Social links">
-      <a class="iconLink" href="https://github.com/YOUR_GITHUB" target="_blank" rel="noopener noreferrer">
-        <!-- GitHub SVG -->
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-          <path d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"/>
-        </svg>
-        <span class="sr-only">GitHub</span>
-      </a>
-
-      <a class="iconLink" href="https://www.linkedin.com/in/YOUR_LINKEDIN" target="_blank" rel="noopener noreferrer">
-        <!-- LinkedIn SVG -->
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-          <path d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"/>
-        </svg>
-        <span class="sr-only">LinkedIn</span>
-      </a>
-    </div>
-  </nav>
-
-      <!-- ABOUT -->
+      <!-- ######## ABOUT ######## -->
       <section class="section" id="about" aria-labelledby="aboutTitle">
         <div class="container">
           <header class="sectionHead">
@@ -276,7 +363,7 @@
         </div>
       </section>
 
-      <!-- SERVICE -->
+      <!-- ######## SERVICE ######## -->
       <section class="section" id="service" aria-labelledby="serviceTitle">
         <div class="container">
           <header class="sectionHead sectionHead--center">
@@ -285,13 +372,13 @@
           </header>
 
           <div class="grid4">
-            <!-- Service 1 -->
+            <!-- # Service 1 -->
             <article class="serviceCard">
               <img class="serviceCard__icon" src="img/svg/laptop.svg" alt="" />
               <h3>Web Development</h3>
-              <p>Bring your business to life with custom website design & development!</p>
+              <p>Bring your business to life with custom website design &amp; development!</p>
               <button class="linkBtn" type="button" data-modal="#svc1">
-                Read more<span class="sr-only"> about Web Development</span>
+                Read more <span class="sr-only">about Web Development</span>
               </button>
 
               <template id="svc1">
@@ -303,13 +390,13 @@
               </template>
             </article>
 
-            <!-- Service 2 -->
+            <!-- # Service 2 -->
             <article class="serviceCard">
               <img class="serviceCard__icon" src="img/svg/mouse.svg" alt="" />
               <h3>Graphic Design</h3>
-              <p>With logo & graphic design, your business will truly stand out!</p>
+              <p>With logo &amp; graphic design, your business will truly stand out!</p>
               <button class="linkBtn" type="button" data-modal="#svc2">
-                Read more<span class="sr-only"> about Graphic Design</span>
+                Read more <span class="sr-only">about Graphic Design</span>
               </button>
 
               <template id="svc2">
@@ -321,13 +408,13 @@
               </template>
             </article>
 
-            <!-- Service 3 -->
+            <!-- # Service 3 -->
             <article class="serviceCard">
               <img class="serviceCard__icon" src="img/svg/monitor.svg" alt="" />
               <h3>Domain Hosting</h3>
               <p>Get the domain which best fits your business and forget your hosting worries!</p>
               <button class="linkBtn" type="button" data-modal="#svc3">
-                Read more<span class="sr-only"> about Domain Hosting</span>
+                Read more <span class="sr-only">about Domain Hosting</span>
               </button>
 
               <template id="svc3">
@@ -339,13 +426,13 @@
               </template>
             </article>
 
-            <!-- Service 4 -->
+            <!-- # Service 4 -->
             <article class="serviceCard">
               <img class="serviceCard__icon" src="img/svg/layer.svg" alt="" />
               <h3>SEO Optimization</h3>
               <p>Get your business to the top of search engines with SEO optimization!</p>
               <button class="linkBtn" type="button" data-modal="#svc4">
-                Read more<span class="sr-only"> about SEO Optimization</span>
+                Read more <span class="sr-only">about SEO Optimization</span>
               </button>
 
               <template id="svc4">
@@ -375,7 +462,7 @@
         </div>
       </section>
 
-      <!-- PRICING -->
+      <!-- ######## PRICING ######## -->
       <section class="section" id="pricing" aria-labelledby="pricingTitle">
         <div class="container">
           <header class="sectionHead sectionHead--center">
@@ -415,7 +502,7 @@
         </div>
       </section>
 
-      <!-- PROCESS -->
+      <!-- ######## PROCESS ######## -->
       <section class="section process" id="process" aria-labelledby="processTitle">
         <div class="container">
           <div class="processGrid">
@@ -424,16 +511,17 @@
                 <p class="kicker">Take a look at</p>
                 <h2 id="processTitle">The Process</h2>
               </header>
+
               <p>
                 Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
                 process—from our first conversation to the final launch.
               </p>
 
               <ol class="steps">
-                <li><strong>Initial Meetup & Planning</strong> — 20%</li>
-                <li><strong>Website Design & Feedback</strong> — 40%</li>
+                <li><strong>Initial Meetup &amp; Planning</strong> — 20%</li>
+                <li><strong>Website Design &amp; Feedback</strong> — 40%</li>
                 <li><strong>Web Development</strong> — 75%</li>
-                <li><strong>Final Feedback & Launch</strong> — 100%</li>
+                <li><strong>Final Feedback &amp; Launch</strong> — 100%</li>
               </ol>
             </div>
 
@@ -444,7 +532,7 @@
         </div>
       </section>
 
-      <!-- PORTFOLIO -->
+      <!-- ######## PORTFOLIO ######## -->
       <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
         <div class="container">
           <header class="sectionHead">
@@ -464,8 +552,9 @@
               <img src="img/portfolio/1.jpg" alt="Mockup preview" loading="lazy" />
               <h3>Mockup</h3>
               <p>Lorem ipsum…</p>
+
               <button class="linkBtn" type="button" data-modal="#p1">
-                View details<span class="sr-only"> for Mockup</span>
+                View details <span class="sr-only">for Mockup</span>
               </button>
 
               <template id="p1">
@@ -478,7 +567,7 @@
         </div>
       </section>
 
-      <!-- TESTIMONIALS -->
+      <!-- ######## TESTIMONIALS ######## -->
       <section class="section" id="testimonials" aria-labelledby="testimonialsTitle">
         <div class="container">
           <header class="sectionHead sectionHead--center">
@@ -490,6 +579,7 @@
             <div class="testimonialMedia">
               <img src="img/testimonials/Testimonials.png" alt="" loading="lazy" />
             </div>
+
             <blockquote class="quote">
               <p>“Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened…”</p>
               <footer>
@@ -501,7 +591,7 @@
         </div>
       </section>
 
-      <!-- BLOG -->
+      <!-- ######## BLOG ######## -->
       <section class="section" id="blog" aria-labelledby="blogTitle">
         <div class="container">
           <header class="sectionHead">
@@ -540,9 +630,11 @@
         </div>
       </section>
 
-      <!-- FOOTER + NETLIFY CONTACT FORM -->
+      <!-- ######## FOOTER + CONTACT (NETLIFY) ######## -->
       <footer class="footer" id="footer">
         <div class="container footerGrid">
+
+          <!-- # Contact Copy -->
           <div>
             <h2>Want to work together? <span class="accent">Let’s Chat!</span></h2>
             <p class="muted">Send a message — submissions are stored in Netlify Forms.</p>
@@ -554,6 +646,7 @@
             </p>
           </div>
 
+          <!-- # Netlify Form -->
           <form
             class="contactForm"
             id="contactForm"
@@ -562,9 +655,11 @@
             data-netlify="true"
             data-netlify-honeypot="bot-field"
             novalidate
+            netlify
           >
             <input type="hidden" name="form-name" value="contact" />
 
+            <!-- # Honeypot (anti-spam) -->
             <p class="sr-only">
               <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
             </p>
@@ -572,13 +667,28 @@
             <div class="twoCol">
               <div>
                 <label for="name">Full Name</label>
-                <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameErr" />
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  aria-describedby="nameErr"
+                />
                 <p class="fieldErr" id="nameErr" aria-live="polite"></p>
               </div>
 
               <div>
                 <label for="email">Your Email</label>
-                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailErr" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  inputmode="email"
+                  autocomplete="email"
+                  required
+                  aria-describedby="emailErr"
+                />
                 <p class="fieldErr" id="emailErr" aria-live="polite"></p>
               </div>
             </div>
@@ -597,7 +707,13 @@
 
             <div>
               <label for="message">Message</label>
-              <textarea id="message" name="message" rows="6" required aria-describedby="msgErr"></textarea>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                required
+                aria-describedby="msgErr"
+              ></textarea>
               <p class="fieldErr" id="msgErr" aria-live="polite"></p>
             </div>
 
@@ -609,6 +725,7 @@
     </main>
   </div>
 
+  <!-- ######## SCRIPTS ######## -->
   <script src="js/app.js" defer></script>
 </body>
 </html>
