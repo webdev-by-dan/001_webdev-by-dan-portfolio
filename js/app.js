@@ -392,37 +392,71 @@
 })();
 
 /* =========================================================
-   LOCK NAVBAR AT TOP, UNLOCK WHEN HERO IS REACHED
+   STICKY-LOCK NAV:
+   - locks (fixed) when nav hits y <= 0
+   - unlocks ONLY when the nav's original spot reaches y >= 0 again
+   (uses a placeholder to track the nav's "spot" in the document flow)
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
-  const hero = document.getElementById("home"); // hero section
-  if (!nav || !hero) return;
+  if (!nav) return;
+
+  // Create an in-flow placeholder right where the nav normally sits
+  const ph = document.createElement("div");
+  ph.className = "mobilebar-placeholder";
+  ph.style.height = `${nav.offsetHeight}px`;
+  ph.style.display = "none"; // only visible (in effect) while locked
+
+  // Insert placeholder immediately before nav
+  nav.parentNode.insertBefore(ph, nav);
 
   let locked = false;
+  let ticking = false;
 
-  const onScroll = () => {
-    const navRect = nav.getBoundingClientRect();
-    const heroRect = hero.getBoundingClientRect();
+  const lock = () => {
+    if (locked) return;
+    locked = true;
+    ph.style.display = ""; // keep layout from jumping
+    nav.classList.add("is-lockedTop");
+  };
 
-    // Lock when nav hits top
-    if (!locked && navRect.top <= 0) {
-      nav.classList.add("is-lockedTop");
-      locked = true;
+  const unlock = () => {
+    if (!locked) return;
+    locked = false;
+    nav.classList.remove("is-lockedTop");
+    ph.style.display = "none";
+  };
+
+  const update = () => {
+    ticking = false;
+
+    if (!locked) {
+      // Gain sticky when nav hits the threshold (viewport top)
+      const navRect = nav.getBoundingClientRect();
+      if (navRect.top <= 0) lock();
       return;
     }
 
-    // Unlock when hero is visible again
-    // (hero's top is at or below viewport top)
-    if (
-      locked &&
-      heroRect.top <= 0 &&
-      heroRect.bottom > 0
-    ) {
-      nav.classList.remove("is-lockedTop");
-      locked = false;
-    }
+    // Lose sticky only when the TOP of the nav's original spot
+    // is back at (or below) the top of the viewport.
+    // When scrolling up, ph.top increases; unlock when ph.top >= 0.
+    const phRect = ph.getBoundingClientRect();
+    if (phRect.top >= 0) unlock();
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
   };
 
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", () => {
+    // Keep placeholder height synced if nav height changes
+    ph.style.height = `${nav.offsetHeight}px`;
+    onScroll();
+  }, { passive: true });
+
+  // Init
+  requestAnimationFrame(update);
 })();
