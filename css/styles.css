@@ -1,44 +1,76 @@
 /* =========================================================
    Web Dev by Dan — Modern, WCAG-minded theme CSS
    Dark mode driven by: html[data-theme="dark"]
+   Light mode: colorful section tints + matching outlines,
+   solid white sidebar/nav with orange highlighting.
 ========================================================= */
 
-/* ---------- Theme tokens ---------- */
+/* =========================
+   THEME TOKENS — LIGHT
+   ========================= */
 :root{
   color-scheme: light;
 
-  /* Brand palette (light) */
-  --cream:  #fff7ed;
-  --cream2: #ffedd5;
+  /* Brand accent (logo / buttons) */
+  --orange:  #c2410c;
+  --orange2: #ea580c;
+  --orange3: #9a3412;
 
-  /* Accents (AA-friendly on light backgrounds) */
-  --orange:  #9a3412;   /* link / accent */
-  --orange2: #c2410c;   /* button */
-  --orange3: #7c2d12;   /* hover */
-
-  /* Semantic tokens (light) */
-  --bg:      #ffffff;
-  --surface: #f6f7f9;
+  /* Foundation */
+  --bg:      #f6f7fb;
+  --surface: #ffffff;
   --card:    #ffffff;
 
-  --text:  #1f1408;     /* dark brown */
-  --muted: #4b3a2a;
-  --border:#e7d6bf;
+  --text:  #0b1220;
+  --muted: #475569;
+  --border: rgba(11,18,32,.14);
 
-  --link:   var(--orange);
+  --link: var(--orange);
   --linkHover: var(--orange3);
 
-  --shadow: 0 12px 30px rgba(31,20,8,.10);
+  --shadow: 0 16px 36px rgba(11,18,32,.12);
   --radius: 18px;
 
-  --focus: #1f2937;     /* highly visible on light */
+  --focus: #2563eb;
+
+  /* Sidebar stays white */
+  --cream:  #ffffff;
+  --cream2: #ffffff;
+
+  /* Light blue “banner” background for Hero + Footer */
+  --sky: #e6f0ff;
+
+  /* Section tint colors */
+  --tint-red:    rgba(239, 68, 68, 0.18);
+  --tint-orange: rgba(249, 115, 22, 0.18);
+  --tint-yellow: rgba(234, 179, 8, 0.20);
+  --tint-green:  rgba(34, 197, 94, 0.18);
+  --tint-blue:   rgba(59, 130, 246, 0.18);
+  --tint-purple: rgba(168, 85, 247, 0.18);
+
+  /* Matching darker outline colors */
+  --outline-red:    rgba(136, 19, 55, 0.55);
+  --outline-orange: rgba(154, 52, 18, 0.55);
+  --outline-yellow: rgba(133, 77, 14, 0.55);
+  --outline-green:  rgba(20, 83, 45, 0.55);
+  --outline-blue:   rgba(30, 64, 175, 0.50);
+  --outline-purple: rgba(88, 28, 135, 0.50);
+
+  /* Defaults */
+  --sectionTint: rgba(0,0,0,0);
+  --sectionOutline: rgba(11,18,32,.14);
+
+  /* Hero text colors in LIGHT */
+  --heroText: var(--text);
+  --heroShadow: none;
 }
 
-/* Dark theme overrides */
+/* =========================
+   THEME TOKENS — DARK
+   ========================= */
 html[data-theme="dark"]{
   color-scheme: dark;
 
-  /* Dark “tints” for panels/gradients */
   --cream:  #0b0f17;
   --cream2: #101826;
 
@@ -48,13 +80,24 @@ html[data-theme="dark"]{
 
   --text:  #eef2ff;
   --muted: #b6c0d1;
-  --border: rgba(238, 242, 255, 0.14);
+  --border: rgba(238,242,255,.14);
 
   --link: #7aa7ff;
   --linkHover: #93c5fd;
 
-  --shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow: 0 16px 40px rgba(0,0,0,.55);
   --focus:  #93c5fd;
+
+  /* Do not tint sections in dark */
+  --sectionTint: rgba(0,0,0,0);
+  --sectionOutline: rgba(238,242,255,.14);
+
+  /* Hero text colors in DARK */
+  --heroText: #ffffff;
+  --heroShadow: 0 2px 20px rgba(0,0,0,0.35);
+
+  /* Dark hero/footer banner */
+  --sky: #0b0f17;
 }
 
 /* ---------- Base ---------- */
@@ -122,13 +165,17 @@ a:hover{ color: var(--linkHover); }
   position: sticky;
   top:0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(10px);
+  background: var(--card);
   border-bottom: 1px solid var(--border);
   padding: 10px 12px;
   align-items:center;
   justify-content: space-between;
   gap: 10px;
+}
+
+html[data-theme="dark"] .mobilebar{
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
 }
 
 .mobilebar__brand img{ height: 36px; width:auto; }
@@ -180,8 +227,12 @@ a:hover{ color: var(--linkHover); }
 /* ---------- Sidebar ---------- */
 .left{
   border-right: 1px solid var(--border);
+  background: var(--card); /* solid white in LIGHT */
+}
+html[data-theme="dark"] .left{
   background: linear-gradient(180deg, var(--cream2), var(--cream));
 }
+
 .left__inner{
   position: sticky;
   top:0;
@@ -196,7 +247,7 @@ a:hover{ color: var(--linkHover); }
   display:block;
   padding: 10px;
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--card) 70%, transparent);
+  background: var(--card);
   border: 1px solid var(--border);
 }
 .logo:focus-visible{ outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -210,10 +261,10 @@ a:hover{ color: var(--linkHover); }
   color: var(--text);
   border: 1px solid transparent;
 }
-.navlink:hover{ background: color-mix(in srgb, var(--link) 10%, transparent); }
+.navlink:hover{ background: color-mix(in srgb, var(--orange) 12%, transparent); }
 .navlink.is-active{
-  border-color: color-mix(in srgb, var(--link) 35%, transparent);
-  background: color-mix(in srgb, var(--link) 12%, transparent);
+  border-color: color-mix(in srgb, var(--orange) 40%, transparent);
+  background: color-mix(in srgb, var(--orange) 16%, transparent);
 }
 .navlink:focus-visible{ outline: 3px solid var(--focus); outline-offset: 3px; }
 
@@ -223,7 +274,7 @@ a:hover{ color: var(--linkHover); }
   padding: 12px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--card) 78%, transparent);
+  background: color-mix(in srgb, var(--card) 92%, transparent);
 }
 .newsletter h2{
   margin: 0 0 8px;
@@ -291,7 +342,7 @@ label{ display:block; margin: 8px 0 6px; font-weight: 700; }
 }
 .iconLink svg{ fill: currentColor; }
 .iconLink:hover{
-  background: var(--surface);
+  background: color-mix(in srgb, var(--orange) 10%, transparent);
   transform: translateY(-1px);
 }
 
@@ -308,7 +359,8 @@ label{ display:block; margin: 8px 0 6px; font-weight: 700; }
   color: var(--text);
   cursor:pointer;
 }
-.themeToggle:hover{ background: var(--surface); }
+.themeToggle:hover{ background: color-mix(in srgb, var(--orange) 10%, transparent); }
+html[data-theme="dark"] .themeToggle:hover{ background: var(--surface); }
 
 .themeToggle__text{
   font-weight: 600;
@@ -318,8 +370,71 @@ label{ display:block; margin: 8px 0 6px; font-weight: 700; }
 /* ---------- Right content ---------- */
 .right{ min-width:0; }
 
-/* Sections */
-.section{ padding: 56px 0; border-bottom: 1px solid var(--border); }
+/* =========================
+   SECTIONS (COLORFUL LIGHT)
+   ========================= */
+
+/* Base section */
+.section{
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+/* Light-mode: apply tinted wash AND a darker outline around the section block */
+:root main .section{
+  background:
+    linear-gradient(0deg, var(--sectionTint), var(--sectionTint)),
+    var(--bg);
+  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  outline: 1px solid var(--sectionOutline);
+  outline-offset: -1px;
+}
+
+/* Assign different tints + outlines by order
+   (adjust mapping if your section order changes) */
+:root main .section:nth-of-type(1){
+  --sectionTint: var(--tint-blue);
+  --sectionOutline: var(--outline-blue);
+  background: var(--sky); /* Hero banner: light blue */
+  outline: 1px solid var(--outline-blue);
+  outline-offset: -1px;
+}
+:root main .section:nth-of-type(2){
+  --sectionTint: var(--tint-green);
+  --sectionOutline: var(--outline-green);
+}
+:root main .section:nth-of-type(3){
+  --sectionTint: var(--tint-yellow);
+  --sectionOutline: var(--outline-yellow);
+}
+:root main .section:nth-of-type(4){
+  --sectionTint: var(--tint-orange);
+  --sectionOutline: var(--outline-orange);
+}
+:root main .section:nth-of-type(5){
+  --sectionTint: var(--tint-purple);
+  --sectionOutline: var(--outline-purple);
+}
+:root main .section:nth-of-type(6){
+  --sectionTint: var(--tint-red);
+  --sectionOutline: var(--outline-red);
+}
+/* Blog section extra color (requested) */
+:root main .section:nth-of-type(7){
+  --sectionTint: var(--tint-blue);
+  --sectionOutline: var(--outline-blue);
+}
+
+/* Do NOT tint in dark mode */
+html[data-theme="dark"] main .section{
+  background: transparent;
+  outline: none;
+  border-top: none;
+}
+
+/* Section headings */
 .sectionHead{ margin-bottom: 16px; }
 .sectionHead--center{ text-align:center; }
 
@@ -341,6 +456,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   overflow: clip;
 }
 
+/* Background image layer */
 .hero__bg{
   position: absolute;
   inset: 0;
@@ -350,38 +466,90 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   z-index: 0;
 }
 
+/* Contrast overlay (REMOVE in light mode; keep in dark mode) */
 .hero__overlay{
   position:absolute;
   inset:0;
+  background: none; /* light mode default */
+}
+html[data-theme="dark"] .hero__overlay{
   background: linear-gradient(
     90deg,
-    rgba(0,0,0,0.55) 0%,
-    rgba(0,0,0,0.35) 45%,
-    rgba(0,0,0,0.10) 100%
+    rgba(0,0,0,0.60) 0%,
+    rgba(0,0,0,0.40) 45%,
+    rgba(0,0,0,0.12) 100%
   );
 }
 
+/* Content block */
 .hero__content{
   position: relative;
   z-index: 1;
-  min-height: clamp(520px, 70vh, 760px);
-  display:flex;
+
+  min-height: clamp(600px, 90vh, 860px);
+
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   text-align: left;
-  max-width: 56ch;
-  padding-block: clamp(36px, 6vh, 80px);
+
+  max-width: 66ch;
+
+  padding-block: clamp(48px, 8vh, 110px);
+
+  transform: translateX(-32%);
 }
 
+/* Constrain left shift on smaller screens */
+@media (max-width: 900px){
+  .hero__content{ transform: none; }
+}
+
+/* Extra breathing room on very large screens */
+@media (min-width: 1200px){
+  .hero__content{ padding-left: 72px; }
+}
+
+/* Typography */
+.hero .eyebrow{
+  font-size: clamp(14px, 1.2vw, 16px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+.hero__title{
+  font-size: clamp(64px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0 0 10px;
+}
+
+.hero__sub{
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.35;
+  max-width: 40ch;
+  margin-bottom: 28px;
+}
+
+/* Light mode: dark text, no shadow.
+   Dark mode: light text with shadow. */
 .hero .eyebrow,
 .hero__title,
 .hero__sub{
-  color:#fff;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.35);
+  color: var(--heroText);
+  text-shadow: var(--heroShadow);
 }
 
-.actions{ display:flex; flex-wrap:wrap; gap: 10px; }
+/* Actions */
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 14px;
+}
 
 /* Buttons */
 .btn{
@@ -389,7 +557,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   align-items:center;
   justify-content:center;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 14px 20px;
   border-radius: 16px;
   border: 1px solid color-mix(in srgb, var(--link) 35%, transparent);
   background: var(--orange2);
@@ -405,7 +573,9 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   background: var(--card);
   color: var(--link);
 }
-.btn--ghost:hover{ background: color-mix(in srgb, var(--link) 10%, var(--card)); }
+.btn--ghost:hover{
+  background: color-mix(in srgb, var(--link) 10%, var(--card));
+}
 
 .btn__icon{ font-size: 12px; }
 
@@ -427,7 +597,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 }
 
 .aboutText{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
@@ -458,7 +628,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   gap: 12px;
 }
 .factCard{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
@@ -472,7 +642,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   gap: 12px;
 }
 .serviceCard{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
@@ -507,7 +677,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   justify-content:center;
 }
 .tag{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
   padding: 8px 10px;
   border-radius: 999px;
@@ -522,7 +692,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   gap: 12px;
 }
 .priceCard{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
@@ -537,6 +707,12 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 .process{
   background: linear-gradient(180deg, var(--cream2), var(--bg));
 }
+html:not([data-theme="dark"]) .process{
+  background:
+    linear-gradient(0deg, var(--sectionTint), var(--sectionTint)),
+    var(--bg);
+}
+
 .processGrid{
   display:grid;
   grid-template-columns: 1.2fr .8fr;
@@ -583,7 +759,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 .column.show{ display:block; }
 
 .portfolioItem{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
@@ -602,7 +778,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   gap: 12px;
 }
 .blogCard{
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
@@ -624,7 +800,7 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
   grid-template-columns: .6fr 1.4fr;
   gap: 12px;
   align-items:center;
-  background: var(--card);
+  background: color-mix(in srgb, var(--card) 90%, transparent);
   border:1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px;
@@ -636,8 +812,14 @@ h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 .footer{
   position: relative;
   padding: 56px 0;
-  background: linear-gradient(180deg, var(--bg), var(--cream2));
+  background: var(--sky); /* light blue footer (requested) */
+  border-top: 1px solid color-mix(in srgb, var(--outline-blue) 35%, transparent);
 }
+html[data-theme="dark"] .footer{
+  background: linear-gradient(180deg, var(--bg), var(--cream2));
+  border-top: 1px solid var(--border);
+}
+
 .footerGrid{
   position: relative;
   z-index: 2;

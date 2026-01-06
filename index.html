@@ -35,7 +35,7 @@
       <a class="mobilebar__brand" href="#home" aria-label="Web Dev by Dan – Home">
       <img
         class="siteLogo"
-        src="img/logo/Web-Graphics-05.png"
+        src="img/logo/Web-Graphics-0.png"
         data-src-light="img/logo/Web-Graphics-05.png"
         data-src-dark="img/logo/Web-Graphics-06.png"
         alt="Web Dev by Dan"
@@ -100,7 +100,13 @@
     <aside class="left" aria-label="Sidebar">
       <div class="left__inner">
         <a class="logo" href="#home" aria-label="Home">
-          <img src="./img/logo/Web-Graphics-05.png" alt="Web Dev by Dan logo" />
+          <img
+            class="siteLogo"
+            src="img/logo/Web-Graphics-05.png"
+            data-src-light="img/logo/Web-Graphics-05.png"
+            data-src-dark="img/logo/Web-Graphics-06.png"
+            alt="Web Dev by Dan"
+          >
         </a>
 
         <nav class="sideNav" aria-label="Primary">
@@ -158,14 +164,24 @@
     <!-- Main content -->
     <main class="right" id="main" tabindex="-1">
       <!-- HERO -->
-      <section class="section hero" id="home" aria-labelledby="homeTitle">
-        <div class="hero__bg" style="--bgimg:url('img/hero/Hero_04.png');">
-          <div class="hero__overlay" aria-hidden="true"></div>
-        </div>
+      <section
+        class="section hero"
+        id="home"
+        aria-labelledby="homeTitle"
+        style="--bgimg: url('../img/hero/Hero_04.png');"
+      >
+        <!-- Background image -->
+        <div class="hero__bg" aria-hidden="true"></div>
 
+        <!-- Contrast overlay -->
+        <div class="hero__overlay" aria-hidden="true"></div>
+
+        <!-- Content -->
         <div class="container hero__content">
           <p class="eyebrow">Hi, I'm</p>
+
           <h1 class="hero__title" id="homeTitle">Dan</h1>
+
           <p class="hero__sub">
             Your favorite freelance <span class="accent">Web Developer.</span>
           </p>
@@ -175,7 +191,10 @@
               Let’s Chat
               <span class="btn__icon" aria-hidden="true">▶</span>
             </a>
-            <a class="btn btn--ghost" href="#about">Learn more</a>
+
+            <a class="btn btn--ghost" href="#about">
+              Learn more
+            </a>
           </div>
         </div>
       </section>
