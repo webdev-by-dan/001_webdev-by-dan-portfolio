@@ -1097,7 +1097,7 @@ html[data-theme="dark"] .footer{
   }
 
   .mobileMenu__panel{
-    width: min(520px, 100%);
+    width: 100vw;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 20px;

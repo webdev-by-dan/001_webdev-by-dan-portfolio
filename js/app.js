@@ -2,7 +2,8 @@
    THEME TOGGLE + IMAGE SWAP (robust click handling)
    - toggles html[data-theme]="light|dark"
    - persists to localStorage("theme")
-   - swaps <img data-src-light data-src-dark> and <source data-srcset-light data-srcset-dark>
+   - swaps <img data-src-light data-src-dark> and
+     <source data-srcset-light data-srcset-dark>
 ========================================================= */
 (function () {
   const STORAGE_KEY = "theme"; // "light" | "dark"
@@ -131,21 +132,19 @@
 /* =========================================================
    SITE INTERACTIONS (NEAT)
    - year
-   - fullscreen mobile menu (hamburger <-> X animation hook)
+   - fullscreen mobile menu (X works + starts closed + overlay/Esc + focus trap)
    - active nav highlighting
    - portfolio filter
    - accessible modal
-   - newsletter demo
    - contact form validation
 ========================================================= */
 (function () {
   "use strict";
 
   const qs = (sel, root) => (root || document).querySelector(sel);
-  const qsa = (sel, root) =>
-    Array.prototype.slice.call((root || document).querySelectorAll(sel));
+  const qsa = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
-  // Year
+  /* ===== Year ===== */
   const yearEl = qs("#year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
@@ -153,30 +152,30 @@
      Fullscreen Mobile Menu (desktop-like vertical nav)
      Requires:
      - button#mobileMenuBtn
-     - nav#mobileMenu [hidden] (fullscreen overlay in CSS)
-     - optional close button inside menu: [data-menu-close]
-     Hamburger->X animation:
+     - nav#mobileMenu (use [hidden] to hide/show)
+     - close button inside menu: [data-menu-close]
+     Hamburger->X animation hook:
      - toggles .is-open on #mobileMenuBtn
   ========================================================= */
   const menuBtn = qs("#mobileMenuBtn");
   const menu = qs("#mobileMenu");
 
   if (menuBtn && menu) {
-    const closeBtn = qs("[data-menu-close]", menu); // optional, but recommended
+    const panel = qs(".mobileMenu__panel", menu); // optional but recommended
+    const closeBtn = qs("[data-menu-close]", menu); // optional but recommended
     let lastFocus = null;
 
-    const focusables = (container) =>
-      qsa(
-        [
-          "a[href]",
-          "button:not([disabled])",
-          "input:not([disabled])",
-          "textarea:not([disabled])",
-          "select:not([disabled])",
-          "[tabindex]:not([tabindex='-1'])",
-        ].join(","),
-        container
-      ).filter((el) => el.offsetParent !== null);
+    const focusableSelector = [
+      "a[href]",
+      "button:not([disabled])",
+      "input:not([disabled])",
+      "textarea:not([disabled])",
+      "select:not([disabled])",
+      "[tabindex]:not([tabindex='-1'])",
+    ].join(",");
+
+    const focusables = () =>
+      qsa(focusableSelector, menu).filter((el) => el.offsetParent !== null);
 
     const isOpen = () => menuBtn.getAttribute("aria-expanded") === "true";
 
@@ -189,15 +188,15 @@
         lastFocus = document.activeElement;
         document.body.style.overflow = "hidden";
 
-        // focus first link or close button
-        const f = focusables(menu);
-        (qs("a[href]", menu) || closeBtn || f[0])?.focus?.();
+        const first =
+          qs(".navlink", menu) || closeBtn || focusables()[0] || menuBtn;
+        first && first.focus && first.focus();
 
         document.addEventListener("keydown", onMenuKeydown);
       } else {
         document.body.style.overflow = "";
         document.removeEventListener("keydown", onMenuKeydown);
-        lastFocus?.focus?.();
+        (lastFocus && lastFocus.focus && lastFocus.focus()) || menuBtn.focus();
       }
     };
 
@@ -212,7 +211,7 @@
 
       // Focus trap
       if (e.key === "Tab") {
-        const f = focusables(menu);
+        const f = focusables();
         if (!f.length) return;
 
         const first = f[0];
@@ -228,25 +227,43 @@
       }
     };
 
+    // Ensure CLOSED on load (prevents “starts open”)
+    setOpen(false);
+
     // Toggle open/close
-    menuBtn.addEventListener("click", () => setOpen(!isOpen()));
-
-    // Close button in corner (if present)
-    closeBtn?.addEventListener("click", () => setOpen(false));
-
-    // Close menu on link click
-    menu.addEventListener("click", (e) => {
-      const a = e.target.closest("a");
-      if (!a) return;
-      setOpen(false);
+    menuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      setOpen(!isOpen());
     });
 
-    // Ensure correct initial state
-    menu.hidden = !isOpen();
+    // Close button in corner (X)
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        setOpen(false);
+      });
+    }
+
+    // Click behavior inside menu:
+    // - close on nav link click
+    // - close on overlay click (outside the panel)
+    menu.addEventListener("click", (e) => {
+      const a = e.target.closest("a.navlink");
+      if (a) {
+        setOpen(false);
+        return;
+      }
+
+      // overlay click closes (only if panel exists)
+      if (panel && !panel.contains(e.target)) {
+        setOpen(false);
+        return;
+      }
+    });
   }
 
-  // Active nav highlighting
-  const navLinks = qsa(".navlink, .mobilebar__menu a");
+  /* ===== Active nav highlighting ===== */
+  const navLinks = qsa(".navlink, #mobileMenu .navlink");
   const sections = qsa("main .section, footer").filter((el) => el.id);
 
   function setActiveLink() {
@@ -266,7 +283,7 @@
   window.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("load", setActiveLink);
 
-  // Portfolio filter
+  /* ===== Portfolio filter ===== */
   const filterWrap = qs("#myBtnContainer");
   const columns = qsa(".column");
 
@@ -274,33 +291,29 @@
     const cat = c === "all" ? "" : c;
     columns.forEach((col) => {
       col.classList.remove("show");
-      if (!cat || col.className.indexOf(cat) > -1) {
-        col.classList.add("show");
-      }
+      if (!cat || col.className.indexOf(cat) > -1) col.classList.add("show");
     });
   }
 
-  filterSelection("all");
+  if (columns.length) filterSelection("all");
 
   if (filterWrap) {
     filterWrap.addEventListener("click", (e) => {
       const b = e.target.closest("button[data-filter]");
       if (!b) return;
 
-      qsa(".filterBtn", filterWrap).forEach((x) =>
-        x.classList.remove("is-active")
-      );
+      qsa(".filterBtn", filterWrap).forEach((x) => x.classList.remove("is-active"));
       b.classList.add("is-active");
       filterSelection(b.getAttribute("data-filter") || "all");
     });
   }
 
-  // Accessible modal
+  /* ===== Accessible modal ===== */
   const modal = qs("#modal");
   const modalContent = qs("#modalContent");
   let lastFocus = null;
 
-  function focusables(container) {
+  function modalFocusables(container) {
     return qsa(
       [
         "a[href]",
@@ -315,7 +328,7 @@
   }
 
   function onModalKeydown(e) {
-    if (!modal.classList.contains("is-open")) return;
+    if (!modal || !modal.classList.contains("is-open")) return;
 
     if (e.key === "Escape") {
       e.preventDefault();
@@ -324,7 +337,7 @@
     }
 
     if (e.key === "Tab") {
-      const f = focusables(modal);
+      const f = modalFocusables(modal);
       if (!f.length) return;
 
       const first = f[0];
@@ -341,19 +354,23 @@
   }
 
   function openModal(html) {
+    if (!modal || !modalContent) return;
+
     lastFocus = document.activeElement;
     modalContent.innerHTML = html;
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
 
-    const f = focusables(modal);
+    const f = modalFocusables(modal);
     (f[0] || qs(".modal__dialog"))?.focus?.();
 
     document.addEventListener("keydown", onModalKeydown);
   }
 
   function closeModal() {
+    if (!modal || !modalContent) return;
+
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     modalContent.innerHTML = "";
@@ -378,29 +395,7 @@
     }
   });
 
-  // Newsletter demo (no backend)
-  const newsForm = qs("#newsletterForm");
-  const newsMsg = qs("#newsletterMsg");
-
-  if (newsForm && newsMsg) {
-    newsForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const email = (qs("#newsletterEmail")?.value || "").trim();
-      newsMsg.className = "formMsg";
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        newsMsg.textContent = "Please enter a valid email address.";
-        newsMsg.classList.add("is-error");
-        return;
-      }
-
-      newsMsg.textContent = "Thanks! (Static demo — wire to Netlify if desired.)";
-      newsMsg.classList.add("is-success");
-      newsForm.reset();
-    });
-  }
-
-  // Contact form validation (Netlify handles submit)
+  /* ===== Contact form validation (Netlify handles submit) ===== */
   const contactForm = qs("#contactForm");
   const contactMsg = qs("#contactMsg");
   const mapErr = { name: "#nameErr", email: "#emailErr", message: "#msgErr" };
