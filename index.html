@@ -1,13 +1,10 @@
-<?php
-// index.php
-?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mers-style Site (No jQuery, Accessible)</title>
+  <title>Mers-style Site (Static, Accessible)</title>
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 
@@ -15,16 +12,13 @@
   <!-- Skip link (WCAG 2.4.1) -->
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <!-- Modal (accessible) -->
+  <!-- Accessible Modal -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
 
-    <!-- role=dialog + aria-modal + labelledby -->
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal__close" type="button" aria-label="Close dialog" data-modal-close>×</button>
-      <div class="modal__content" id="modalContent">
-        <!-- injected -->
-      </div>
+      <div class="modal__content" id="modalContent"></div>
     </div>
   </div>
 
@@ -45,14 +39,14 @@
           <a class="nav__link" href="#services">Services</a>
           <a class="nav__link" href="#portfolio">Portfolio</a>
           <a class="nav__link" href="#news">News</a>
-          <a class="nav__link" href="#contact">Contact</a>
+          <a class="nav__link" href="#footer">Contact</a>
         </nav>
 
         <section class="sidebar__card" aria-labelledby="subscribeTitle">
           <h2 class="sidebar__cardTitle" id="subscribeTitle">Subscribe</h2>
 
-          <!-- associate labels + helper text -->
-          <form class="subscribe" id="subscribeForm" novalidate>
+          <!-- OPTIONAL: static subscribe (you can wire to Netlify forms too if you want) -->
+          <form class="subscribe" id="subscribeForm" novalidate aria-describedby="subscribeHelp">
             <label for="subscribeEmail">Email address</label>
             <input
               id="subscribeEmail"
@@ -64,11 +58,8 @@
               required
               aria-describedby="subscribeHelp subscribeMsg"
             />
-            <p class="help" id="subscribeHelp">We’ll only email when there’s something worth sharing.</p>
-
+            <p class="help" id="subscribeHelp">Static demo (no backend). Remove or wire to Netlify.</p>
             <button type="submit">Join</button>
-
-            <!-- live region for status (WCAG 4.1.3) -->
             <p class="formMsg" id="subscribeMsg" aria-live="polite"></p>
           </form>
         </section>
@@ -79,7 +70,7 @@
             <a href="#" aria-label="GitHub">Gh</a>
             <a href="#" aria-label="LinkedIn">In</a>
           </div>
-          <p class="tiny">© <?= date('Y') ?> Your Name</p>
+          <p class="tiny">© <span id="year"></span> Your Name</p>
         </div>
       </div>
     </header>
@@ -92,27 +83,27 @@
             <div>
               <h1 class="hero__title" id="homeTitle">Beautiful, fast sites for real work.</h1>
               <p class="hero__lead">
-                Vanilla JS, accessible modal/filtering, and PHP forms. No jQuery.
+                Static HTML/CSS/JS with accessible modal + filtering and a Netlify-ready footer form.
               </p>
               <div class="hero__actions">
                 <a class="btn" href="#portfolio">View work</a>
-                <a class="btn btn--ghost" href="#contact">Contact</a>
+                <a class="btn btn--ghost" href="#footer">Contact</a>
               </div>
             </div>
 
             <div class="hero__card" aria-label="Highlights">
               <dl class="stats">
                 <div class="stat">
-                  <dt class="stat__k">40+</dt>
-                  <dd class="stat__v">Projects</dd>
-                </div>
-                <div class="stat">
                   <dt class="stat__k">WCAG</dt>
                   <dd class="stat__v">2.2 AA minded</dd>
                 </div>
                 <div class="stat">
                   <dt class="stat__k">0</dt>
-                  <dd class="stat__v">jQuery required</dd>
+                  <dd class="stat__v">Backend required</dd>
+                </div>
+                <div class="stat">
+                  <dt class="stat__k">Netlify</dt>
+                  <dd class="stat__v">Form submissions</dd>
                 </div>
               </dl>
             </div>
@@ -131,15 +122,15 @@
           <div class="cards">
             <article class="card">
               <h3>What I do</h3>
-              <p>Frontend builds, backend integration, accessibility, and performance.</p>
+              <p>Frontend builds, accessibility, and maintainable UI systems.</p>
             </article>
             <article class="card">
               <h3>How I work</h3>
-              <p>Clear scope, clean handoffs, and maintainable code you can own.</p>
+              <p>Clear scope, clean handoffs, and thoughtful documentation.</p>
             </article>
             <article class="card">
-              <h3>Tools</h3>
-              <p>HTML/CSS/JS, PHP, and modern hosting/deploy workflows.</p>
+              <h3>Focus</h3>
+              <p>WCAG-friendly patterns, keyboard support, reduced motion.</p>
             </article>
           </div>
         </div>
@@ -150,32 +141,23 @@
         <div class="container">
           <div class="section__head">
             <h2 id="servicesTitle">Services</h2>
-            <p>Click any service to open an accessible modal (keyboard-friendly).</p>
+            <p>Click any service to open an accessible modal (keyboard + ESC supported).</p>
           </div>
 
           <div class="grid">
             <article class="tile">
               <h3>Website Builds</h3>
-              <p>Launch-ready pages with strong UX and accessibility.</p>
-
-              <!-- Button (not a link) for modal triggers -->
-              <button
-                class="linklike"
-                type="button"
-                data-modal="service"
-                data-title="Website Builds"
-                data-content="#service1"
-              >
+              <p>Launch-ready pages with clean UX and accessibility.</p>
+              <button class="linklike" type="button" data-content="#service1">
                 Learn more<span class="sr-only"> about Website Builds</span>
               </button>
-
               <template id="service1">
                 <h2 id="modalTitle">Website Builds</h2>
                 <p>Fast, responsive builds with accessible components and clean styling.</p>
                 <ul>
-                  <li>Semantic structure + ARIA where needed</li>
-                  <li>Keyboard + reduced motion friendly</li>
-                  <li>Performance-minded assets</li>
+                  <li>Semantic structure</li>
+                  <li>Keyboard-friendly</li>
+                  <li>Performance-minded</li>
                 </ul>
               </template>
             </article>
@@ -183,19 +165,19 @@
             <article class="tile">
               <h3>Accessibility Fixes</h3>
               <p>Audit and remediation for common AA issues.</p>
-              <button class="linklike" type="button" data-modal="service" data-title="Accessibility Fixes" data-content="#service2">
+              <button class="linklike" type="button" data-content="#service2">
                 Learn more<span class="sr-only"> about Accessibility Fixes</span>
               </button>
               <template id="service2">
                 <h2 id="modalTitle">Accessibility Fixes</h2>
-                <p>Focus states, color contrast, form labels, headings, and more.</p>
+                <p>Focus styles, contrast, labels, headings, and interactive controls.</p>
               </template>
             </article>
 
             <article class="tile">
               <h3>Content Layout</h3>
               <p>Clean sections and reusable patterns.</p>
-              <button class="linklike" type="button" data-modal="service" data-title="Content Layout" data-content="#service3">
+              <button class="linklike" type="button" data-content="#service3">
                 Learn more<span class="sr-only"> about Content Layout</span>
               </button>
               <template id="service3">
@@ -207,12 +189,12 @@
         </div>
       </section>
 
-      <!-- Portfolio with Filter -->
+      <!-- Portfolio -->
       <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
         <div class="container">
           <div class="section__head">
             <h2 id="portfolioTitle">Portfolio</h2>
-            <p>Filter items. Fully keyboard accessible.</p>
+            <p>Filter items. Buttons + clear focus states.</p>
           </div>
 
           <div class="filter" role="group" aria-label="Portfolio filters" id="myBtnContainer">
@@ -225,37 +207,37 @@
           <div class="grid portfolio" id="portfolioGrid">
             <article class="tile column web show">
               <h3>Municipal Site</h3>
-              <p>Template-based, accessible layout.</p>
-              <button class="linklike" type="button" data-modal="portfolio" data-title="Municipal Site" data-content="#p1">
+              <p>Template-based accessible layout.</p>
+              <button class="linklike" type="button" data-content="#p1">
                 View details<span class="sr-only"> for Municipal Site</span>
               </button>
               <template id="p1">
                 <h2 id="modalTitle">Municipal Site</h2>
-                <p>Details and screenshots here.</p>
+                <p>Add screenshots/details here.</p>
               </template>
             </article>
 
             <article class="tile column data show">
               <h3>Dashboards</h3>
               <p>Data-driven UI patterns.</p>
-              <button class="linklike" type="button" data-modal="portfolio" data-title="Dashboards" data-content="#p2">
+              <button class="linklike" type="button" data-content="#p2">
                 View details<span class="sr-only"> for Dashboards</span>
               </button>
               <template id="p2">
                 <h2 id="modalTitle">Dashboards</h2>
-                <p>Details and screenshots here.</p>
+                <p>Add screenshots/details here.</p>
               </template>
             </article>
 
             <article class="tile column design show">
               <h3>Brand Kit</h3>
               <p>Typography + color system.</p>
-              <button class="linklike" type="button" data-modal="portfolio" data-title="Brand Kit" data-content="#p3">
+              <button class="linklike" type="button" data-content="#p3">
                 View details<span class="sr-only"> for Brand Kit</span>
               </button>
               <template id="p3">
                 <h2 id="modalTitle">Brand Kit</h2>
-                <p>Details and screenshots here.</p>
+                <p>Add screenshots/details here.</p>
               </template>
             </article>
           </div>
@@ -267,7 +249,7 @@
         <div class="container">
           <div class="section__head">
             <h2 id="newsTitle">News</h2>
-            <p>Optional section with modal details.</p>
+            <p>Optional section.</p>
           </div>
 
           <div class="grid">
@@ -275,27 +257,49 @@
               <h3>Post Title</h3>
               <p class="meta">Jan 5, 2026</p>
               <p>Short teaser text goes here.</p>
-              <button class="linklike" type="button" data-modal="news" data-title="Post Title" data-content="#n1">
+              <button class="linklike" type="button" data-content="#n1">
                 Read more<span class="sr-only"> about Post Title</span>
               </button>
               <template id="n1">
                 <h2 id="modalTitle">Post Title</h2>
-                <p>Full post content here.</p>
+                <p>Full post content goes here.</p>
               </template>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- Contact (PHP email) -->
-      <section class="section" id="contact" aria-labelledby="contactTitle">
-        <div class="container">
-          <div class="section__head">
-            <h2 id="contactTitle">Contact</h2>
-            <p>Accessible form with inline validation + server validation.</p>
+      <!-- Footer + Netlify contact form -->
+      <footer class="footer" id="footer">
+        <div class="container footer__grid">
+          <div class="footer__about">
+            <h2>Contact</h2>
+            <p class="muted">
+              Send a message — submissions go to Netlify Forms.
+            </p>
           </div>
 
-          <form class="contact" id="contactForm" method="post" action="api/contact.php" novalidate>
+          <!-- NETLIFY FORMS:
+               1) netlify attribute
+               2) form name
+               3) hidden form-name input
+               4) optional honeypot -->
+          <form
+            class="contact"
+            id="contactForm"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            novalidate
+          >
+            <input type="hidden" name="form-name" value="contact" />
+
+            <!-- honeypot -->
+            <p class="sr-only">
+              <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+            </p>
+
             <div class="formRow">
               <label for="name">Name</label>
               <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="nameErr" />
@@ -323,10 +327,8 @@
             <p class="formMsg" id="contactMsg" aria-live="polite"></p>
           </form>
         </div>
-      </section>
 
-      <footer class="footer">
-        <div class="container">
+        <div class="container footer__bottom">
           <p class="tiny">Built with semantic HTML + accessible interactions.</p>
         </div>
       </footer>

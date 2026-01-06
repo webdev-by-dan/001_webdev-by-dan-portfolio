@@ -1,11 +1,14 @@
 (function () {
   "use strict";
 
-  // Utilities
-  function qs(sel, root) { return (root || document).querySelector(sel); }
-  function qsa(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  const qs = (sel, root) => (root || document).querySelector(sel);
+  const qsa = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
 
-  // ---- Active nav link on scroll (simple + robust)
+  // Year
+  const yearEl = qs("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Active nav on scroll
   const navLinks = qsa(".nav__link");
   const sections = navLinks
     .map(a => qs(a.getAttribute("href")))
@@ -25,7 +28,7 @@
   window.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("load", setActiveLink);
 
-  // ---- Portfolio filter
+  // Portfolio filtering
   const filterWrap = qs("#myBtnContainer");
   const columns = qsa(".column");
 
@@ -42,16 +45,15 @@
     filterWrap.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-filter]");
       if (!btn) return;
-      const c = btn.getAttribute("data-filter") || "all";
 
       qsa(".filter__btn", filterWrap).forEach(b => b.classList.remove("is-active"));
       btn.classList.add("is-active");
 
-      filterSelection(c);
+      filterSelection(btn.getAttribute("data-filter") || "all");
     });
   }
 
-  // ---- Accessible Modal with focus trap + ESC close
+  // Accessible modal (focus trap + ESC)
   const modal = qs("#modal");
   const modalContent = qs("#modalContent");
   let lastFocus = null;
@@ -67,35 +69,6 @@
     ].join(","), container).filter(el => el.offsetParent !== null);
   }
 
-  function openModal(html) {
-    if (!modal || !modalContent) return;
-    lastFocus = document.activeElement;
-
-    modalContent.innerHTML = html;
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-
-    // Prevent background scroll
-    document.body.style.overflow = "hidden";
-
-    // Move focus into modal
-    const focusables = getFocusable(modal);
-    (focusables[0] || qs(".modal__dialog")).focus?.();
-
-    document.addEventListener("keydown", onModalKeydown);
-  }
-
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove("is-open");
-    modal.setAttribute("aria-hidden", "true");
-    modalContent.innerHTML = "";
-    document.body.style.overflow = "";
-
-    document.removeEventListener("keydown", onModalKeydown);
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
   function onModalKeydown(e) {
     if (!modal.classList.contains("is-open")) return;
 
@@ -105,7 +78,6 @@
       return;
     }
 
-    // Focus trap
     if (e.key === "Tab") {
       const focusables = getFocusable(modal);
       if (!focusables.length) return;
@@ -123,59 +95,73 @@
     }
   }
 
-  // Modal open triggers (buttons with data-content="#templateId")
+  function openModal(html) {
+    lastFocus = document.activeElement;
+    modalContent.innerHTML = html;
+
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+
+    const focusables = getFocusable(modal);
+    (focusables[0] || qs(".modal__dialog")).focus?.();
+
+    document.addEventListener("keydown", onModalKeydown);
+  }
+
+  function closeModal() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    modalContent.innerHTML = "";
+    document.body.style.overflow = "";
+
+    document.removeEventListener("keydown", onModalKeydown);
+    lastFocus && lastFocus.focus && lastFocus.focus();
+  }
+
   document.addEventListener("click", (e) => {
-    const openBtn = e.target.closest("button[data-modal][data-content]");
+    const openBtn = e.target.closest("button[data-content]");
     if (openBtn) {
       const tplSel = openBtn.getAttribute("data-content");
       const tpl = qs(tplSel);
-      if (tpl && tpl.content) {
-        openModal(tpl.innerHTML);
-      }
+      if (tpl && tpl.content) openModal(tpl.innerHTML);
       return;
     }
-
-    if (e.target.closest("[data-modal-close]")) {
-      closeModal();
-      return;
-    }
+    if (e.target.closest("[data-modal-close]")) closeModal();
   });
 
-  // ---- Contact form validation + fetch submit (progressive enhancement)
+  // Contact form validation (Netlify does the submission)
   const contactForm = qs("#contactForm");
   const contactMsg = qs("#contactMsg");
 
-  function setFieldError(input, msg) {
-    const errId = input.getAttribute("aria-describedby") || "";
-    // We used separate <p id="...Err">, so locate by convention:
-    const map = { name: "#nameErr", email: "#emailErr", message: "#msgErr" };
-    const errEl = qs(map[input.name]);
-    if (errEl) errEl.textContent = msg || "";
-    input.setAttribute("aria-invalid", msg ? "true" : "false");
-  }
+  const mapErr = { name: "#nameErr", email: "#emailErr", message: "#msgErr" };
 
   function isEmail(v) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
   }
 
+  function setFieldError(input, msg) {
+    const errEl = qs(mapErr[input.name]);
+    if (errEl) errEl.textContent = msg || "";
+    input.setAttribute("aria-invalid", msg ? "true" : "false");
+  }
+
   if (contactForm) {
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+    contactForm.addEventListener("submit", (e) => {
       if (contactMsg) {
         contactMsg.textContent = "";
         contactMsg.className = "formMsg";
       }
 
-      const fd = new FormData(contactForm);
-      const name = (fd.get("name") || "").toString().trim();
-      const email = (fd.get("email") || "").toString().trim();
-      const message = (fd.get("message") || "").toString().trim();
-
-      let ok = true;
-
       const nameEl = qs("#name");
       const emailEl = qs("#email");
       const msgEl = qs("#message");
+
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const message = msgEl.value.trim();
+
+      let ok = true;
 
       setFieldError(nameEl, "");
       setFieldError(emailEl, "");
@@ -187,52 +173,35 @@
       if (!message) { setFieldError(msgEl, "Please enter a message."); ok = false; }
 
       if (!ok) {
-        // Focus first invalid field (WCAG usability)
+        e.preventDefault();
         const firstInvalid = qs('[aria-invalid="true"]', contactForm);
         firstInvalid && firstInvalid.focus();
+        if (contactMsg) {
+          contactMsg.textContent = "Please fix the highlighted fields.";
+          contactMsg.classList.add("is-error");
+        }
         return;
       }
 
-      try {
-        const res = await fetch(contactForm.action, {
-          method: "POST",
-          body: fd,
-          headers: { "Accept": "application/json" }
-        });
-
-        const data = await res.json();
-        if (!res.ok || !data.ok) {
-          throw new Error(data.error || "Failed to send.");
-        }
-
-        contactForm.reset();
-        if (contactMsg) {
-          contactMsg.textContent = "Message sent. Thanks!";
-          contactMsg.classList.add("is-success");
-        }
-      } catch (err) {
-        if (contactMsg) {
-          contactMsg.textContent = "Sorry — something went wrong sending your message.";
-          contactMsg.classList.add("is-error");
-        }
+      // Allow Netlify to submit normally.
+      // Optional: show a message immediately (Netlify will redirect unless you set action)
+      if (contactMsg) {
+        contactMsg.textContent = "Sending…";
       }
     });
   }
 
-  // ---- Subscribe (email)
+  // Subscribe form (static demo)
   const subscribeForm = qs("#subscribeForm");
   const subscribeMsg = qs("#subscribeMsg");
-
   if (subscribeForm) {
-    subscribeForm.addEventListener("submit", async (e) => {
+    subscribeForm.addEventListener("submit", (e) => {
       e.preventDefault();
       subscribeMsg.textContent = "";
       subscribeMsg.className = "formMsg";
 
-      const fd = new FormData(subscribeForm);
-      const email = (fd.get("email") || "").toString().trim();
       const emailEl = qs("#subscribeEmail");
-
+      const email = emailEl.value.trim();
       emailEl.setAttribute("aria-invalid", "false");
 
       if (!email || !isEmail(email)) {
@@ -243,22 +212,9 @@
         return;
       }
 
-      try {
-        const res = await fetch("api/subscribe.php", {
-          method: "POST",
-          body: fd,
-          headers: { "Accept": "application/json" }
-        });
-        const data = await res.json();
-        if (!res.ok || !data.ok) throw new Error(data.error || "Failed.");
-
-        subscribeForm.reset();
-        subscribeMsg.textContent = "Subscribed — thank you!";
-        subscribeMsg.classList.add("is-success");
-      } catch (err) {
-        subscribeMsg.textContent = "Sorry — subscription failed. Try again later.";
-        subscribeMsg.classList.add("is-error");
-      }
+      subscribeMsg.textContent = "Static demo (no backend).";
+      subscribeMsg.classList.add("is-success");
+      subscribeForm.reset();
     });
   }
 
