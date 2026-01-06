@@ -63,6 +63,16 @@
   /* Hero text colors in LIGHT */
   --heroText: var(--text);
   --heroShadow: none;
+
+  /* =========================================================
+     WCAG BUTTON TOKENS (fix WAVE contrast)
+     - Keeps your orange background (orange2)
+     - Uses dark text on the orange (passes more reliably)
+  ========================================================= */
+  --btnBg: var(--orange2);
+  --btnHover: var(--orange3);
+  --btnText: var(--text);
+  --btnBorder: rgba(11,18,32,.25);
 }
 
 /* =========================
@@ -98,6 +108,12 @@ html[data-theme="dark"]{
 
   /* Dark hero/footer banner */
   --sky: #0b0f17;
+
+  /* Buttons in dark mode can keep white text */
+  --btnBg: var(--orange2);
+  --btnHover: var(--orange3);
+  --btnText: #ffffff;
+  --btnBorder: rgba(238,242,255,.18);
 }
 
 /* ---------- Base ---------- */
@@ -553,21 +569,39 @@ html[data-theme="dark"] .hero__overlay{
 
 /* Buttons */
 .btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
+
   padding: 14px 20px;
   border-radius: 16px;
-  border: 1px solid color-mix(in srgb, var(--link) 35%, transparent);
-  background: var(--orange2);
-  color: #fff;
-  text-decoration:none;
+
+  /* Use theme tokens instead of hardcoded white */
+  background: var(--btnBg);
+  color: var(--btnText);
+
+  border: 1px solid var(--btnBorder);
+
+  text-decoration: none;
   font-weight: 800;
-  cursor:pointer;
+  cursor: pointer;
+
+  transition: background-color 160ms ease,
+              transform 120ms ease,
+              box-shadow 160ms ease;
 }
-.btn:hover{ background: var(--orange3); }
-.btn:focus-visible{ outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.btn:hover{
+  background: var(--btnHover);
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
 
 .btn--ghost{
   background: var(--card);
