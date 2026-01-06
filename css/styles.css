@@ -584,8 +584,13 @@ html[data-theme="dark"] .hero__overlay{
     z-index: -1;
   }
 
+  .hero__sub {
+    margin-top: 2px;
+  }
+
   .hero__title {
     margin-top: 8px;
+    margin-bottom: 4px;
   }
 
   /* Text spacing */
