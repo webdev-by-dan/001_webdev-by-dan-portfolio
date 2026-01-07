@@ -676,7 +676,7 @@
 
   function scrollToWithOffset(target) {
     const navH = getNavH();
-    const y = Math.max(0, Math.round(getY(target) + navH));
+    const y = Math.max(0, Math.round(getY(target) - navH));
     window.scrollTo({ top: y, behavior: "smooth" });
   }
 
