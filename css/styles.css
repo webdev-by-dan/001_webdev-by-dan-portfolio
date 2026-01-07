@@ -1207,7 +1207,7 @@ html[data-theme="dark"] .footer{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 6px;
     width: 100%;
   }
 
@@ -1216,7 +1216,7 @@ html[data-theme="dark"] .footer{
     max-width: 520px;
 
     box-sizing: border-box;
-    padding: 12px 14px;
+    padding: 8px 14px;
 
     font-size: clamp(16px, 4.2vw, 20px);
     line-height: 1.15;

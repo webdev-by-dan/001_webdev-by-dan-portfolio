@@ -503,52 +503,53 @@
 
     // More stable height measurement while fixed vs getBoundingClientRect()
     const navH = nav.offsetHeight;
+    const bottomLine = vh - navH; // where the nav's TOP should be when it's flush to bottom
 
     // FLOW mode decisions are based on current nav position relative to viewport
     if (mode === "flow") {
-      const navRect = nav.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
 
-      // If the nav’s bottom is beyond the visible viewport, lock it to bottom
-      if (navRect.bottom > vh + navH) {
+    // ✅ If the nav is even a little ABOVE its bottom resting spot, lock it to bottom
+    // (so it never "floats up" while you're still in the hero)
+    if (navRect.top < bottomLine - EPS) {
         setMode("bottom");
         return;
-      }
+    }
 
-      // If the nav’s top hits the top edge, lock it to top
-      if (navRect.top <= 0 + EPS) {
+    // If the nav’s top hits the top edge, lock it to top
+    if (navRect.top <= 0 + EPS) {
         setMode("top");
         return;
-      }
+    }
 
-      return;
+    return;
     }
 
     const phRect = ph.getBoundingClientRect();
 
     if (mode === "bottom") {
-      // Return to flow only once placeholder is clearly above the bottom-lock line
-      const flowTopY = vh - navH;
-      if (phRect.top <= flowTopY - HYST) {
+    // Return to flow only once placeholder is clearly BELOW the bottom-lock line
+    // (hysteresis prevents flicker)
+    if (phRect.top >= bottomLine + HYST) {
         setMode("flow");
-      }
-      return;
+    }
+    return;
     }
 
     if (mode === "top") {
-      // Return to flow only once placeholder is clearly below top edge
-      if (phRect.top >= 0 + HYST) {
+    // Return to flow only once placeholder is clearly below top edge
+    if (phRect.top >= 0 + HYST) {
         setMode("flow");
         return;
-      }
-
-      // Switch to bottom only when placeholder is clearly below bottom-lock line
-      const flowTopY = vh - navH;
-      if (phRect.top > flowTopY + HYST) {
-        setMode("bottom");
-      }
-      return;
     }
-  };
+
+    // Switch to bottom only when placeholder is clearly below bottom-lock line
+    if (phRect.top > bottomLine + HYST) {
+        setMode("bottom");
+    }
+    return;
+    }
+
 
   const onScroll = () => {
     if (ticking) return;
