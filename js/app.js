@@ -516,27 +516,36 @@
 
     const phRect = ph.getBoundingClientRect();
 
-    if (mode === "bottom") {
-      const flowTopY = vh - navH;
+    // Add a small hysteresis buffer so it doesn't flicker when near the threshold
+    const HYST = 10; // px (try 8–16)
 
-      if (phRect.top <= flowTopY) {
+    if (mode === "bottom") {
+    // In bottom-locked mode, we only return to flow once the placeholder
+    // is clearly above the bottom-lock line (with hysteresis).
+    const flowTopY = vh - navH;
+
+    if (phRect.top <= flowTopY - HYST) {
         setMode("flow");
-      }
-      return;
+    }
+    return;
     }
 
     if (mode === "top") {
-      if (phRect.top >= 0 - EPS) {
+    // In top-locked mode, we only return to flow once the placeholder
+    // is clearly below the top edge (with hysteresis).
+    if (phRect.top >= 0 + HYST) {
         setMode("flow");
         return;
-      }
-
-      const flowTopY = vh - navH;
-      if (phRect.top > flowTopY + EPS) {
-        setMode("bottom");
-      }
-      return;
     }
+
+    // And only switch to bottom when it's clearly below the bottom-lock line
+    const flowTopY = vh - navH;
+    if (phRect.top > flowTopY + HYST) {
+        setMode("bottom");
+    }
+    return;
+    }
+
   };
 
   const onScroll = () => {
