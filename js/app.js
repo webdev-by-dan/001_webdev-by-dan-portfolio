@@ -509,7 +509,7 @@
       const navRect = nav.getBoundingClientRect();
 
       // If the nav’s bottom is beyond the visible viewport, lock it to bottom
-      if (navRect.bottom > vh + navH + 10) {
+      if (navRect.bottom > vh) {
         setMode("bottom");
         return;
       }
@@ -573,4 +573,77 @@
   }
 
   requestAnimationFrame(update);
+})();
+
+/* =========================================================
+   MOBILE MENU: close first, then smooth-scroll to anchor
+   - Only runs on mobile + only when menu is open
+   - Captures clicks on #hash links inside the sidebar menu
+========================================================= */
+(() => {
+  const mq = window.matchMedia("(max-width: 900px)");
+  const ANIM_MS = 350; // must match your menu close transition duration
+  const EPS_FOCUS_MS = 50;
+
+  const menuRoot = document.querySelector("aside.left, .left");
+  if (!menuRoot) return;
+
+  const isMenuOpen = () => document.body.classList.contains("menu-open");
+
+  const closeMenu = () => {
+    // Mirror your existing close behavior
+    document.body.classList.remove("menu-open");
+    document.body.style.overflow = "";
+    document.documentElement.removeAttribute("data-menu-open");
+
+    const menuBtn = document.getElementById("mobileMenuBtn");
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.setAttribute("aria-label", "Open menu");
+      menuBtn.classList.remove("is-open");
+    }
+
+    // After transition finishes, unmount
+    window.setTimeout(() => {
+      document.body.classList.remove("menu-visible");
+    }, ANIM_MS);
+  };
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!mq.matches) return;
+      if (!isMenuOpen()) return;
+
+      const link = e.target.closest("a[href^='#']");
+      if (!link) return;
+
+      // only handle links that are inside the menu
+      if (!menuRoot.contains(link)) return;
+
+      const hash = link.getAttribute("href") || "";
+      const id = hash.slice(1);
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      e.preventDefault();
+
+      // 1) close menu first
+      closeMenu();
+
+      // 2) after close animation, do the smooth scroll
+      window.setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // Optional: move focus for a11y if you want
+        window.setTimeout(() => {
+          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+        }, EPS_FOCUS_MS);
+      }, ANIM_MS + 10);
+    },
+    true
+  );
 })();
