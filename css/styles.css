@@ -343,6 +343,12 @@ html[data-theme="dark"] .themeToggle:hover{ background-color: var(--surface); }
   --sectionTint: var(--tint-red);
   --sectionOutline: var(--outline-red);
 }
+@media (max-width: 700px) {
+  :root main .section:nth-of-type(1){
+  --sectionTint: var(--tint-red);
+  --sectionOutline: none;
+}
+}
 :root main .section:nth-of-type(2){
   --sectionTint: var(--tint-green);
   --sectionOutline: var(--outline-green);
@@ -830,7 +836,7 @@ html:not([data-theme="dark"]) .process{
 }
 
 /* Mobile: 1 column + centered actions */
-@media (max-width: 780px){
+@media (max-width: 700px){
   #portfolio .sectionHead,
   #portfolio .container{
     text-align: center;
@@ -1073,9 +1079,9 @@ html[data-theme="dark"] .footer{
 }
 
 /* #########################################################
-   ##### MOBILE: HERO + NAV WRAP (<= 780px)
+   ##### MOBILE: HERO + NAV WRAP (<= 700px)
 ######################################################### */
-@media (max-width: 780px){
+@media (max-width: 700px){
   :root{
     --mobilebarH: 72px;
     --heroCream: #fbf2e8;
@@ -1428,7 +1434,7 @@ html[data-theme="dark"] .footer{
 }
 
 /* ===== FULLSCREEN MOBILE MENU (uses existing left sidebar markup) ===== */
-@media (max-width: 780px) {
+@media (max-width: 700px) {
   /* Default: hide sidebar on mobile */
   .left { display: none; }
 
@@ -1578,7 +1584,7 @@ html[data-theme="dark"] .footer{
   }
 }
 
-@media (max-width: 780px) {
+@media (max-width: 700px) {
   body.menu-open .menuClose {
     position: fixed;
     right: 18px;
@@ -1653,14 +1659,14 @@ html[data-theme="dark"] .footer{
 }
 
 /* Show it only on mobile */
-@media (max-width: 780px){
+@media (max-width: 700px){
   body.menu-visible .menuClose,
   body.menu-open .menuClose{
     display: flex;
   }
 }
 
-@media (max-width: 780px){
+@media (max-width: 700px){
   /* Put theme toggle + icons in one centered row */
   body.menu-visible .sideFooter{
     display: flex;
@@ -1696,7 +1702,7 @@ html[data-theme="dark"] .footer{
   padding: 0;
 }
 
-@media (max-width: 780px){
+@media (max-width: 700px){
   .rating {
     text-align: center;
     font-size: 1.8rem !important;
@@ -1706,7 +1712,7 @@ html[data-theme="dark"] .footer{
 /* #########################################################
    ##### HERO (TABLET): centered + soft white banner behind text
 ######################################################### */
-@media (max-width: 1100px) and (min-width: 900px){
+@media (max-width: 1100px) and (min-width: 700px){
 
   /* Center the whole hero content block */
   .hero__content{
@@ -1744,7 +1750,7 @@ html[data-theme="dark"] .footer{
   }
 }
 
-@media (max-width: 1100px) and (min-width: 900px){
+@media (max-width: 1100px) and (min-width: 700px){
   html[data-theme="dark"] .hero__mid{
     background: rgba(15, 23, 42, 0.72);  /* dark translucent */
     border-color: rgba(238,242,255,0.14);
@@ -1753,5 +1759,179 @@ html[data-theme="dark"] .footer{
   html[data-theme="dark"] .hero__title,
   html[data-theme="dark"] .hero__sub{
     color: #fff;
+  }
+}
+
+@media (max-width: 700px){
+  .container.hero__content{
+    position: relative;
+    z-index: 2;
+  }
+
+.container.hero__content::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--heroCream);
+
+  /* top-only rounding */
+  border-top-left-radius: 360px;
+  border-top-right-radius: 360px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transform: translateY(60px);
+
+  z-index: -1;
+}
+
+}
+
+
+
+
+
+/* =========================================================
+   MOBILE NAV + HERO — REMOVE ALL BORDERS / OUTLINES
+   Safe to paste at END of styles.css
+========================================================= */
+@media (max-width: 700px){
+
+  /* ===============================
+     MOBILE NAV BAR
+  =============================== */
+  .mobilebar{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobilebar *,
+  .mobilebar *::before,
+  .mobilebar *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar button:focus,
+  .mobilebar button:focus-visible,
+  .mobilebar a:focus,
+  .mobilebar a:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar__toggle,
+  .mobilebar__toggleLines{
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===============================
+     HERO CONTENT (NO EDGES)
+  =============================== */
+  .hero__content{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  .hero__content::before,
+  .hero__content::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .hero__content *,
+  .hero__content *::before,
+  .hero__content *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }/* =========================================================
+   MOBILE NAV + HERO — REMOVE ALL BORDERS / OUTLINES
+   Safe to paste at END of styles.css
+========================================================= */
+@media (max-width: 700px){
+
+  /* ===============================
+     MOBILE NAV BAR
+  =============================== */
+  .mobilebar{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobilebar *,
+  .mobilebar *::before,
+  .mobilebar *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar button:focus,
+  .mobilebar button:focus-visible,
+  .mobilebar a:focus,
+  .mobilebar a:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar__toggle,
+  .mobilebar__toggleLines{
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===============================
+     HERO CONTENT (NO EDGES)
+  =============================== */
+  .hero__content{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  .hero__content::before,
+  .hero__content::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .hero__content *,
+  .hero__content *::before,
+  .hero__content *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Kill focus rings inside hero on mobile */
+  .hero__content a:focus,
+  .hero__content a:focus-visible,
+  .hero__content button:focus,
+  .hero__content button:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+  /* Kill focus rings inside hero on mobile */
+  .hero__content a:focus,
+  .hero__content a:focus-visible,
+  .hero__content button:focus,
+  .hero__content button:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
   }
 }
