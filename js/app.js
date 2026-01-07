@@ -15,6 +15,8 @@
    - Measure nav height with offsetHeight (more stable than getBoundingClientRect while fixed)
    - Add HYST buffer in both directions to reduce threshold flicker
    - Listen to visualViewport resize/scroll (mobile URL bar changes)
+   - ✅ NEW: On initial load (hero view), if the navbar’s “natural spot” is below the viewport,
+           force bottom-sticky immediately (no need to scroll first).
 ========================================================= */
 
 /* =========================================================
@@ -446,10 +448,11 @@
    BOTTOM -> FLOW -> TOP STICKY NAV (WITH HYSTERESIS)
    Fixes:
    - stable VH (visualViewport / clientHeight)
-   - overscroll guard (y<=0) to prevent “dip” on drag
+   - overscroll guard (y<0) to prevent “dip” on drag
    - stable nav height (offsetHeight)
    - hysteresis buffer
    - listen to visualViewport resize/scroll
+   - ✅ NEW: initial bottom-lock when nav’s natural position is below viewport
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
@@ -485,6 +488,21 @@
     nav.classList.toggle("is-lockedTop", mode === "top");
   };
 
+  // NEW: force initial bottom sticky if nav’s natural spot is below the viewport
+  function initBottomLockIfNeeded() {
+    const vh = getVH();
+    const navRect = nav.getBoundingClientRect();
+    const EPS = 1;
+
+    // If the navbar’s bottom is below the visible viewport on load,
+    // lock it to bottom immediately.
+    if (navRect.bottom > vh + EPS) {
+      setMode("bottom");
+    } else {
+      setMode("flow");
+    }
+  }
+
   const update = () => {
     ticking = false;
 
@@ -492,29 +510,23 @@
     const y = window.scrollY || window.pageYOffset || 0;
 
     const EPS = 1;
-    const HYST = 0; // try 8–16
+    const HYST = 0; // try 8–16 if you still see flicker
 
-    // ✅ iOS rubber-band / drag-bounce guard:
-    // when you’re “pulling” at the top, avoid locking/unlocking calculations entirely.
-    if (y <= 0) {
-      setMode("flow");
-      return;
-    }
+    // Rubber-band guard (only when you’re *past* the top)
+    if (y < 0) return;
 
-    // More stable height measurement while fixed vs getBoundingClientRect()
-    const navH = nav.offsetHeight;
+    const navH = nav.offsetHeight; // stable
 
-    // FLOW mode decisions are based on current nav position relative to viewport
     if (mode === "flow") {
       const navRect = nav.getBoundingClientRect();
 
-      // If the nav’s bottom is beyond the visible viewport, lock it to bottom
-      if (navRect.bottom > vh) {
+      // ✅ For the hero case: if nav’s natural bottom is even slightly below viewport,
+      // lock it to bottom.
+      if (navRect.bottom > vh + EPS) {
         setMode("bottom");
         return;
       }
 
-      // If the nav’s top hits the top edge, lock it to top
       if (navRect.top <= 0 + EPS) {
         setMode("top");
         return;
@@ -528,9 +540,7 @@
     if (mode === "bottom") {
       // Return to flow only once placeholder is clearly above the bottom-lock line
       const flowTopY = vh - navH;
-      if (phRect.top <= flowTopY - HYST) {
-        setMode("flow");
-      }
+      if (phRect.top <= flowTopY - HYST) setMode("flow");
       return;
     }
 
@@ -543,9 +553,7 @@
 
       // Switch to bottom only when placeholder is clearly below bottom-lock line
       const flowTopY = vh - navH;
-      if (phRect.top > flowTopY + HYST) {
-        setMode("bottom");
-      }
+      if (phRect.top > flowTopY + HYST) setMode("bottom");
       return;
     }
   };
@@ -566,19 +574,28 @@
     { passive: true }
   );
 
-  // ✅ Important on mobile: URL bar changes sometimes don’t fire normal resize
   if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", onScroll, { passive: true });
     window.visualViewport.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  requestAnimationFrame(update);
+  // ✅ Run init after layout/paint so measurements are correct on mobile
+  window.addEventListener("load", () => {
+    ph.style.height = `${nav.offsetHeight}px`;
+    initBottomLockIfNeeded();
+    onScroll();
+  });
+
+  // Also run once ASAP (then load will correct it if images/fonts shift layout)
+  requestAnimationFrame(() => {
+    ph.style.height = `${nav.offsetHeight}px`;
+    initBottomLockIfNeeded();
+    update();
+  });
 })();
 
 /* =========================================================
    MOBILE MENU: close first, then smooth-scroll to anchor
-   - Only runs on mobile + only when menu is open
-   - Captures clicks on #hash links inside the sidebar menu
 ========================================================= */
 (() => {
   const mq = window.matchMedia("(max-width: 900px)");
@@ -591,7 +608,6 @@
   const isMenuOpen = () => document.body.classList.contains("menu-open");
 
   const closeMenu = () => {
-    // Mirror your existing close behavior
     document.body.classList.remove("menu-open");
     document.body.style.overflow = "";
     document.documentElement.removeAttribute("data-menu-open");
@@ -603,7 +619,6 @@
       menuBtn.classList.remove("is-open");
     }
 
-    // After transition finishes, unmount
     window.setTimeout(() => {
       document.body.classList.remove("menu-visible");
     }, ANIM_MS);
@@ -617,8 +632,6 @@
 
       const link = e.target.closest("a[href^='#']");
       if (!link) return;
-
-      // only handle links that are inside the menu
       if (!menuRoot.contains(link)) return;
 
       const hash = link.getAttribute("href") || "";
@@ -630,14 +643,11 @@
 
       e.preventDefault();
 
-      // 1) close menu first
       closeMenu();
 
-      // 2) after close animation, do the smooth scroll
       window.setTimeout(() => {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        // Optional: move focus for a11y if you want
         window.setTimeout(() => {
           if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
           target.focus({ preventScroll: true });
