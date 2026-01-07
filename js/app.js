@@ -657,3 +657,60 @@
     true
   );
 })();
+
+/* =========================================================
+   MOBILE (< = 780px): anchor clicks scroll to section
+   but offset by the mobilebar height (so headings aren’t hidden)
+   - Works for clicks in BOTH the mobilebar and the sidebar nav
+========================================================= */
+(() => {
+  const mq = window.matchMedia("(max-width: 780px)");
+  const nav = document.querySelector(".mobileHeroWrap .mobilebar");
+
+  const getNavH = () => (nav ? nav.offsetHeight : 0);
+
+  const getY = (el) => {
+    const r = el.getBoundingClientRect();
+    return (window.pageYOffset || window.scrollY || 0) + r.top;
+  };
+
+  function scrollToWithOffset(target) {
+    const navH = getNavH();
+    const y = Math.max(0, Math.round(getY(target) - navH));
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!mq.matches) return;
+
+      const link = e.target.closest("a[href^='#']");
+      if (!link) return;
+
+      const href = link.getAttribute("href") || "";
+      const id = href.slice(1);
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      // Let other handlers (like your “close menu then scroll” handler)
+      // run first if they want to cancel this.
+      if (e.defaultPrevented) return;
+
+      e.preventDefault();
+
+      // If you have a sticky mobilebar, subtract its height
+      scrollToWithOffset(target);
+
+      // Optional a11y: move focus without jumping again
+      setTimeout(() => {
+        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+      }, 450);
+    },
+    true
+  );
+})();
+
