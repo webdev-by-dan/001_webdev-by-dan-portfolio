@@ -3151,3 +3151,91 @@ input, select, textarea {
   position: relative;
   z-index: 0;
 }
+
+/* =========================================================
+   ✅ CONTRAST FIX OVERRIDES (paste at END of CSS)
+   Goal: remove low-contrast flags in the provided stylesheet.
+========================================================= */
+
+/* Base text + headings (your #6b7770 was ~4.25:1 on #f2f5f3) */
+body,
+input, textarea, select {
+  color: #44524c; /* darker, still soft */
+}
+
+h1, h2, h3, h4, h5, h6,
+b, strong {
+  color: #2f3a35; /* headings/strong text */
+}
+
+/* Section header kicker text (was #b8c7d9 on white) */
+header > p,
+#header .logo p {
+  color: #475569; /* readable “muted” */
+}
+
+/* Meta text (was #a1aaa5 too light) */
+ul.meta {
+  color: #5b6762;
+}
+
+/* Copyright pill (was #8b9790 on #e7eae8 too light) */
+#copyright {
+  color: #44524c;
+}
+
+/* Table header (was white text on light gray header bg) */
+table.default thead {
+  background: #e7eae8;
+  color: #2f3a35;
+}
+table.default thead th {
+  color: #2f3a35;
+}
+
+/* Buttons: keep primary, fix ALT (light bg + white text was low contrast) */
+input[type="button"].alt,
+input[type="submit"].alt,
+input[type="reset"].alt,
+button.alt,
+.button.alt {
+  background: #c1cac5;
+  color: #1f2a44; /* dark text on light button */
+}
+input[type="button"].alt:hover,
+input[type="submit"].alt:hover,
+input[type="reset"].alt:hover,
+button.alt:hover,
+.button.alt:hover {
+  background: #ccd5d0;
+  color: #1f2a44;
+}
+
+/* Social/contact icon buttons:
+   default was light blue bg + near-white icon => low contrast */
+ul.contact li a {
+  background: #2b6cb0; /* darker base so icon is readable */
+}
+ul.contact li a:before {
+  color: #ffffff;
+}
+
+/* Nav panel links (rgba(255,255,255,0.5) can trip contrast checks) */
+#navPanel .link {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Banner subtitle text (was #7c8aa3 on dark overlay = low) */
+#banner .content p {
+  color: #c7d3e6;
+}
+
+/* Banner ghost button: ensure text + border are visible */
+#banner .content .button {
+  color: #ffffff !important;
+  border-color: rgba(199, 211, 230, 0.85);
+}
+#banner .content .button:hover {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.92);
+}
