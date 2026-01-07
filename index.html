@@ -22,9 +22,6 @@
 </head>
 
 <body>
-  <!-- ######## SKIP LINK (A11Y) ######## -->
-  <a class="skip-link" href="#main">Skip to main content</a>
-
   <!-- ######## MODAL (A11Y) ######## -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal__backdrop" data-modal-close></div>
@@ -160,7 +157,7 @@
           class="section hero"
           id="home"
           aria-labelledby="homeTitle"
-          style="--bgimg: url('../img/hero/Hero_04.png');"
+          style="background-color: var(--sky); --bgimg: url('../img/hero/Hero_04.png');"
         >
           <!-- # Background image -->
           <div class="hero__bg" aria-hidden="true"></div>
@@ -249,6 +246,7 @@
           </div>
         </header>
       </div>
+      </section>
 
       <!-- ######## ABOUT ######## -->
       <section class="section" id="about" aria-labelledby="aboutTitle">
@@ -264,6 +262,7 @@
             </div>
 
             <div class="aboutText">
+              <h2><span class="accent">Summary</span></h2>
               <p>
                 Hi, I’m Dan — a web developer with 5+ years of experience helping small businesses succeed online.
                 I blend technical skill with creative insight to build standout websites that reflect your brand.
@@ -285,6 +284,7 @@
             </div>
           </div>
 
+          <h2 style="text-align: center; margin:auto; margin-top: 36px;"><span class="accent">Some Fun Facts</span></h2>
           <div class="facts" aria-label="Quick facts">
             <article class="factCard">
               <h3>🌱 Nature Lover</h3>
@@ -409,8 +409,8 @@
       <section class="section" id="pricing" aria-labelledby="pricingTitle">
         <div class="container">
           <header class="sectionHead sectionHead--center">
-            <p class="kicker">Choose your plan</p>
             <h2 id="pricingTitle">Price Table</h2>
+            <p>Websites are customizable and prices depend on scope of project.</p>
           </header>
 
           <div class="pricingGrid">
@@ -446,34 +446,51 @@
       </section>
 
       <!-- ######## PROCESS ######## -->
-      <section class="section process" id="process" aria-labelledby="processTitle">
-        <div class="container">
-          <div class="processGrid">
-            <div>
-              <header class="sectionHead">
-                <p class="kicker">Take a look at</p>
-                <h2 id="processTitle">The Process</h2>
-              </header>
+<section class="section process" id="process" aria-labelledby="processTitle">
+  <div class="container">
+    <div class="processGrid">
+      <div>
+        <header class="sectionHead">
+          <p class="kicker" style="font-size: 1.05rem;">
+            Take a look at
+          </p>
+          <h2 id="processTitle" style="font-size: clamp(30px, 3vw, 38px);">
+            The Process
+          </h2>
+        </header>
 
-              <p>
-                Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
-                process—from our first conversation to the final launch.
-              </p>
+        <p style="font-size: 1.15rem; line-height: 1.7; max-width: 52ch;">
+          Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
+          process—from our first conversation to the final launch.
+        </p>
 
-              <ol class="steps">
-                <li><strong>Initial Meetup &amp; Planning</strong> — 20%</li>
-                <li><strong>Website Design &amp; Feedback</strong> — 40%</li>
-                <li><strong>Web Development</strong> — 75%</li>
-                <li><strong>Final Feedback &amp; Launch</strong> — 100%</li>
-              </ol>
-            </div>
+        <ol class="steps" style="font-size: 1.1rem; line-height: 1.8;">
+          <li>
+            <strong style="font-size: 1.15rem;">Initial Meetup &amp; Planning</strong> — 20%
+          </li>
+          <li>
+            <strong style="font-size: 1.15rem;">Website Design &amp; Feedback</strong> — 40%
+          </li>
+          <li>
+            <strong style="font-size: 1.15rem;">Web Development</strong> — 75%
+          </li>
+          <li>
+            <strong style="font-size: 1.15rem;">Final Feedback &amp; Launch</strong> — 100%
+          </li>
+        </ol>
+      </div>
 
-            <div class="processMedia">
-              <img src="img/skills/TheProcess.png" alt="Web development process illustration" loading="lazy" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <div class="processMedia">
+        <img
+          src="img/skills/TheProcess.png"
+          alt="Web development process illustration"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <!-- ######## PORTFOLIO ######## -->
       <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
@@ -519,12 +536,13 @@
           </header>
 
           <div class="testimonialCard">
-            <div class="testimonialMedia">
+            <div class="testimonialMedia style="margin-left: 24px;">
               <img src="img/testimonials/Testimonials.png" alt="" loading="lazy" />
             </div>
 
-            <blockquote class="quote">
-              <p>“Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened…”</p>
+            <blockquote class="quote" style="margin-left: 32px;">
+              <p class="rating">⭐⭐⭐⭐⭐</p>
+              <p style="font-size: 1.4em;">'Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened…'</p>
               <footer>
                 <strong>Dylan Koval</strong><br />
                 <span class="muted">Technical Writer</span>
