@@ -1400,22 +1400,3 @@ html[data-theme="dark"] .footer{
   }
 }
 
-@media (max-width: 780px){
-  body.menu-open{
-    scroll-behavior: auto;
-  }
-  body.menu-open html{
-    scroll-behavior: auto;
-  }
-}
-
-/* More reliable (some browsers only respect this on html) */
-@media (max-width: 780px){
-  body.menu-open{
-    scroll-behavior: auto;
-  }
-  html[data-menu-open="true"]{
-    scroll-behavior: auto;
-  }
-}
-

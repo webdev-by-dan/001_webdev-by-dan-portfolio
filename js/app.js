@@ -492,7 +492,7 @@
     const y = window.scrollY || window.pageYOffset || 0;
 
     const EPS = 1;
-    const HYST = 12; // try 8–16
+    const HYST = 0; // try 8–16
 
     // ✅ iOS rubber-band / drag-bounce guard:
     // when you’re “pulling” at the top, avoid locking/unlocking calculations entirely.
@@ -509,7 +509,7 @@
       const navRect = nav.getBoundingClientRect();
 
       // If the nav’s bottom is beyond the visible viewport, lock it to bottom
-      if (navRect.bottom > vh + EPS) {
+      if (navRect.bottom > vh + navH) {
         setMode("bottom");
         return;
       }
