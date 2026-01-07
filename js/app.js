@@ -592,6 +592,105 @@
     requestAnimationFrame(update);
   };
 
+  (() => {
+  const nav = document.querySelector(".mobileHeroWrap .mobilebar");
+  if (!nav) return;
+
+  // NEW: when this section becomes visible, disable sticky immediately
+  const stopEl = document.querySelector("#about") || document.querySelector("main .section:not(#home)");
+
+  const ph = document.createElement("div");
+  ph.className = "mobilebar-placeholder";
+  ph.style.height = `${nav.offsetHeight}px`;
+  ph.style.display = "none";
+  nav.parentNode.insertBefore(ph, nav);
+
+  let mode = "flow";
+  let ticking = false;
+
+  const setMode = (next) => {
+    if (next === mode) return;
+    mode = next;
+
+    const fixed = mode === "bottom" || mode === "top";
+    ph.style.display = fixed ? "" : "none";
+
+    nav.classList.toggle("is-lockedBottom", mode === "bottom");
+    nav.classList.toggle("is-lockedTop", mode === "top");
+  };
+
+  const update = () => {
+    ticking = false;
+
+    const vh = window.innerHeight;
+    const EPS = 1;
+
+    // ✅ NEW: if the next section is visible at all, force non-sticky
+    if (stopEl) {
+      const stopRect = stopEl.getBoundingClientRect();
+
+      // “shown on the screen” = its top is within the viewport
+      if (stopRect.top < vh - EPS) {
+        setMode("flow");          // remove fixed bottom/top immediately
+        return;                   // and do not re-apply sticky
+      }
+    }
+
+    const navH = nav.getBoundingClientRect().height;
+
+    if (mode === "flow") {
+      const navRect = nav.getBoundingClientRect();
+
+      if (navRect.bottom > vh + EPS) {
+        setMode("bottom");
+        return;
+      }
+      if (navRect.top <= 0 + EPS) {
+        setMode("top");
+        return;
+      }
+      return;
+    }
+
+    const phRect = ph.getBoundingClientRect();
+
+    if (mode === "bottom") {
+      const flowTopY = vh - navH;
+      if (phRect.top <= flowTopY + EPS) setMode("flow");
+      return;
+    }
+
+    if (mode === "top") {
+      if (phRect.top >= 0 - EPS) {
+        setMode("flow");
+        return;
+      }
+      const flowTopY = vh - navH;
+      if (phRect.top > flowTopY + EPS) setMode("bottom");
+      return;
+    }
+  };
+
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener(
+    "resize",
+    () => {
+      ph.style.height = `${nav.offsetHeight}px`;
+      onScroll();
+    },
+    { passive: true }
+  );
+
+  requestAnimationFrame(update);
+})();
+
+
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener(
     "resize",
