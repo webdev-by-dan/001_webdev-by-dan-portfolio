@@ -509,7 +509,7 @@
       const navRect = nav.getBoundingClientRect();
 
       // If the nav’s bottom is beyond the visible viewport, lock it to bottom
-      if (navRect.bottom > vh) {
+      if (navRect.bottom > vh + navH + 10) {
         setMode("bottom");
         return;
       }
