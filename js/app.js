@@ -517,7 +517,7 @@
     const phRect = ph.getBoundingClientRect();
 
     // Add a small hysteresis buffer so it doesn't flicker when near the threshold
-    const HYST = 10; // px (try 8–16)
+    const HYST = 0; // px (try 8–16)
 
     if (mode === "bottom") {
     // In bottom-locked mode, we only return to flow once the placeholder
