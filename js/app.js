@@ -1,9 +1,17 @@
 /* =========================================================
+   app.js
+   - Theme toggle + image swap
+   - Site interactions
+   - Mobile fullscreen menu (ONLY closes via X button)
+   - Active nav highlighting
+   - Portfolio filter
+   - Accessible modal
+   - Contact form validation
+   - Mobile sticky bar (bottom/flow/top)
+========================================================= */
+
+/* =========================================================
    THEME TOGGLE + IMAGE SWAP (robust click handling)
-   - toggles html[data-theme]="light|dark"
-   - persists to localStorage("theme")
-   - swaps <img data-src-light data-src-dark> and
-     <source data-srcset-light data-srcset-dark>
 ========================================================= */
 (function () {
   const STORAGE_KEY = "theme"; // "light" | "dark"
@@ -11,6 +19,15 @@
 
   const toggles = () =>
     Array.from(document.querySelectorAll("[data-theme-toggle]"));
+
+    function withThemeTransition() {
+    // Avoid stacking timers
+    root.classList.add("theme-transition");
+    window.clearTimeout(withThemeTransition._t);
+    withThemeTransition._t = window.setTimeout(() => {
+        root.classList.remove("theme-transition");
+    }, 450);
+    }
 
   function getPreferredTheme() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -93,11 +110,19 @@
   }
 
   function setTheme(theme) {
-    root.setAttribute("data-theme", theme);
+    root.classList.add("theme-transition"); // 1️⃣ enable transitions
+    root.setAttribute("data-theme", theme); // 2️⃣ change theme
     localStorage.setItem(STORAGE_KEY, theme);
     syncButtons(theme);
     swapThemeAssets(theme);
-  }
+
+    clearTimeout(setTheme._t);
+    setTheme._t = setTimeout(() => {
+        root.classList.remove("theme-transition"); // 3️⃣ cleanup
+    }, 250);
+    }
+
+
 
   // Init
   setTheme(getPreferredTheme());
@@ -131,12 +156,6 @@
 
 /* =========================================================
    SITE INTERACTIONS (NEAT)
-   - year
-   - fullscreen mobile menu (X works + starts closed + overlay/Esc + focus trap)
-   - active nav highlighting
-   - portfolio filter
-   - accessible modal
-   - contact form validation
 ========================================================= */
 (function () {
   "use strict";
@@ -149,121 +168,101 @@
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   /* =========================================================
-     Fullscreen Mobile Menu (desktop-like vertical nav)
-     Requires:
+     MOBILE FULLSCREEN MENU (re-uses EXISTING desktop sidebar)
+     Requirements (you already have most):
      - button#mobileMenuBtn
-     - nav#mobileMenu (use [hidden] to hide/show)
-     - close button inside menu: [data-menu-close]
-     Hamburger->X animation hook:
-     - toggles .is-open on #mobileMenuBtn
+     - Add an X button inside <div class="left__inner">:
+         <button class="menuClose" type="button" data-menu-close aria-label="Close menu">×</button>
+
+     Behavior:
+     - Starts CLOSED on mobile
+     - Opens ONLY via hamburger
+     - Closes ONLY via X button (NOT Esc, NOT outside click, NOT link click)
+     - Locks background scroll while open
+     - Adds body.menu-open class for your CSS to render fullscreen
+     - Toggles .is-open on #mobileMenuBtn for hamburger->X animation
   ========================================================= */
-  const menuBtn = qs("#mobileMenuBtn");
-  const menu = qs("#mobileMenu");
+    /* ===== Mobile fullscreen menu (animated) ===== */
+    const menuBtn = qs("#mobileMenuBtn");
+    const closeBtn = qs("[data-menu-close]");
+    const mq = window.matchMedia("(max-width: 900px)");
+    const ANIM_MS = 350;
 
-  if (menuBtn && menu) {
-    const panel = qs(".mobileMenu__panel", menu); // optional but recommended
-    const closeBtn = qs("[data-menu-close]", menu); // optional but recommended
-    let lastFocus = null;
-
-    const focusableSelector = [
-      "a[href]",
-      "button:not([disabled])",
-      "input:not([disabled])",
-      "textarea:not([disabled])",
-      "select:not([disabled])",
-      "[tabindex]:not([tabindex='-1'])",
-    ].join(",");
-
-    const focusables = () =>
-      qsa(focusableSelector, menu).filter((el) => el.offsetParent !== null);
-
-    const isOpen = () => menuBtn.getAttribute("aria-expanded") === "true";
-
-    const setOpen = (open) => {
-      menuBtn.setAttribute("aria-expanded", String(open));
-      menuBtn.classList.toggle("is-open", open); // for hamburger->X CSS
-      menu.hidden = !open;
-
-      if (open) {
-        lastFocus = document.activeElement;
-        document.body.style.overflow = "hidden";
-
-        const first =
-          qs(".navlink", menu) || closeBtn || focusables()[0] || menuBtn;
-        first && first.focus && first.focus();
-
-        document.addEventListener("keydown", onMenuKeydown);
-      } else {
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", onMenuKeydown);
-        (lastFocus && lastFocus.focus && lastFocus.focus()) || menuBtn.focus();
-      }
-    };
-
-    const onMenuKeydown = (e) => {
-      if (menu.hidden) return;
-
-      if (e.key === "Escape") {
-        e.preventDefault();
-        setOpen(false);
-        return;
-      }
-
-      // Focus trap
-      if (e.key === "Tab") {
-        const f = focusables();
-        if (!f.length) return;
-
-        const first = f[0];
-        const last = f[f.length - 1];
-
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-
-    // Ensure CLOSED on load (prevents “starts open”)
-    setOpen(false);
-
-    // Toggle open/close
-    menuBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      setOpen(!isOpen());
-    });
-
-    // Close button in corner (X)
-    if (closeBtn) {
-      closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        setOpen(false);
-      });
+    function isMenuOpen() {
+    return document.body.classList.contains("menu-open");
     }
 
-    // Click behavior inside menu:
-    // - close on nav link click
-    // - close on overlay click (outside the panel)
-    menu.addEventListener("click", (e) => {
-      const a = e.target.closest("a.navlink");
-      if (a) {
-        setOpen(false);
-        return;
-      }
+    function openMenu() {
+    if (!mq.matches) return;
 
-      // overlay click closes (only if panel exists)
-      if (panel && !panel.contains(e.target)) {
-        setOpen(false);
-        return;
-      }
+    // Mount + start closed position (CSS: translateX(-100%))
+    document.body.classList.add("menu-visible");
+
+    // Next frame -> slide in (CSS transition to translateX(0))
+    requestAnimationFrame(() => {
+        document.body.classList.add("menu-open");
     });
-  }
 
-  /* ===== Active nav highlighting ===== */
-  const navLinks = qsa(".navlink, #mobileMenu .navlink");
+    document.body.style.overflow = "hidden";
+    if (menuBtn) {
+        menuBtn.setAttribute("aria-expanded", "true");
+        menuBtn.setAttribute("aria-label", "Menu open");
+        // (optional) remove animation class entirely if you don't want hamburger->X:
+        menuBtn.classList.remove("is-open");
+    }
+    }
+
+    function closeMenu() {
+    // Slide out
+    document.body.classList.remove("menu-open");
+    document.body.style.overflow = "";
+
+    if (menuBtn) {
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
+        menuBtn.classList.remove("is-open");
+    }
+
+    // After transition finishes, unmount
+    window.setTimeout(() => {
+        document.body.classList.remove("menu-visible");
+    }, ANIM_MS);
+    }
+
+    if (menuBtn) {
+    // Start closed
+    document.body.classList.remove("menu-open", "menu-visible");
+    document.body.style.overflow = "";
+    menuBtn.setAttribute("aria-expanded", "false");
+    menuBtn.setAttribute("aria-label", "Open menu");
+    menuBtn.classList.remove("is-open");
+
+    // Click hamburger: OPEN only (does not close)
+    menuBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!isMenuOpen()) openMenu();
+    });
+    }
+
+    // Close ONLY via X
+    if (closeBtn) {
+    closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeMenu();
+    });
+    }
+
+    // If resized to desktop, ensure closed
+    mq.addEventListener("change", () => {
+    closeMenu();
+    });
+
+
+  /* =========================================================
+     ACTIVE NAV HIGHLIGHTING
+     (Keeps working for both desktop sidebar and the fullscreen mobile state)
+  ========================================================= */
+  const navLinks = qsa(".navlink, nav[aria-label='Primary'] .navlink");
   const sections = qsa("main .section, footer").filter((el) => el.id);
 
   function setActiveLink() {
@@ -302,7 +301,9 @@
       const b = e.target.closest("button[data-filter]");
       if (!b) return;
 
-      qsa(".filterBtn", filterWrap).forEach((x) => x.classList.remove("is-active"));
+      qsa(".filterBtn", filterWrap).forEach((x) =>
+        x.classList.remove("is-active")
+      );
       b.classList.add("is-active");
       filterSelection(b.getAttribute("data-filter") || "all");
     });
@@ -464,13 +465,6 @@
 
 /* =========================================================
    BOTTOM -> FLOW -> TOP STICKY NAV (WITH HYSTERESIS)
-   Your rules:
-   - Bottom-sticky UNTIL the nav's original spot reaches the nav's "natural" position
-     (i.e., the top of the nav equals the top of its area in the document flow)
-   - Top-sticky ONLY when the nav's original spot reaches the top of the viewport (y = 0)
-   - Unlock method stays the same idea: only unlock when the placeholder returns to the
-     boundary so we don’t flicker.
-   Uses placeholder (ph) to track the nav’s original spot.
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
@@ -504,19 +498,16 @@
     const navH = nav.getBoundingClientRect().height;
     const vh = window.innerHeight;
 
-    // Thresholds (in px). Small epsilon prevents flicker from sub-pixel rounding.
     const EPS = 1;
 
     if (mode === "flow") {
       const navRect = nav.getBoundingClientRect();
 
-      // If nav would fall below the viewport bottom -> lock bottom
       if (navRect.bottom > vh + EPS) {
         setMode("bottom");
         return;
       }
 
-      // If nav hits top -> lock top
       if (navRect.top <= 0 + EPS) {
         setMode("top");
         return;
@@ -528,23 +519,20 @@
     const phRect = ph.getBoundingClientRect();
 
     if (mode === "bottom") {
-      // Stop bottom-sticky when placeholder top reaches the "natural" flow top position
       const flowTopY = vh - navH;
 
       if (phRect.top <= flowTopY + EPS) {
-        setMode("flow"); // release to normal flow (NOT top-sticky yet)
+        setMode("flow");
       }
       return;
     }
 
     if (mode === "top") {
-      // Unlock only when the placeholder (nav's original spot) is back at/above viewport top
       if (phRect.top >= 0 - EPS) {
         setMode("flow");
         return;
       }
 
-      // If scrolling down and original spot drops below bottom boundary, go bottom-fixed
       const flowTopY = vh - navH;
       if (phRect.top > flowTopY + EPS) {
         setMode("bottom");
