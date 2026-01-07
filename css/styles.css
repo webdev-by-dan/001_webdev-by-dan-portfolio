@@ -687,71 +687,267 @@ html:not([data-theme="dark"]) .process{
 }
 .steps{ padding-left: 18px; }
 
-/* ----- Portfolio ----- */
+/* #########################################################
+   ##### PORTFOLIO (3 / 2 / 1) — professional website screenshots
+   Assumes each <img> is a desktop homepage screenshot
+######################################################### */
+
+/* Filter buttons */
 .filter{
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin: 12px 0 16px;
+  margin: 12px 0 18px;
 }
+
 .filterBtn{
   border-radius: 999px;
   border: 1px solid color-mix(in srgb, var(--link) 30%, transparent);
-  background-color: var(--card);
+  background-color: color-mix(in srgb, var(--card) 92%, transparent);
   color: var(--link);
   font-weight: 800;
-  padding: 10px 12px;
+  padding: 10px 14px;
   cursor: pointer;
+  transition: transform 120ms ease, background-color 140ms ease, border-color 140ms ease;
 }
+.filterBtn:hover{ transform: translateY(-1px); }
 .filterBtn.is-active{
   background-color: color-mix(in srgb, var(--link) 12%, var(--card));
   border-color: color-mix(in srgb, var(--link) 45%, transparent);
   color: var(--text);
 }
 
+/* Grid: 3 desktop / 2 tablet / 1 mobile */
 .portfolioGrid{
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ desktop */
+  gap: 16px;
+  align-items: stretch;
 }
+
+/* Filter logic compatibility */
 .column{ display: none; }
 .column.show{ display: block; }
 
+/* Card */
 .portfolioItem{
-  background-color: color-mix(in srgb, var(--card) 90%, transparent);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  background-color: color-mix(in srgb, var(--card) 94%, transparent);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 20px;
   padding: 14px;
+
   box-shadow: var(--shadow);
-}
-.portfolioItem img{
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  background-color: var(--card);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 
-/* ----- Blog ----- */
+.portfolioItem:hover{
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--link) 22%, var(--border));
+}
+
+/* Screenshot frame */
+.portfolioItem img{
+  width: 100%;
+  height: 220px;                 /* consistent screenshot size */
+  object-fit: cover;             /* crop (no stretching) */
+  object-position: top center;   /* show nav/hero first */
+
+  display: block;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+  background-color: var(--card);
+
+  /* subtle “device/screenshot” polish */
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+/* Text */
+.portfolioItem h3{
+  margin: 12px 0 6px;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.portfolioItem p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+
+  /* keep card heights tidy even if descriptions vary */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Action pinned to bottom */
+.portfolioItem .linkBtn,
+.portfolioItem .btn{
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+#portfolio .linkBtn{
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 11px 14px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--btnBorder) 90%, transparent);
+
+  background-color: color-mix(in srgb, var(--btnBg) 92%, transparent);
+  color: var(--btnText);
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: transform 120ms ease, background-color 140ms ease;
+}
+#portfolio .linkBtn:hover{
+  background-color: var(--btnHover);
+  transform: translateY(-1px);
+}
+#portfolio .linkBtn:focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1100px){
+  .portfolioGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ tablet */
+  }
+  .portfolioItem img{
+    height: 240px;
+  }
+}
+
+/* Mobile: 1 column + centered actions */
+@media (max-width: 780px){
+  #portfolio .sectionHead,
+  #portfolio .container{
+    text-align: center;
+  }
+  .filter{ justify-content: center; }
+
+  .portfolioGrid{
+    grid-template-columns: 1fr; /* ✅ mobile */
+  }
+  .portfolioItem{
+    text-align: center;
+    padding: 14px;
+  }
+  .portfolioItem img{
+    height: 220px;
+  }
+  .portfolioItem .linkBtn,
+  .portfolioItem .btn{
+    align-self: center;
+  }
+}
+
+
+/* ----- Blog (polished cards) ----- */
 .blogGrid{
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
+
+@media (max-width: 980px){
+  .blogGrid{ grid-template-columns: 1fr; }
+}
+
 .blogCard{
-  background-color: color-mix(in srgb, var(--card) 90%, transparent);
-  border: 1px solid var(--border);
+  overflow: hidden;
   border-radius: var(--radius);
-  padding: 14px;
-  box-shadow: var(--shadow);
-}
-.blogCard__img{
-  border-radius: 14px;
   border: 1px solid var(--border);
-  height: 180px;
-  background-image: var(--bgimg);
+  background-color: color-mix(in srgb, var(--card) 92%, transparent);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-rows: 180px 1fr;
+}
+
+.blogCard__media{
+  display: block;
   background-size: cover;
   background-position: center;
-  margin-bottom: 10px;
+  position: relative;
+  text-decoration: none;
 }
+
+/* subtle gradient overlay for readability / polish */
+.blogCard__media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.10) 0%,
+    rgba(0,0,0,0.35) 100%
+  );
+}
+
+.blogCard__body{
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.blogMeta{
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.blogTitle{
+  margin: 0;
+  line-height: 1.2;
+  font-size: 1.25rem;
+}
+
+.blogTitle__link{
+  color: var(--text);
+  text-decoration: none;
+}
+.blogTitle__link:hover{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blogExcerpt{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Make the existing .linkBtn feel like a pro CTA here */
+.blogBtn{
+  margin-top: 6px;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 11px 14px;
+  text-decoration: none;
+}
+
+/* Nice hover lift */
+.blogCard--link:hover{
+  transform: translateY(-2px);
+  transition: transform 160ms ease;
+}
+
 
 /* ----- Testimonials ----- */
 .testimonialCard{
@@ -1504,5 +1700,58 @@ html[data-theme="dark"] .footer{
   .rating {
     text-align: center;
     font-size: 1.8rem !important;
+  }
+}
+
+/* #########################################################
+   ##### HERO (TABLET): centered + soft white banner behind text
+######################################################### */
+@media (max-width: 1100px) and (min-width: 781px){
+
+  /* Center the whole hero content block */
+  .hero__content{
+    transform: none;              /* ✅ remove the left shift */
+    max-width: 70ch;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Add a translucent banner behind the text/buttons */
+  .hero__mid{
+    background: rgba(255,255,255,0.72);  /* ✅ white w/ transparency */
+    border: 1px solid rgba(11,18,32,0.12);
+    border-radius: 20px;
+    padding: 22px 22px 20px;
+    box-shadow: 0 16px 36px rgba(11,18,32,.14);
+
+    /* keep it from getting too wide */
+    max-width: 56ch;
+    width: min(92%, 680px);
+  }
+
+  /* Make text readable on the white banner */
+  .hero .eyebrow,
+  .hero__title,
+  .hero__sub{
+    color: var(--text);           /* ✅ use normal text color */
+    text-shadow: none;
+  }
+
+  /* Center the buttons inside the banner */
+  .hero .actions{
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 781px){
+  html[data-theme="dark"] .hero__mid{
+    background: rgba(15, 23, 42, 0.72);  /* dark translucent */
+    border-color: rgba(238,242,255,0.14);
+  }
+  html[data-theme="dark"] .hero .eyebrow,
+  html[data-theme="dark"] .hero__title,
+  html[data-theme="dark"] .hero__sub{
+    color: #fff;
   }
 }

@@ -393,51 +393,50 @@
       </section>
 
       <!-- ######## PROCESS ######## -->
-<section class="section process" id="process" aria-labelledby="processTitle">
-  <div class="container">
-    <div class="processGrid">
-      <div>
-        <header class="sectionHead">
-          <p class="kicker" style="font-size: 1.05rem;">
-            Take a look at
-          </p>
-          <h2 id="processTitle" style="font-size: clamp(30px, 3vw, 38px);">
-            The Process
-          </h2>
-        </header>
+      <section class="section process" id="process" aria-labelledby="processTitle">
+        <div class="container">
+          <div class="processGrid">
+            <div>
+              <header class="sectionHead">
+                <p class="kicker" style="font-size: 1.05rem;">
+                  Take a look at
+                </p>
+                <h2 id="processTitle" style="font-size: clamp(30px, 3vw, 38px);">
+                  The Process
+                </h2>
+              </header>
 
-        <p style="font-size: 1.15rem; line-height: 1.7; max-width: 52ch;">
-          Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
-          process, from our first conversation to the final launch.
-        </p>
+              <p style="font-size: 1.15rem; line-height: 1.7; max-width: 52ch;">
+                Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
+                process, from our first conversation to the final launch.
+              </p>
 
-        <ol class="steps" style="font-size: 1.1rem; line-height: 1.8;">
-          <li>
-            <strong style="font-size: 1.15rem;">Initial Meetup &amp; Planning</strong> — 20%
-          </li>
-          <li>
-            <strong style="font-size: 1.15rem;">Website Design &amp; Feedback</strong> — 40%
-          </li>
-          <li>
-            <strong style="font-size: 1.15rem;">Web Development</strong> — 75%
-          </li>
-          <li>
-            <strong style="font-size: 1.15rem;">Final Feedback &amp; Launch</strong> — 100%
-          </li>
-        </ol>
-      </div>
+              <ol class="steps" style="font-size: 1.1rem; line-height: 1.8;">
+                <li>
+                  <strong style="font-size: 1.15rem;">Initial Meetup &amp; Planning</strong> — 20%
+                </li>
+                <li>
+                  <strong style="font-size: 1.15rem;">Website Design &amp; Feedback</strong> — 40%
+                </li>
+                <li>
+                  <strong style="font-size: 1.15rem;">Web Development</strong> — 75%
+                </li>
+                <li>
+                  <strong style="font-size: 1.15rem;">Final Feedback &amp; Launch</strong> — 100%
+                </li>
+              </ol>
+            </div>
 
-      <div class="processMedia">
-        <img
-          src="img/skills/TheProcess.png"
-          alt="Web development process illustration"
-          loading="lazy"
-        />
-      </div>
-    </div>
-  </div>
-</section>
-
+            <div class="processMedia">
+              <img
+                src="img/skills/TheProcess.png"
+                alt="Web development process illustration"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- ######## PORTFOLIO ######## -->
       <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
@@ -454,21 +453,32 @@
             <button class="filterBtn" type="button" data-filter="pastwork">Past Work</button>
           </div>
 
+          <!-- ✅ ONE grid container that holds ALL cards -->
           <div class="portfolioGrid" id="portfolioGrid">
-            <article class="portfolioItem column mockups show">
-              <img src="img/portfolio/1.jpg" alt="Mockup preview" loading="lazy" />
+            <!-- BEECH LEAF DISEASE -->
+            <article class="portfolioItem column projects show">
+              <img src="img/portfolio/1.png" alt="Beech Leaf Disease Preview" loading="lazy" />
               <h3>Beech Leaf Disease: A Data Story</h3>
               <p>A site explaining the beech leaf disease, where it's at, and where it's going.</p>
 
-              <button class="linkBtn" type="button" data-modal="#p1">
-                View details <span class="sr-only">for Mockup</span>
-              </button>
+              <a style="text-decoration: none; color:black" href="content\BLD-Data-Story\index.html">
+                <button class="linkBtn" type="button" data-modal="#p2">
+                View details
+                </button>
+              </a>
+            </article>
 
-              <template id="p1">
-                <h2 id="modalTitle">Mockup</h2>
-                <img class="modalImg" src="img\portfolio\1.png" alt="Beech Leaf Disease Preview" />
-                <p>Add your real project details here.</p>
-              </template>
+            <!-- PEQUABUCK -->
+            <article class="portfolioItem column mockups show">
+              <img src="img/portfolio/2.png" alt="Pequabuck River Watershed Association Preview" loading="lazy" />
+              <h3>PRWA Non-Profit</h3>
+              <p>Nonprofit website for PRWA, highlighting new design methods.</p>
+
+              <a style="text-decoration: none; color:black" href="content\PRWA\index.html">
+                <button class="linkBtn" type="button" data-modal="#p2">
+                View details
+                </button>
+              </a>
             </article>
           </div>
         </div>
@@ -488,8 +498,9 @@
             </div>
 
             <blockquote class="quote" style="margin-left: 32px;">
-              <h2 class="rating">⭐⭐⭐⭐⭐</h2>
-              <p style="font-size: 1.4em;">'Working with Dan was an absolute pleasure! He was attentive, responsive, and really listened…'</p>
+              <h2 class="rating" style="transform: translateX(-12px);">⭐⭐⭐⭐⭐</h2>
+              <p style="font-size: 1.4em;">Working with Dan was an absolute pleasure! 
+                He was attentive, responsive, and really listened to what I was saying.</p>
               <footer>
                 <strong>Dylan Koval</strong><br />
                 <span class="muted">Technical Writer</span>
@@ -503,36 +514,89 @@
       <section class="section" id="blog" aria-labelledby="blogTitle">
         <div class="container">
           <header class="sectionHead">
-            <p class="kicker">Curious About Web-Dev?</p>
+            <p class="kicker">Curious About Web Dev?</p>
             <h2 id="blogTitle">Blog Posts</h2>
           </header>
 
           <div class="blogGrid">
-            <article class="blogCard">
-              <div class="blogCard__img" style="--bgimg:url('img/news/website-news.jpg');" aria-hidden="true"></div>
-              <h3>The Importance of a website for small businesses</h3>
-              <p class="muted">By Daniel Scheuermann</p>
-              <button class="linkBtn" type="button" data-modal="#b1">Read more</button>
+            <!-- Card 1 -->
+            <article class="blogCard blogCard--link">
+              <a
+                class="blogCard__media"
+                href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Read: Responsive web design (opens in a new tab)"
+                style="background-image: url('img/news/website-news.jpg');"
+              ></a>
 
-              <template id="b1">
-                <h2 id="modalTitle">The Importance of a website for small businesses</h2>
-                <p>In today's digital age, having a website is crucial for small businesses looking to compete…</p>
-                <p>Websites can level the playing field…</p>
-              </template>
+              <div class="blogCard__body">
+                <p class="blogMeta">MDN Web Docs • CSS Layout</p>
+                <h3 class="blogTitle">
+                  <a
+                    class="blogTitle__link"
+                    href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Responsive Web Design (RWD): Core Techniques
+                  </a>
+                </h3>
+
+                <p class="blogExcerpt">
+                  A practical guide to responsive design—media queries, flexible layouts,
+                  and how to build for a multi-device web.
+                </p>
+
+                <a
+                  class="linkBtn blogBtn"
+                  href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Read article <span aria-hidden="true">↗</span>
+                </a>
+              </div>
             </article>
 
-            <article class="blogCard">
-              <div class="blogCard__img" style="--bgimg:url('img/news/colors-news.jpg');" aria-hidden="true"></div>
-              <h3>Understanding Color Psychology in Web Design</h3>
-              <p class="muted">By Daniel Scheuermann</p>
-              <button class="linkBtn" type="button" data-modal="#b2">Read more</button>
+            <!-- Card 2 -->
+            <article class="blogCard blogCard--link">
+              <a
+                class="blogCard__media"
+                href="https://web.dev/articles/accessibility"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Read: Accessibility (opens in a new tab)"
+                style="background-image: url('img/news/colors-news.jpg');"
+              ></a>
 
-              <template id="b2">
-                <h2 id="modalTitle">Understanding Color Psychology in Web Design</h2>
-                <p>Color is a powerful tool in web design, influencing both aesthetics and user behavior…</p>
-                <p>Blue represents trust and security…</p>
-                <p>Green symbolizes growth and balance…</p>
-              </template>
+              <div class="blogCard__body">
+                <p class="blogMeta">web.dev • Accessibility</p>
+                <h3 class="blogTitle">
+                  <a
+                    class="blogTitle__link"
+                    href="https://web.dev/articles/accessibility"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Accessibility Fundamentals for Web Developers
+                  </a>
+                </h3>
+
+                <p class="blogExcerpt">
+                  A clear overview of what accessibility means in practice—and what to
+                  build into your sites from day one.
+                </p>
+
+                <a
+                  class="linkBtn blogBtn"
+                  href="https://web.dev/articles/accessibility"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Read article <span aria-hidden="true">↗</span>
+                </a>
+              </div>
             </article>
           </div>
         </div>

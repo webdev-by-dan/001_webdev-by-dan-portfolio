@@ -263,32 +263,57 @@
   window.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("load", setActiveLink);
 
-  /* ===== Portfolio filter ===== */
-  const filterWrap = qs("#myBtnContainer");
-  const columns = qsa(".column");
+  /* ===== Portfolio filter (FORCE HIDE/SHOW — FIXED) ===== */
+  (() => {
+    const portfolio = qs("#portfolio");
+    const filterWrap = qs("#myBtnContainer", portfolio || document);
+    const grid = qs("#portfolioGrid", portfolio || document);
+    if (!filterWrap || !grid) return;
 
-  function filterSelection(c) {
-    const cat = c === "all" ? "" : c;
-    columns.forEach((col) => {
-      col.classList.remove("show");
-      if (!cat || col.className.indexOf(cat) > -1) col.classList.add("show");
-    });
-  }
+    // Prevent double-binding if this script runs more than once
+    if (filterWrap.dataset.bound === "1") return;
+    filterWrap.dataset.bound = "1";
 
-  if (columns.length) filterSelection("all");
+    // Only portfolio cards inside the portfolio grid
+    const items = Array.from(grid.querySelectorAll(".portfolioItem"));
 
-  if (filterWrap) {
+    function setVisible(el, isVisible) {
+      // Hard-hide/show so CSS can't accidentally keep it visible
+      el.hidden = !isVisible;
+      el.style.display = isVisible ? "" : "none";
+
+      // Optional: keep your old class logic too (won't hurt)
+      el.classList.toggle("show", isVisible);
+    }
+
+    function applyFilter(filter) {
+      const cat = (filter || "all").toLowerCase().trim();
+
+      items.forEach((item) => {
+        const match = cat === "all" ? true : item.classList.contains(cat);
+        setVisible(item, match);
+      });
+    }
+
+    // Init based on whichever button is active, else "all"
+    const activeBtn =
+      filterWrap.querySelector("button[data-filter].is-active") ||
+      filterWrap.querySelector("button[data-filter]");
+
+    applyFilter(activeBtn ? activeBtn.getAttribute("data-filter") : "all");
+
     filterWrap.addEventListener("click", (e) => {
-      const b = e.target.closest("button[data-filter]");
-      if (!b) return;
+      const btn = e.target.closest("button[data-filter]");
+      if (!btn) return;
 
-      qsa(".filterBtn", filterWrap).forEach((x) =>
-        x.classList.remove("is-active")
-      );
-      b.classList.add("is-active");
-      filterSelection(b.getAttribute("data-filter") || "all");
+      // Active state
+      filterWrap
+        .querySelectorAll("button[data-filter]")
+        .forEach((b) => b.classList.toggle("is-active", b === btn));
+
+      applyFilter(btn.getAttribute("data-filter"));
     });
-  }
+  })();
 
   /* ===== Accessible modal ===== */
   const modal = qs("#modal");

@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Understanding Beech Leaf Disease</title>
+
+  <!-- Fonts + Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+  /* =========================================================
+     WCAG / AA Baseline
+     - Good focus styles
+     - Respects prefers-reduced-motion
+     - Semantic layout: header/main/footer + skip link
+     - Centered layout + “--- text ---” dividers darker + wider
+     - Green hero again
+  ========================================================= */
+
+  :root{
+    --bg: #F5F4ED;
+    --bg2:#E9E7DE;
+    --text:#1E2203;
+
+    /* Green theme */
+    --accent:#2F5D3A;
+    --accent2:#2F5D3A; /* links green to match hero */
+
+    --card:#FFFFFF;
+    --border:#B7A976;
+    --muted:#3F4525;
+
+    --focus:#0B57D0;
+    --shadow: 0 8px 24px rgba(0,0,0,.12);
+
+    --radius: 16px;
+    --max: 900px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    text-align: center; /* ✅ center everything by default */
+  }
+
+  /* Ensure common blocks are centered */
+  header, main, footer, section, figure { width: 100%; }
+  figure { margin-left: auto; margin-right: auto; }
+  img { max-width: 100%; height: auto; }
+
+  /* Skip link */
+  .skip-link{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    z-index:9999;
+    padding: .75rem 1rem;
+    background: var(--card);
+    border: 2px solid var(--focus);
+    border-radius: 12px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .skip-link:focus{
+    left: 1rem;
+    top: 1rem;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(11,87,208,.25);
+  }
+
+  /* Focus states */
+  a, button, input, [tabindex]:not([tabindex="-1"]) { outline: none; }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible {
+    box-shadow: 0 0 0 4px rgba(11,87,208,.25);
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+
+  a {
+    color: var(--accent2);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  a:hover { text-decoration: underline; }
+
+  /* Layout wrapper */
+  .wrap{
+    width: 100%;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* =========================================================
+     Intro / Hero (GREEN again)
+  ========================================================= */
+  .intro-section{
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    place-items: center;
+
+    /* ✅ greener hero overlay while keeping background image */
+    background:
+      /* radial-gradient(1200px 500px at 50% 20%, rgba(47,93,58,.22), rgba(245,244,237,0) 60%), */
+      /* linear-gradient(to bottom, rgba(232,244,235,.92), rgba(233,231,222,.92)), */
+      url('images/faint-leaf-pattern.jpg');
+
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+
+    text-align: center;
+    position: relative;
+    padding: 3rem 0 2.25rem;
+  }
+
+  .intro-inner{
+    width: min(900px, 92vw);
+    margin: 0 auto;
+  }
+
+  .uvm-logo{
+    width: min(520px, 92vw);
+    height: auto;
+    display: block;
+    margin: 0 auto 1rem;
+  }
+
+  .uvm-label{
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #1E2203; /* darker for contrast */
+    margin: 0 0 2rem;
+  }
+
+  .hero-title{
+    font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+    line-height: 1.12;
+    margin: 0 0 .75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle{
+    max-width: 70ch;
+    margin: 0 auto 1.75rem;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+
+  /* Accessible “search” display */
+  .search-demo{
+    margin: 0 auto;
+    width: min(720px, 92vw);
+    background: var(--card);
+    border: 2px solid rgba(73, 133, 87, 0.897); /* green-ish */
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    padding: .75rem .9rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  .search-demo label{
+    position:absolute;
+    width:1px;height:1px;
+    padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);
+    white-space:nowrap;border:0;
+  }
+
+  .search-demo input{
+    width: 100%;
+    font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+    padding: .75rem 1rem;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    text-align: center; /* ✅ centered typing */
+  }
+  .search-demo input[readonly]{ cursor: default; }
+
+  .search-demo .material-icons{
+    color: var(--accent);
+    font-size: 2rem;
+    flex: 0 0 auto;
+    padding-right: .25rem;
+  }
+
+  .search-result{
+    margin: 1rem auto 0;
+    width: min(720px, 60%);
+    padding: .9rem 1rem;
+    background: rgba(245,244,237,.88);
+    border-radius: 14px;
+    border: 2px solid rgba(47,93,58,.25);
+    color: var(--text);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  .search-result.visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .search-result .material-icons{
+    color: var(--accent);
+    font-size: 1.25rem;
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator{
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #1D1D1D;
+    opacity: 0;
+    transition: opacity .5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .25rem;
+  }
+  .scroll-indicator.visible{ opacity: 1; }
+  .scroll-indicator .arrow{
+    font-size: 1.1rem;
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  @keyframes bounce{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-8px); }
+  }
+
+  /* =========================================================
+     Main content + sections (CENTERED)
+  ========================================================= */
+  main{
+    padding: 3rem 0 2rem;
+  }
+
+  .content{ padding: 0; }
+
+  .content-section{
+    margin: 0 auto;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(138,122,80,.35);
+  }
+  .content-section:first-child{ border-top: 0; }
+
+  /* ✅ “--- text ---” headers darker, centered, with wider lines */
+  .section-divider{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-weight: 800;
+    color: #1E2203; /* darker */
+    letter-spacing: .02em;
+    margin: 0 auto 1.25rem;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .section-divider::before,
+  .section-divider::after{
+    content:"";
+    height: 2px; /* thicker */
+    width: clamp(90px, 20vw, 240px); /* wider */
+    background: rgba(30,34,3,.65); /* darker line */
+    border-radius: 999px;
+  }
+
+  h2{
+    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    line-height: 1.2;
+    margin: .75rem auto .75rem;
+    letter-spacing: -0.015em;
+    max-width: 36ch;
+  }
+
+  p{
+    max-width: 70ch;
+    margin: 0.75rem auto 0;
+    font-size: 1.05rem;
+  }
+
+  figure{
+    margin: 1.75rem auto 0;
+    width: min(820px, 92vw);
+  }
+  figcaption{
+    margin-top: .6rem;
+    color: #3f4525;
+    font-size: .98rem;
+    max-width: 80ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Images */
+  .img-frame{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    border: 4px solid rgb(70,40,7);
+    border-radius: 14px;
+    background: #fff;
+  }
+  .round{
+    border-radius: 999px;
+    max-width: 260px;
+  }
+  .soft-round{
+    border-radius: 40%;
+    max-width: min(520px, 92vw);
+  }
+  .wide{ width: min(820px, 92vw); }
+
+  .beech-nutrients{
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.08), var(--shadow);
+  }
+
+  /* Carousel */
+  .carousel-wrap{
+    margin-top: 1.25rem;
+    width: min(860px, 92vw);
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(255,255,255,.6);
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: 0 2px 14px rgba(0,0,0,.08);
+    text-align: center;
+  }
+  .carousel-head{
+    display:flex;
+    align-items:center;
+    justify-content:center; /* ✅ center header row */
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: .75rem;
+  }
+  .carousel-head p{
+    margin: 0;
+    max-width: 60ch;
+    color: var(--muted);
+    font-size: .98rem;
+  }
+  .btn{
+    appearance:none;
+    border: 2px solid rgba(0,0,0,.15);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 999px;
+    padding: .6rem .95rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn:hover{ border-color: rgba(0,0,0,.25); }
+  .btn[aria-pressed="true"]{
+    border-color: rgba(47,93,58,.55);
+    box-shadow: 0 0 0 4px rgba(47,93,58,.15);
+  }
+
+  #container{
+    position: relative;
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 14px;
+    margin: 0 auto;
+  }
+  #carousel{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    gap: 14px;
+    padding: 0 14px;
+    left: 0;
+  }
+  #carousel img{
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #654321;
+    object-fit: cover;
+    background: #fff;
+  }
+
+  /* Map images */
+  .beech-map{
+    width: min(860px, 92vw);
+    border-radius: 14px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.12), 0px 10px 26px rgba(0,0,0,.12);
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Social */
+  .social-icons-container{
+    display: flex;
+    justify-content: center;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-top: .75rem;
+  }
+  .social-icon{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid rgba(0,0,0,.12);
+  }
+  .social-icon .material-icons{ font-size: 22px; }
+  .facebook{ background:#2F4B8E; }
+  .twitter{ background:#0C74B8; }
+  .instagram{ background:#B12E6A; }
+  .linkedin{ background:#0B5FA5; }
+  .youtube{ background:#B00020; }
+
+  /* Footer */
+  footer{
+    border-top: 1px solid rgba(0,0,0,.12);
+    padding: 2rem 0 3rem;
+    background: rgba(255,255,255,.35);
+    text-align: center;
+  }
+  footer p{
+    margin: .5rem auto 0;
+    font-size: .98rem;
+    color: #353A1E;
+    max-width: 80ch;
+  }
+
+  /* =========================================================
+     Motion: respect reduced-motion
+  ========================================================= */
+  @media (prefers-reduced-motion: reduce){
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  /* =========================================================
+     Responsive
+  ========================================================= */
+  @media (max-width: 768px){
+    .uvm-label{ margin-bottom: 1.25rem; }
+    #carousel img{ width: 110px; height: 110px; }
+    #container{ height: 160px; }
+    .section-divider::before,
+    .section-divider::after{
+      width: clamp(70px, 18vw, 190px);
+    }
+  }
+
+  @media (max-width: 480px){
+    .search-demo{ border-radius: 24px; }
+    .search-demo .material-icons{ font-size: 1.75rem; }
+    .search-demo input{ padding: .65rem .8rem; }
+    #carousel img{ width: 95px; height: 95px; }
+    #container{ height: 140px; }
+    .section-divider::before,
+    .section-divider::after{
+      width: clamp(55px, 16vw, 150px);
+    }
+  }
+
+        .backToDan {
+        position: fixed;
+        left: 12px;
+        top: 32px;
+        transform: translateY(-50%);
+        z-index: 999999;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        background: #ffffff;
+        border: 2px solid #ff6a00;
+        border-radius: 999px;
+        text-decoration: none;
+        color: #0b2f4a;
+        box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+      }
+      .backToDan:focus {
+        outline: 3px solid rgba(255,106,0,0.35);
+        outline-offset: 3px;
+      }
+      .backToDan .arrow {
+        font-weight: 900;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .backToDan img {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        display: block;
+      }
+</style>
+</head>
+
+<body>
+
+  <a class="backToDan" href="https://webdev-by-dan.com" aria-label="Back to Web Dev by Dan">
+      <span class="arrow">&lt;</span>
+      <img src="images/logo-dan.png" alt="" aria-hidden="true" />
+    </a>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="intro-section" aria-labelledby="pageTitle">
+    <div class="intro-inner">
+      <img src="images/uvm-logo.png" alt="University of Vermont logo" class="uvm-logo">
+      <div class="uvm-label">Presents</div>
+
+      <h1 id="pageTitle" class="hero-title">Understanding Beech Leaf Disease</h1>
+      <p class="hero-subtitle">
+        A visual data story by Daniel Scheuermann.
+      </p>
+
+      <!-- Accessible “search” demo (readonly input so SRs read it naturally) -->
+      <div class="search-demo" role="search" aria-label="Search demonstration">
+        <label for="searchDemoInput">Search demonstration</label>
+        <input id="searchDemoInput" type="text" inputmode="search" readonly value="" aria-readonly="true">
+        <span class="material-icons" aria-hidden="true">search</span>
+      </div>
+
+      <div class="search-result" id="searchResult" role="status" aria-live="polite">
+        <span class="material-icons" aria-hidden="true">search</span>
+        <span>A Visual Story by Daniel Scheuermann</span>
+      </div>
+
+      <div class="scroll-indicator" id="scroll-indicator" aria-hidden="true">
+        <div>Scroll</div>
+        <div class="arrow">▼</div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <!-- SECTION: Background on American Beech -->
+    <section class="content-section" aria-labelledby="s1">
+      <div class="section-divider" aria-hidden="true">Meet the American Beech Tree</div>
+
+      <figure>
+        <img class="img-frame wide" src="images/beech-tree.png"
+             alt="A mature American beech tree in a forested setting.">
+      </figure>
+
+      <h2 id="s1">A cornerstone of Eastern forests</h2>
+      <p>
+        The American beech (<strong><em>Fagus grandifolia</em></strong>) is a towering hardwood native to eastern North America,
+        known for smooth, silvery-gray bark and dense canopies that shape wildlife habitat.
+        Its edible beechnuts support many species, making beech a key part of temperate forest ecosystems.
+      </p>
+    </section>
+
+    <!-- SECTION: What is BLD -->
+    <section class="content-section" aria-labelledby="s2">
+      <div class="section-divider" aria-hidden="true">What Is Beech Leaf Disease?</div>
+
+      <h2 id="s2">A microscopic nematode drives a very visible disease</h2>
+      <p>
+        Beech leaf disease (BLD) is associated with a tiny nematode (a microscopic worm) called
+        <em>Litylenchus crenatae mccannii</em>. It can invade buds and leaves, feeding internally and disrupting normal growth.
+      </p>
+
+      <figure>
+        <img class="img-frame" style="max-width:min(420px,92vw)" src="images/nematode.jpg"
+             alt="Microscope image of a nematode.">
+      </figure>
+
+      <h2>Small cause, big impact</h2>
+      <p>
+        Infested leaves can show dark striping, cupping, and thickening. Over time, reduced photosynthesis contributes to
+        canopy thinning and decline.
+      </p>
+
+      <figure>
+        <img class="img-frame round" src="images/BLD-Damage.png"
+             alt="Beech leaves showing dark banding associated with beech leaf disease.">
+      </figure>
+    </section>
+
+    <!-- SECTION: Symptoms -->
+    <section class="content-section" aria-labelledby="s3">
+      <div class="section-divider" aria-hidden="true">Symptoms</div>
+
+      <h2 id="s3">What to look for</h2>
+      <p>
+        Common signs include dark banding, curling, and a leathery feel. Leaves may yellow and drop early, thinning the canopy.
+        Impacts can be severe in saplings and accumulate over time in mature trees.
+      </p>
+
+      <figure>
+        <img class="img-frame wide" src="images/Stripe-curl-darken.png"
+             alt="Beech leaves showing dark striping and curling.">
+      </figure>
+
+      <h2>Why early detection matters</h2>
+      <p>
+        Where infections are widespread, forest structure can change quickly—affecting understory plants, wildlife habitat,
+        and long-term regeneration.
+      </p>
+
+      <figure>
+        <img class="img-frame soft-round" src="images/dead-beech-branch.jpg"
+             alt="A dead beech branch with no leaves.">
+      </figure>
+    </section>
+
+    <!-- SECTION: The Cost -->
+    <section class="content-section" aria-labelledby="s4">
+      <div class="section-divider" aria-hidden="true">The Cost</div>
+
+      <h2 id="s4">The impact reaches ecosystems and communities</h2>
+      <p>
+        Beech contributes food and shelter for wildlife. When beech declines, food webs can shift and management costs can rise
+        (removal of hazardous trees, monitoring, and restoration planning).
+      </p>
+
+      <!-- Carousel with pause/play (WCAG: user control over moving content) -->
+      <div class="carousel-wrap" aria-labelledby="carouselTitle">
+        <div class="carousel-head">
+          <div>
+            <h3 id="carouselTitle" style="margin:0;font-size:1.15rem;">Wildlife that uses beech forests</h3>
+            <p>Use “Pause” if the motion is distracting. Motion will also stop automatically if your system prefers reduced motion.</p>
+          </div>
+          <button class="btn" id="carouselToggle" type="button" aria-pressed="false">
+            Pause
+          </button>
+        </div>
+
+        <div id="container" aria-label="Scrolling gallery of wildlife images">
+          <div id="carousel">
+            <img src="images/deer.png" alt="Deer silhouette">
+            <img src="images/blue-jay.jpg" alt="Blue jay perched on a branch">
+            <img src="images/squirrel.jpg" alt="Gray squirrel in a forest">
+            <img src="images/opossum.jfif" alt="Opossum behind leaves">
+            <img src="images/beechbug.jfif" alt="Small insect near a beech trunk">
+            <img src="images/bear.jfif" alt="Black bear in forest undergrowth">
+          </div>
+        </div>
+      </div>
+
+      <h2>Beechnuts are energy-dense</h2>
+      <p>
+        Beech nuts contain meaningful fat and protein and can be especially important where other mast-producing trees are less common.
+      </p>
+
+      <figure>
+        <img class="beech-nutrients wide" src="images/Beech_Nut_Nutrients.png"
+             alt="Chart showing nutrient composition of beech nuts.">
+        <figcaption>
+          Beech nut nutritional breakdown.
+          (Source:
+          <a href="https://www.eatthismuch.com/calories/beechnuts-2637" target="_blank" rel="noopener noreferrer">
+            EatThisMuch
+          </a>)
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- SECTION: Areas at Risk -->
+    <section class="content-section" aria-labelledby="s5">
+      <div class="section-divider" aria-hidden="true">Areas at Risk</div>
+
+      <h2 id="s5">Beech is a major mast species across much of the Northeast</h2>
+      <p>
+        In many mixed hardwood stands, beech can be a significant contributor to mast production and forest structure,
+        supporting wildlife and shaping understory conditions.
+      </p>
+
+      <figure>
+        <img class="beech-map" src="images/beech.jpg"
+             alt="Map showing locations where beech is the dominant nut-bearing tree.">
+        <figcaption>
+          Forest map of beech distribution.
+          (Source: USFS LCMS TreeMap Viewer)
+        </figcaption>
+      </figure>
+
+      <h2>A broader mast mix can spread risk</h2>
+      <p>
+        In warmer or deeper-soil areas, oak, hickory, walnut, and hazelnut can contribute additional mast. Diversity can help buffer
+        poor crop years and support a wider range of wildlife.
+      </p>
+
+      <figure>
+        <img class="beech-map" src="images/all.jpg"
+             alt="Map showing distribution of major nut-bearing tree species including oak, hickory, walnut, hazelnut, and beech.">
+        <figcaption>Nut-bearing tree distribution (oak, hickory, walnut, hazelnut, and beech).</figcaption>
+      </figure>
+
+      <h2>Without beech, food and canopy dynamics change</h2>
+      <p>
+        Large-scale decline can reduce mast availability and create canopy openings that may favor invasive plants,
+        affecting regeneration trajectories.
+      </p>
+
+      <figure>
+        <img class="beech-map" src="images/non-beech.jpg"
+             alt="Map illustrating forests with beech removed from the mast mix.">
+        <figcaption>Projected forest composition if beech were lost from the mast mix.</figcaption>
+      </figure>
+
+      <h2>The Upper Northeast has fewer mast replacements</h2>
+      <p>
+        In colder regions with thin or acidic soils, fewer nut-bearing species can fill the same ecological role at scale.
+        This increases the importance of monitoring, reporting, and adaptive management.
+      </p>
+
+      <p style="margin-top:1rem;color:#3f4525;">
+        <strong>Note:</strong> Replacement-candidate scarcity map (Upper Northeast) intentionally omitted.
+      </p>
+    </section>
+
+    <!-- SECTION: Where is it Going? -->
+    <section class="content-section" aria-labelledby="s6">
+      <div class="section-divider" aria-hidden="true">Where Is It Going?</div>
+
+      <h2 id="s6">Spread has expanded well beyond its initial detection</h2>
+      <p>
+        Spread can be influenced by natural movement (wind, animals, insects) and by human transport of plant material.
+        Recent reporting includes expansion across state lines and into Canada.
+      </p>
+
+      <figure>
+        <img class="img-frame wide" src="images/bld-time-map.PNG"
+             alt="Time-series map showing spread of beech leaf disease from 2012 to the present.">
+        <figcaption>
+          Time-series map of BLD spread.
+          (Source:
+          <a href="https://www.dontmovefirewood.org/pest_pathogen/beech-leaf-disease/" target="_blank" rel="noopener noreferrer">
+            Don't Move Firewood
+          </a>)
+        </figcaption>
+      </figure>
+
+      <h2>What comes next?</h2>
+      <p>
+        Models and surveillance efforts can help anticipate where impacts may increase, and where intervention, monitoring,
+        or forest planning may be most urgent.
+      </p>
+    </section>
+
+    <!-- SECTION: How You Can Help -->
+    <section class="content-section" aria-labelledby="s7">
+      <div class="section-divider" aria-hidden="true">How You Can Help</div>
+
+      <h2 id="s7">If you think you’ve found BLD, take action</h2>
+      <p>
+        <strong>1) Share responsibly</strong><br>
+        Raise awareness with neighbors and local communities—use clear photos and location context when appropriate.
+      </p>
+
+      <!-- If you don't have real share links yet, keep them as buttons (not dead anchors) -->
+      <div class="social-icons-container" role="list" aria-label="Social sharing options">
+        <button type="button" class="social-icon facebook" role="listitem" aria-label="Share on Facebook (not configured)">
+          <span class="material-icons" aria-hidden="true">thumb_up</span>
+        </button>
+        <button type="button" class="social-icon twitter" role="listitem" aria-label="Share on X / Twitter (not configured)">
+          <span class="material-icons" aria-hidden="true">chat</span>
+        </button>
+        <button type="button" class="social-icon instagram" role="listitem" aria-label="Share on Instagram (not configured)">
+          <span class="material-icons" aria-hidden="true">camera_alt</span>
+        </button>
+        <button type="button" class="social-icon linkedin" role="listitem" aria-label="Share on LinkedIn (not configured)">
+          <span class="material-icons" aria-hidden="true">work</span>
+        </button>
+        <button type="button" class="social-icon youtube" role="listitem" aria-label="Share on YouTube (not configured)">
+          <span class="material-icons" aria-hidden="true">smart_display</span>
+        </button>
+      </div>
+
+      <h2 style="margin-top:2rem;">2) Report it</h2>
+      <p>
+        Early reporting helps. Use local state resources or community science tools like EDDMapS, or contact your state forestry department.
+      </p>
+    </section>
+
+    <!-- SECTION: Citations -->
+    <section class="content-section" aria-labelledby="citations">
+      <div class="section-divider" aria-hidden="true">Citations</div>
+      <h2 id="citations">Sources</h2>
+
+      <ul style="max-width:70ch;margin:1rem auto 0;text-align:left;line-height:1.7;">
+        <li><a href="https://www.dontmovefirewood.org/pest_pathogen/beech-leaf-disease/" target="_blank" rel="noopener noreferrer">Don't Move Firewood — Beech Leaf Disease</a></li>
+        <li><a href="https://www.eatthismuch.com/calories/beechnuts-2637" target="_blank" rel="noopener noreferrer">EatThisMuch — Beechnuts</a></li>
+        <li><a href="https://usfs-lcms.github.io/lcms-viewer/treemap" target="_blank" rel="noopener noreferrer">USFS LCMS TreeMap Viewer</a></li>
+        <li><a href="https://vtinvasives.org/invasive/beech-leaf-disease" target="_blank" rel="noopener noreferrer">VT Invasives — Beech Leaf Disease</a></li>
+        <li><a href="https://fpr.vermont.gov/news/beech-leaf-disease-expands-vermont" target="_blank" rel="noopener noreferrer">VT FPR — Beech Leaf Disease Expands</a></li>
+        <li><a href="https://extension.psu.edu/guide-to-beech-leaf-disease-for-the-public" target="_blank" rel="noopener noreferrer">Penn State Extension — Guide to BLD</a></li>
+        <li><a href="https://www.invasivespeciescentre.ca/invasive-species/meet-the-species/invasive-pathogens/beech-leaf-disease/" target="_blank" rel="noopener noreferrer">Invasive Species Centre — BLD</a></li>
+        <li><a href="https://www.eppo.int/ACTIVITIES/plant_quarantine/alert_list_nematodes/litylenchus_crenatae" target="_blank" rel="noopener noreferrer">EPPO — <em>Litylenchus crenatae</em></a></li>
+        <li><a href="https://www.frontiersin.org/journals/forests-and-global-change/articles/10.3389/ffgc.2023.1146742/full" target="_blank" rel="noopener noreferrer">Frontiers in Forests and Global Change (2023)</a></li>
+        <li><a href="https://www.arcgis.com/home/item.html?id=a09bee8d9a3f41b1bfc6bb714b345a99" target="_blank" rel="noopener noreferrer">ArcGIS item</a></li>
+        <li><a href="https://www.invasivespeciescentre.ca/take-action/community-science-program/beech-leaf-disease-monitoring-network/" target="_blank" rel="noopener noreferrer">BLD Monitoring Network</a></li>
+        <li><a href="https://www.sciencefriday.com/articles/identify-beech-leaf-disease/" target="_blank" rel="noopener noreferrer">Science Friday — Identify BLD</a></li>
+        <li><a href="https://www.pexels.com/search/" target="_blank" rel="noopener noreferrer">Pexels — Stock photo search</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>
+        © <span id="year"></span> — Understanding Beech Leaf Disease. Built as an accessible visual story.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    /* =========================================================
+       Reduced motion helper
+    ========================================================= */
+    const prefersReducedMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  </script>
+
+  <script>
+    /* =========================================================
+       Carousel Script (with Pause + reduced motion)
+       WCAG: Provide user control over moving content.
+    ========================================================= */
+    const carousel = document.getElementById("carousel");
+    const container = document.getElementById("container");
+    const toggleBtn = document.getElementById("carouselToggle");
+
+    let speed = 0.8;
+    let paused = prefersReducedMotion; // auto-pause if reduced motion
+    let rafId = null;
+
+    function stepCarousel() {
+      if (paused) return;
+
+      carousel.style.left = (carousel.offsetLeft - speed) + "px";
+
+      const firstImage = carousel.querySelector("img");
+      if (!firstImage) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const firstRect = firstImage.getBoundingClientRect();
+
+      if (firstRect.right < containerRect.left) {
+        carousel.appendChild(firstImage);
+        const gap = 14; // matches CSS gap
+        const imageTotalWidth = firstImage.offsetWidth + gap;
+        carousel.style.left = (carousel.offsetLeft + imageTotalWidth) + "px";
+      }
+
+      rafId = requestAnimationFrame(stepCarousel);
+    }
+
+    function startCarousel() {
+      if (paused) return;
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(stepCarousel);
+    }
+
+    function stopCarousel() {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      paused = !paused;
+      toggleBtn.setAttribute("aria-pressed", String(paused));
+      toggleBtn.textContent = paused ? "Play" : "Pause";
+      if (paused) stopCarousel();
+      else startCarousel();
+    });
+
+    // Initialize button label correctly
+    toggleBtn.setAttribute("aria-pressed", String(paused));
+    toggleBtn.textContent = paused ? "Play" : "Pause";
+
+    // Start if allowed
+    if (!paused) startCarousel();
+  </script>
+
+  <script>
+    /* =========================================================
+       Typing Demo + Search Result
+       - Writes into readonly input (more accessible than a span)
+       - Stops animation for prefers-reduced-motion
+    ========================================================= */
+    const input = document.getElementById("searchDemoInput");
+    const resultBox = document.getElementById("searchResult");
+    const scrollIndicator = document.getElementById("scroll-indicator");
+
+    const demoText = "what is beech leaf disease?";
+    let idx = 0;
+
+    function typeIntoInput() {
+      if (prefersReducedMotion) {
+        input.value = demoText;
+        resultBox.classList.add("visible");
+        scrollIndicator.classList.add("visible");
+        return;
+      }
+
+      if (idx < demoText.length) {
+        input.value += demoText.charAt(idx);
+        idx++;
+        setTimeout(typeIntoInput, 70);
+      } else {
+        setTimeout(() => {
+          resultBox.classList.add("visible");
+          setTimeout(() => scrollIndicator.classList.add("visible"), 900);
+        }, 350);
+      }
+    }
+
+    window.addEventListener("load", () => {
+      // Start slightly after load so SR/AT has a stable page
+      setTimeout(typeIntoInput, 250);
+    });
+  </script>
+</body>
+</html>
