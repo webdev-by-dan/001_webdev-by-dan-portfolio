@@ -517,7 +517,7 @@
     const phRect = ph.getBoundingClientRect();
 
     if (mode === "bottom") {
-      const flowTopY = vh - navH;
+      const flowTopY = vh;
 
       if (phRect.top <= flowTopY + EPS) {
         setMode("flow");
@@ -531,7 +531,7 @@
         return;
       }
 
-      const flowTopY = vh;
+      const flowTopY = vh - navH;
       if (phRect.top > flowTopY + EPS) {
         setMode("bottom");
       }
