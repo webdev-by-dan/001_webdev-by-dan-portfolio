@@ -8,6 +8,11 @@
    - Accessible modal
    - Contact form validation
    - Mobile sticky bar (bottom/flow/top)
+
+   Changes requested:
+   - While mobile menu is open: disable smooth scrolling / force instant anchor jumps
+   - Make mobile nav links jump instantly (no smooth animation) and prevent "walking" highlight
+   - Add html[data-menu-open] attribute toggling so CSS can disable scroll-behavior reliably
 ========================================================= */
 
 /* =========================================================
@@ -19,15 +24,6 @@
 
   const toggles = () =>
     Array.from(document.querySelectorAll("[data-theme-toggle]"));
-
-    function withThemeTransition() {
-    // Avoid stacking timers
-    root.classList.add("theme-transition");
-    window.clearTimeout(withThemeTransition._t);
-    withThemeTransition._t = window.setTimeout(() => {
-        root.classList.remove("theme-transition");
-    }, 450);
-    }
 
   function getPreferredTheme() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -110,19 +106,19 @@
   }
 
   function setTheme(theme) {
-    root.classList.add("theme-transition"); // 1️⃣ enable transitions
-    root.setAttribute("data-theme", theme); // 2️⃣ change theme
+    // Enable global theme transition class for CSS
+    root.classList.add("theme-transition");
+
+    root.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
     syncButtons(theme);
     swapThemeAssets(theme);
 
     clearTimeout(setTheme._t);
     setTheme._t = setTimeout(() => {
-        root.classList.remove("theme-transition"); // 3️⃣ cleanup
+      root.classList.remove("theme-transition");
     }, 250);
-    }
-
-
+  }
 
   // Init
   setTheme(getPreferredTheme());
@@ -169,98 +165,149 @@
 
   /* =========================================================
      MOBILE FULLSCREEN MENU (re-uses EXISTING desktop sidebar)
-     Requirements (you already have most):
+     Requirements:
      - button#mobileMenuBtn
-     - Add an X button inside <div class="left__inner">:
-         <button class="menuClose" type="button" data-menu-close aria-label="Close menu">×</button>
+     - X button inside <div class="left__inner">:
+       <button class="menuClose" type="button" data-menu-close aria-label="Close menu">×</button>
 
      Behavior:
      - Starts CLOSED on mobile
      - Opens ONLY via hamburger
-     - Closes ONLY via X button (NOT Esc, NOT outside click, NOT link click)
+     - Closes ONLY via X button
      - Locks background scroll while open
-     - Adds body.menu-open class for your CSS to render fullscreen
-     - Toggles .is-open on #mobileMenuBtn for hamburger->X animation
+     - Adds:
+         body.menu-visible (mounted for animation)
+         body.menu-open (open state)
+         html[data-menu-open] (for CSS to disable smooth scroll reliably)
+     - Nav links: instant jump (no smooth scroll) + avoid highlight "walking"
   ========================================================= */
-    /* ===== Mobile fullscreen menu (animated) ===== */
-    const menuBtn = qs("#mobileMenuBtn");
-    const closeBtn = qs("[data-menu-close]");
-    const mq = window.matchMedia("(max-width: 900px)");
-    const ANIM_MS = 350;
+  const menuBtn = qs("#mobileMenuBtn");
+  const closeBtn = qs("[data-menu-close]");
+  const menuRoot =
+    qs("aside.left") || qs(".left") || qs("nav[aria-label='Primary']") || null;
 
-    function isMenuOpen() {
+  const mq = window.matchMedia("(max-width: 900px)");
+  const ANIM_MS = 350;
+
+  function isMenuOpen() {
     return document.body.classList.contains("menu-open");
-    }
+  }
 
-    function openMenu() {
+  function setMenuOpenAttr(open) {
+    // Lets CSS do: html[data-menu-open="true"] { scroll-behavior:auto; }
+    document.documentElement.toggleAttribute("data-menu-open", open);
+  }
+
+  function openMenu() {
     if (!mq.matches) return;
 
-    // Mount + start closed position (CSS: translateX(-100%))
+    // Mount (present but off-screen for animation)
     document.body.classList.add("menu-visible");
+    setMenuOpenAttr(true);
 
-    // Next frame -> slide in (CSS transition to translateX(0))
+    // Next frame -> slide in (CSS transition)
     requestAnimationFrame(() => {
-        document.body.classList.add("menu-open");
+      document.body.classList.add("menu-open");
     });
 
     document.body.style.overflow = "hidden";
-    if (menuBtn) {
-        menuBtn.setAttribute("aria-expanded", "true");
-        menuBtn.setAttribute("aria-label", "Menu open");
-        // (optional) remove animation class entirely if you don't want hamburger->X:
-        menuBtn.classList.remove("is-open");
-    }
-    }
 
-    function closeMenu() {
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", "true");
+      menuBtn.setAttribute("aria-label", "Menu open");
+      // You said you don't want hamburger->X animation
+      menuBtn.classList.remove("is-open");
+    }
+  }
+
+  function closeMenu() {
     // Slide out
     document.body.classList.remove("menu-open");
     document.body.style.overflow = "";
+    setMenuOpenAttr(false);
 
     if (menuBtn) {
-        menuBtn.setAttribute("aria-expanded", "false");
-        menuBtn.setAttribute("aria-label", "Open menu");
-        menuBtn.classList.remove("is-open");
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.setAttribute("aria-label", "Open menu");
+      menuBtn.classList.remove("is-open");
     }
 
     // After transition finishes, unmount
     window.setTimeout(() => {
-        document.body.classList.remove("menu-visible");
+      document.body.classList.remove("menu-visible");
     }, ANIM_MS);
-    }
+  }
 
-    if (menuBtn) {
+  if (menuBtn) {
     // Start closed
     document.body.classList.remove("menu-open", "menu-visible");
     document.body.style.overflow = "";
+    setMenuOpenAttr(false);
+
     menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.setAttribute("aria-label", "Open menu");
     menuBtn.classList.remove("is-open");
 
     // Click hamburger: OPEN only (does not close)
     menuBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (!isMenuOpen()) openMenu();
+      e.preventDefault();
+      if (!isMenuOpen()) openMenu();
     });
-    }
+  }
 
-    // Close ONLY via X
-    if (closeBtn) {
+  // Close ONLY via X
+  if (closeBtn) {
     closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closeMenu();
+      e.preventDefault();
+      closeMenu();
     });
-    }
+  }
 
-    // If resized to desktop, ensure closed
-    mq.addEventListener("change", () => {
+  // If resized to desktop, ensure closed
+  mq.addEventListener("change", () => {
     closeMenu();
-    });
+  });
 
+  /* =========================================================
+     INSTANT ANCHOR JUMPS (MOBILE MENU ONLY)
+     - Prevent smooth scroll / highlight "walking" by:
+       1) preventing default anchor
+       2) closing menu
+       3) scrollIntoView({behavior:"auto"})
+  ========================================================= */
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!isMenuOpen()) return;
+      if (!mq.matches) return;
+
+      const link = e.target.closest("a[href^='#']");
+      if (!link) return;
+
+      // Only handle links that are inside the menu/sidebar area
+      if (menuRoot && !menuRoot.contains(link)) return;
+
+      const hash = link.getAttribute("href") || "";
+      const id = hash.slice(1);
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      e.preventDefault();
+
+      // Close menu first (so layout goes back to normal)
+      closeMenu();
+
+      // Instant jump (no smooth)
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+    },
+    true
+  );
 
   /* =========================================================
      ACTIVE NAV HIGHLIGHTING
-     (Keeps working for both desktop sidebar and the fullscreen mobile state)
+     (Keeps working for both desktop sidebar and fullscreen mobile state)
   ========================================================= */
   const navLinks = qsa(".navlink, nav[aria-label='Primary'] .navlink");
   const sections = qsa("main .section, footer").filter((el) => el.id);
@@ -301,9 +348,7 @@
       const b = e.target.closest("button[data-filter]");
       if (!b) return;
 
-      qsa(".filterBtn", filterWrap).forEach((x) =>
-        x.classList.remove("is-active")
-      );
+      qsa(".filterBtn", filterWrap).forEach((x) => x.classList.remove("is-active"));
       b.classList.add("is-active");
       filterSelection(b.getAttribute("data-filter") || "all");
     });

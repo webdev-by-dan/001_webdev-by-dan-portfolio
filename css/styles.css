@@ -998,26 +998,25 @@ html[data-theme="dark"] .footer{
     border: 1px solid rgba(11,18,32,.14);
   }
 
-  /* Mobile bar visible on mobile */
   .mobileHeroWrap .mobilebar{
-    display: flex;
-    height: var(--mobilebarH);
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
+  display: flex;                 /* ✅ brings it back */
+  height: var(--mobilebarH);     /* ✅ restores size */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
 
-    /* UPDATED: remove transparency */
-    background-color: var(--bg);
+  background-color: var(--heroCream); /* cream, as you want */
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  padding: 0 12px;
+  z-index: 999;
+}
 
-    border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-    padding: 0 12px;
-    z-index: 999;
-  }
 
   html[data-theme="dark"] .mobileHeroWrap .mobilebar{
-    /* UPDATED: remove transparency + blur */
-    background-color: var(--bg);
+    background-color: var(--heroCream);
     border-top: 1px solid var(--border);
+
+    /* optional: if you don't want any translucency/blur */
     backdrop-filter: none;
   }
 
@@ -1038,7 +1037,7 @@ html[data-theme="dark"] .footer{
     height: 46px;
     border-radius: 14px;
     border: 1px solid var(--border);
-    background-color: var(--card);
+    background-color: var(--cream2);
     color: var(--text);
     cursor: pointer;
   }
@@ -1084,76 +1083,6 @@ html[data-theme="dark"] .footer{
     background-color: color-mix(in srgb, var(--card) 85%, transparent);
     border: 1px solid rgba(238,242,255,.14);
     box-shadow: 0 14px 30px rgba(0,0,0,.55);
-  }
-}
-
-/* #########################################################
-   ##### MOBILE MENU (FULLSCREEN OVERLAY)
-   Works with:
-   - nav#mobileMenu.mobilebar__menu[hidden]
-   - optional close button: .mobileMenu__close[data-menu-close]
-   - optional panel wrapper: .mobileMenu__panel
-######################################################### */
-@media (max-width: 780px){
-  .mobilebar__menu{
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-
-    display: grid;
-    place-items: center;
-
-    padding: 18px;
-
-    /* UPDATED: remove transparency + blur from overlay */
-    background-color: var(--bg);
-    backdrop-filter: none;
-  }
-
-  .mobileMenu__panel{
-    width: min(520px, 100%);
-    background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    box-shadow: var(--shadow);
-    padding: 22px 18px 18px;
-  }
-
-  .mobileMenu__close{
-    position: fixed;
-    top: 14px;
-    right: 14px;
-    width: 48px;
-    height: 48px;
-    border-radius: 14px;
-
-    border: 1px solid var(--border);
-    background-color: var(--card);
-    color: var(--text);
-    cursor: pointer;
-    box-shadow: var(--shadow);
-  }
-
-  .mobilebar__menu .navlist{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 10px;
-    text-align: center;
-  }
-
-  .mobilebar__menu .navlink{
-    display: block;
-    padding: 14px 16px;
-    border-radius: 16px;
-    text-decoration: none;
-    color: var(--text);
-    border: 1px solid transparent;
-    font-weight: 700;
-  }
-  .mobilebar__menu .navlink:hover{
-    background-color: color-mix(in srgb, var(--orange) 12%, transparent);
   }
 }
 
@@ -1204,7 +1133,7 @@ html[data-theme="dark"] .footer{
 }
 
 /* ===== FULLSCREEN MOBILE MENU (uses existing left sidebar markup) ===== */
-@media (max-width: 900px) {
+@media (max-width: 780px) {
   /* Default: hide sidebar on mobile */
   .left { display: none; }
 
@@ -1286,17 +1215,27 @@ html[data-theme="dark"] .footer{
     width: 100%;
   }
 
-  body.menu-visible nav[aria-label="Primary"] .navlink {
-    display: block;
-    width: min(92vw, 520px);
-    padding: 14px 16px;
-    text-align: center;
-    font-size: clamp(18px, 4.8vw, 22px);
+  body.menu-visible nav[aria-label="Primary"] .navlink{
+    width: 100%;
+    max-width: 520px;
+
+    box-sizing: border-box;
+    padding: 12px 14px;
+
+    font-size: clamp(16px, 4.2vw, 20px);
     line-height: 1.15;
-    color: inherit;
-    text-decoration: none;
-    border-radius: 14px;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
+
+  @media (max-width: 780px){
+  body.menu-visible .left,
+  body.menu-visible .left__inner{
+    overflow-x: hidden;
+  }
+}
+
 
   body.menu-visible nav[aria-label="Primary"] .navlink:hover {
     background-color: rgba(127,127,127,0.12);
@@ -1429,9 +1368,58 @@ html[data-theme="dark"] .footer{
 }
 
 /* Show it only on mobile (or whatever breakpoint you use for the fullscreen menu) */
-@media (max-width: 900px){
+@media (max-width: 780px){
   body.menu-visible .menuClose,
   body.menu-open .menuClose{
     display: flex;
   }
 }
+
+@media (max-width: 780px){
+  /* Put theme toggle + icons in one centered row */
+  body.menu-visible .sideFooter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  body.menu-visible .sideFooter__row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Make the theme toggle compact so it doesn't steal width */
+  body.menu-visible .themeToggle{
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  /* Hide the "Dark mode/Light mode" text ONLY in mobile menu to save space */
+  body.menu-visible .themeToggle__text{
+    display: none;
+  }
+}
+
+@media (max-width: 780px){
+  body.menu-open{
+    scroll-behavior: auto;
+  }
+  body.menu-open html{
+    scroll-behavior: auto;
+  }
+}
+
+/* More reliable (some browsers only respect this on html) */
+@media (max-width: 780px){
+  body.menu-open{
+    scroll-behavior: auto;
+  }
+  html[data-menu-open="true"]{
+    scroll-behavior: auto;
+  }
+}
+
