@@ -8,6 +8,13 @@
    - Accessible modal
    - Contact form validation
    - Mobile sticky bar (bottom/flow/top)
+
+   Fixes added:
+   - Use stable viewport height (visualViewport or documentElement.clientHeight)
+   - Guard against iOS rubber-band / drag-bounce so sticky doesn’t “dip” or flicker
+   - Measure nav height with offsetHeight (more stable than getBoundingClientRect while fixed)
+   - Add HYST buffer in both directions to reduce threshold flicker
+   - Listen to visualViewport resize/scroll (mobile URL bar changes)
 ========================================================= */
 
 /* =========================================================
@@ -20,14 +27,14 @@
   const toggles = () =>
     Array.from(document.querySelectorAll("[data-theme-toggle]"));
 
-    function withThemeTransition() {
+  function withThemeTransition() {
     // Avoid stacking timers
     root.classList.add("theme-transition");
     window.clearTimeout(withThemeTransition._t);
     withThemeTransition._t = window.setTimeout(() => {
-        root.classList.remove("theme-transition");
+      root.classList.remove("theme-transition");
     }, 450);
-    }
+  }
 
   function getPreferredTheme() {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -110,22 +117,22 @@
   }
 
   function setTheme(theme) {
-    root.classList.add("theme-transition"); // 1️⃣ enable transitions
-    root.setAttribute("data-theme", theme); // 2️⃣ change theme
+    root.classList.add("theme-transition"); // enable transitions
+    root.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
     syncButtons(theme);
     swapThemeAssets(theme);
 
     clearTimeout(setTheme._t);
     setTheme._t = setTimeout(() => {
-        root.classList.remove("theme-transition"); // 3️⃣ cleanup
+      root.classList.remove("theme-transition");
     }, 250);
-    }
+  }
 
   // Init
   setTheme(getPreferredTheme());
 
-  // Toggle click (robust: prevents link navigation / other click handlers hijacking)
+  // Toggle click
   document.addEventListener("click", (e) => {
     const toggleBtn = e.target.closest("[data-theme-toggle]");
     if (!toggleBtn) return;
@@ -167,98 +174,73 @@
 
   /* =========================================================
      MOBILE FULLSCREEN MENU (re-uses EXISTING desktop sidebar)
-     Requirements (you already have most):
-     - button#mobileMenuBtn
-     - Add an X button inside <div class="left__inner">:
-         <button class="menuClose" type="button" data-menu-close aria-label="Close menu">×</button>
-
-     Behavior:
-     - Starts CLOSED on mobile
-     - Opens ONLY via hamburger
-     - Closes ONLY via X button (NOT Esc, NOT outside click, NOT link click)
-     - Locks background scroll while open
-     - Adds body.menu-open class for your CSS to render fullscreen
-     - Toggles .is-open on #mobileMenuBtn for hamburger->X animation
   ========================================================= */
-    /* ===== Mobile fullscreen menu (animated) ===== */
-    const menuBtn = qs("#mobileMenuBtn");
-    const closeBtn = qs("[data-menu-close]");
-    const mq = window.matchMedia("(max-width: 900px)");
-    const ANIM_MS = 350;
+  const menuBtn = qs("#mobileMenuBtn");
+  const closeBtn = qs("[data-menu-close]");
+  const mq = window.matchMedia("(max-width: 900px)");
+  const ANIM_MS = 350;
 
-    function isMenuOpen() {
+  function isMenuOpen() {
     return document.body.classList.contains("menu-open");
-    }
+  }
 
-    function openMenu() {
+  function openMenu() {
     if (!mq.matches) return;
 
-    // Mount + start closed position (CSS: translateX(-100%))
     document.body.classList.add("menu-visible");
-
-    // Next frame -> slide in (CSS transition to translateX(0))
     requestAnimationFrame(() => {
-        document.body.classList.add("menu-open");
+      document.body.classList.add("menu-open");
     });
 
     document.body.style.overflow = "hidden";
     if (menuBtn) {
-        menuBtn.setAttribute("aria-expanded", "true");
-        menuBtn.setAttribute("aria-label", "Menu open");
-        // (optional) remove animation class entirely if you don't want hamburger->X:
-        menuBtn.classList.remove("is-open");
+      menuBtn.setAttribute("aria-expanded", "true");
+      menuBtn.setAttribute("aria-label", "Menu open");
+      menuBtn.classList.remove("is-open"); // keep hamburger (no X anim)
     }
-    }
+  }
 
-    function closeMenu() {
-    // Slide out
+  function closeMenu() {
     document.body.classList.remove("menu-open");
     document.body.style.overflow = "";
 
     if (menuBtn) {
-        menuBtn.setAttribute("aria-expanded", "false");
-        menuBtn.setAttribute("aria-label", "Open menu");
-        menuBtn.classList.remove("is-open");
+      menuBtn.setAttribute("aria-expanded", "false");
+      menuBtn.setAttribute("aria-label", "Open menu");
+      menuBtn.classList.remove("is-open");
     }
 
-    // After transition finishes, unmount
     window.setTimeout(() => {
-        document.body.classList.remove("menu-visible");
+      document.body.classList.remove("menu-visible");
     }, ANIM_MS);
-    }
+  }
 
-    if (menuBtn) {
-    // Start closed
+  if (menuBtn) {
     document.body.classList.remove("menu-open", "menu-visible");
     document.body.style.overflow = "";
     menuBtn.setAttribute("aria-expanded", "false");
     menuBtn.setAttribute("aria-label", "Open menu");
     menuBtn.classList.remove("is-open");
 
-    // Click hamburger: OPEN only (does not close)
     menuBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (!isMenuOpen()) openMenu();
+      e.preventDefault();
+      if (!isMenuOpen()) openMenu();
     });
-    }
+  }
 
-    // Close ONLY via X
-    if (closeBtn) {
+  if (closeBtn) {
     closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        closeMenu();
+      e.preventDefault();
+      closeMenu();
     });
-    }
+  }
 
-    // If resized to desktop, ensure closed
-    mq.addEventListener("change", () => {
+  mq.addEventListener("change", () => {
     closeMenu();
-    });
-
+  });
 
   /* =========================================================
      ACTIVE NAV HIGHLIGHTING
-     (Keeps working for both desktop sidebar and the fullscreen mobile state)
   ========================================================= */
   const navLinks = qsa(".navlink, nav[aria-label='Primary'] .navlink");
   const sections = qsa("main .section, footer").filter((el) => el.id);
@@ -455,7 +437,6 @@
         return;
       }
 
-      // allow Netlify submit normally
       if (contactMsg) contactMsg.textContent = "Sending…";
     });
   }
@@ -463,10 +444,24 @@
 
 /* =========================================================
    BOTTOM -> FLOW -> TOP STICKY NAV (WITH HYSTERESIS)
+   Fixes:
+   - stable VH (visualViewport / clientHeight)
+   - overscroll guard (y<=0) to prevent “dip” on drag
+   - stable nav height (offsetHeight)
+   - hysteresis buffer
+   - listen to visualViewport resize/scroll
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
   if (!nav) return;
+
+  // Stable viewport height helper (mobile URL bar / bounce friendly)
+  function getVH() {
+    if (window.visualViewport && window.visualViewport.height) {
+      return Math.round(window.visualViewport.height);
+    }
+    return document.documentElement.clientHeight;
+  }
 
   // Placeholder keeps layout from jumping when nav is fixed
   const ph = document.createElement("div");
@@ -493,19 +488,33 @@
   const update = () => {
     ticking = false;
 
-    const navH = nav.getBoundingClientRect().height;
-    const vh = window.innerHeight;
+    const vh = getVH();
+    const y = window.scrollY || window.pageYOffset || 0;
 
     const EPS = 1;
+    const HYST = 12; // try 8–16
 
+    // ✅ iOS rubber-band / drag-bounce guard:
+    // when you’re “pulling” at the top, avoid locking/unlocking calculations entirely.
+    if (y <= 0) {
+      setMode("flow");
+      return;
+    }
+
+    // More stable height measurement while fixed vs getBoundingClientRect()
+    const navH = nav.offsetHeight;
+
+    // FLOW mode decisions are based on current nav position relative to viewport
     if (mode === "flow") {
       const navRect = nav.getBoundingClientRect();
 
+      // If the nav’s bottom is beyond the visible viewport, lock it to bottom
       if (navRect.bottom > vh + EPS) {
         setMode("bottom");
         return;
       }
 
+      // If the nav’s top hits the top edge, lock it to top
       if (navRect.top <= 0 + EPS) {
         setMode("top");
         return;
@@ -516,36 +525,29 @@
 
     const phRect = ph.getBoundingClientRect();
 
-    // Add a small hysteresis buffer so it doesn't flicker when near the threshold
-    const HYST = 0; // px (try 8–16)
-
     if (mode === "bottom") {
-    // In bottom-locked mode, we only return to flow once the placeholder
-    // is clearly above the bottom-lock line (with hysteresis).
-    const flowTopY = vh - navH;
-
-    if (phRect.top >= flowTopY - HYST) {
+      // Return to flow only once placeholder is clearly above the bottom-lock line
+      const flowTopY = vh - navH;
+      if (phRect.top <= flowTopY - HYST) {
         setMode("flow");
-    }
-    return;
+      }
+      return;
     }
 
     if (mode === "top") {
-    // In top-locked mode, we only return to flow once the placeholder
-    // is clearly below the top edge (with hysteresis).
-    if (phRect.top >= 0 + HYST) {
+      // Return to flow only once placeholder is clearly below top edge
+      if (phRect.top >= 0 + HYST) {
         setMode("flow");
         return;
-    }
+      }
 
-    // And only switch to bottom when it's clearly below the bottom-lock line
-    const flowTopY = vh - navH;
-    if (phRect.top > flowTopY + HYST) {
+      // Switch to bottom only when placeholder is clearly below bottom-lock line
+      const flowTopY = vh - navH;
+      if (phRect.top > flowTopY + HYST) {
         setMode("bottom");
+      }
+      return;
     }
-    return;
-    }
-
   };
 
   const onScroll = () => {
@@ -563,6 +565,12 @@
     },
     { passive: true }
   );
+
+  // ✅ Important on mobile: URL bar changes sometimes don’t fire normal resize
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", onScroll, { passive: true });
+    window.visualViewport.addEventListener("scroll", onScroll, { passive: true });
+  }
 
   requestAnimationFrame(update);
 })();
