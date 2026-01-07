@@ -17,6 +17,7 @@
    - Listen to visualViewport resize/scroll (mobile URL bar changes)
    - ✅ NEW: On initial load (hero view), if the navbar’s “natural spot” is below the viewport,
            force bottom-sticky immediately (no need to scroll first).
+   - ✅ NEW: On mobile, when clicking #anchor links, subtract mobilebar height so headings aren’t hidden.
 ========================================================= */
 
 /* =========================================================
@@ -30,7 +31,6 @@
     Array.from(document.querySelectorAll("[data-theme-toggle]"));
 
   function withThemeTransition() {
-    // Avoid stacking timers
     root.classList.add("theme-transition");
     window.clearTimeout(withThemeTransition._t);
     withThemeTransition._t = window.setTimeout(() => {
@@ -96,7 +96,6 @@
         }
       });
 
-    // Optional helper attribute for CSS hooks
     root.toggleAttribute("data-theme-dark", isDark);
   }
 
@@ -119,7 +118,7 @@
   }
 
   function setTheme(theme) {
-    root.classList.add("theme-transition"); // enable transitions
+    withThemeTransition();
     root.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
     syncButtons(theme);
@@ -446,19 +445,11 @@
 
 /* =========================================================
    BOTTOM -> FLOW -> TOP STICKY NAV (WITH HYSTERESIS)
-   Fixes:
-   - stable VH (visualViewport / clientHeight)
-   - overscroll guard (y<0) to prevent “dip” on drag
-   - stable nav height (offsetHeight)
-   - hysteresis buffer
-   - listen to visualViewport resize/scroll
-   - ✅ NEW: initial bottom-lock when nav’s natural position is below viewport
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
   if (!nav) return;
 
-  // Stable viewport height helper (mobile URL bar / bounce friendly)
   function getVH() {
     if (window.visualViewport && window.visualViewport.height) {
       return Math.round(window.visualViewport.height);
@@ -466,14 +457,12 @@
     return document.documentElement.clientHeight;
   }
 
-  // Placeholder keeps layout from jumping when nav is fixed
   const ph = document.createElement("div");
   ph.className = "mobilebar-placeholder";
   ph.style.height = `${nav.offsetHeight}px`;
   ph.style.display = "none";
   nav.parentNode.insertBefore(ph, nav);
 
-  // Modes: "flow" (normal) | "bottom" (fixed bottom) | "top" (fixed top)
   let mode = "flow";
   let ticking = false;
 
@@ -488,19 +477,13 @@
     nav.classList.toggle("is-lockedTop", mode === "top");
   };
 
-  // NEW: force initial bottom sticky if nav’s natural spot is below the viewport
   function initBottomLockIfNeeded() {
     const vh = getVH();
     const navRect = nav.getBoundingClientRect();
     const EPS = 1;
 
-    // If the navbar’s bottom is below the visible viewport on load,
-    // lock it to bottom immediately.
-    if (navRect.bottom > vh + EPS) {
-      setMode("bottom");
-    } else {
-      setMode("flow");
-    }
+    if (navRect.bottom > vh + EPS) setMode("bottom");
+    else setMode("flow");
   }
 
   const update = () => {
@@ -510,18 +493,15 @@
     const y = window.scrollY || window.pageYOffset || 0;
 
     const EPS = 1;
-    const HYST = 0; // try 8–16 if you still see flicker
+    const HYST = 0;
 
-    // Rubber-band guard (only when you’re *past* the top)
     if (y < 0) return;
 
-    const navH = nav.offsetHeight; // stable
+    const navH = nav.offsetHeight;
 
     if (mode === "flow") {
       const navRect = nav.getBoundingClientRect();
 
-      // ✅ For the hero case: if nav’s natural bottom is even slightly below viewport,
-      // lock it to bottom.
       if (navRect.bottom > vh + EPS) {
         setMode("bottom");
         return;
@@ -538,20 +518,17 @@
     const phRect = ph.getBoundingClientRect();
 
     if (mode === "bottom") {
-      // Return to flow only once placeholder is clearly above the bottom-lock line
       const flowTopY = vh - navH;
       if (phRect.top <= flowTopY - HYST) setMode("flow");
       return;
     }
 
     if (mode === "top") {
-      // Return to flow only once placeholder is clearly below top edge
       if (phRect.top >= 0 + HYST) {
         setMode("flow");
         return;
       }
 
-      // Switch to bottom only when placeholder is clearly below bottom-lock line
       const flowTopY = vh - navH;
       if (phRect.top > flowTopY + HYST) setMode("bottom");
       return;
@@ -579,14 +556,12 @@
     window.visualViewport.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  // ✅ Run init after layout/paint so measurements are correct on mobile
   window.addEventListener("load", () => {
     ph.style.height = `${nav.offsetHeight}px`;
     initBottomLockIfNeeded();
     onScroll();
   });
 
-  // Also run once ASAP (then load will correct it if images/fonts shift layout)
   requestAnimationFrame(() => {
     ph.style.height = `${nav.offsetHeight}px`;
     initBottomLockIfNeeded();
@@ -596,6 +571,7 @@
 
 /* =========================================================
    MOBILE MENU: close first, then smooth-scroll to anchor
+   ✅ UPDATED: subtract mobilebar height so section headers aren’t hidden
 ========================================================= */
 (() => {
   const mq = window.matchMedia("(max-width: 900px)");
@@ -604,6 +580,9 @@
 
   const menuRoot = document.querySelector("aside.left, .left");
   if (!menuRoot) return;
+
+  const nav = document.querySelector(".mobileHeroWrap .mobilebar");
+  const getNavH = () => (nav ? nav.offsetHeight : 0);
 
   const isMenuOpen = () => document.body.classList.contains("menu-open");
 
@@ -622,6 +601,16 @@
     window.setTimeout(() => {
       document.body.classList.remove("menu-visible");
     }, ANIM_MS);
+  };
+
+  const getY = (el) => {
+    const r = el.getBoundingClientRect();
+    return (window.pageYOffset || window.scrollY || 0) + r.top;
+  };
+
+  const smoothScrollWithOffset = (target) => {
+    const y = Math.max(0, Math.round(getY(target) - getNavH()));
+    window.scrollTo({ top: y, behavior: "smooth" });
   };
 
   document.addEventListener(
@@ -646,7 +635,7 @@
       closeMenu();
 
       window.setTimeout(() => {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        smoothScrollWithOffset(target);
 
         window.setTimeout(() => {
           if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
@@ -660,8 +649,7 @@
 
 /* =========================================================
    MOBILE (< = 780px): anchor clicks scroll to section
-   but offset by the mobilebar height (so headings aren’t hidden)
-   - Works for clicks in BOTH the mobilebar and the sidebar nav
+   ✅ FIXED: subtract (not add) mobilebar height; removed the accidental +2000
 ========================================================= */
 (() => {
   const mq = window.matchMedia("(max-width: 780px)");
@@ -675,8 +663,7 @@
   };
 
   function scrollToWithOffset(target) {
-    const navH = getNavH();
-    const y = Math.max(0, Math.round(getY(target) - navH));
+    const y = Math.max(0, Math.round(getY(target) - getNavH()));
     window.scrollTo({ top: y, behavior: "smooth" });
   }
 
@@ -695,16 +682,12 @@
       const target = document.getElementById(id);
       if (!target) return;
 
-      // Let other handlers (like your “close menu then scroll” handler)
-      // run first if they want to cancel this.
+      // Let the menu handler (above) take precedence when it prevents default.
       if (e.defaultPrevented) return;
 
       e.preventDefault();
-
-      // If you have a sticky mobilebar, subtract its height
       scrollToWithOffset(target);
 
-      // Optional a11y: move focus without jumping again
       setTimeout(() => {
         if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
@@ -713,4 +696,3 @@
     true
   );
 })();
-
