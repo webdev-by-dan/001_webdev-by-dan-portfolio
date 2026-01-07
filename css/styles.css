@@ -661,7 +661,7 @@ html[data-theme="dark"] .btn--ghost:hover{
   box-shadow: var(--shadow);
   text-align: center;
 }
-.priceCard__kicker{ text-align: center; margin: 0 0 8px; }
+.priceCard__kicker{text-align: center; margin: 0 0 8px; }
 .priceCard__price{ text-align: center; margin: 0 0 10px; font-weight: 800; }
 .checkList{ margin: 0; padding-left: 18px; }
 .checkList li{ margin: 8px 0; }
@@ -1503,5 +1503,6 @@ html[data-theme="dark"] .footer{
 @media (max-width: 780px){
   .rating {
     text-align: center;
+    font-size: 1.8rem !important;
   }
 }
