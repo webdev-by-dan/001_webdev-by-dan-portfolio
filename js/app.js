@@ -524,7 +524,7 @@
     // is clearly above the bottom-lock line (with hysteresis).
     const flowTopY = vh - navH;
 
-    if (phRect.top <= flowTopY - HYST) {
+    if (phRect.top >= flowTopY - HYST) {
         setMode("flow");
     }
     return;
