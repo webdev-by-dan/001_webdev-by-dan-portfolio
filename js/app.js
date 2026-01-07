@@ -531,7 +531,7 @@
         return;
       }
 
-      const flowTopY = vh - navH;
+      const flowTopY = vh;
       if (phRect.top > flowTopY + EPS) {
         setMode("bottom");
       }
