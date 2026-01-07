@@ -320,10 +320,8 @@ html[data-theme="dark"] .themeToggle:hover{ background-color: var(--surface); }
   background-color:
     linear-gradient(0deg, var(--sectionTint), var(--sectionTint)),
     var(--bg);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 0;
   border-top: 1px solid var(--border);
-  outline: 1px solid var(--sectionOutline);
-  outline-offset: -1px;
 }
 
 /* Section-by-section tints */
@@ -331,8 +329,6 @@ html[data-theme="dark"] .themeToggle:hover{ background-color: var(--surface); }
   --sectionTint: var(--tint-blue);
   --sectionOutline: var(--outline-blue);
   background-color: var(--sky);
-  outline: 1px solid var(--outline-blue);
-  outline-offset: -1px;
 }
 :root main .section:nth-of-type(2){ --sectionTint: var(--tint-green);  --sectionOutline: var(--outline-green); }
 :root main .section:nth-of-type(3){ --sectionTint: var(--tint-yellow); --sectionOutline: var(--outline-yellow); }
@@ -1006,7 +1002,7 @@ html[data-theme="dark"] .footer{
   gap: 0;
 
   background-color: var(--heroCream); /* cream, as you want */
-  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-top: 0;
   padding: 0 12px;
   z-index: 999;
 }
@@ -1014,7 +1010,7 @@ html[data-theme="dark"] .footer{
 
   html[data-theme="dark"] .mobileHeroWrap .mobilebar{
     background-color: var(--heroCream);
-    border-top: 1px solid var(--border);
+    border-top: 0;
 
     /* optional: if you don't want any translucency/blur */
     backdrop-filter: none;
