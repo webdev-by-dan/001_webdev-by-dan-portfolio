@@ -1,34 +1,58 @@
-/* =========================
-   THEME TOKENS (LIGHT)
-========================= */
+/* =========================================================
+   Web Dev by Dan — Modern, WCAG-minded theme CSS
+   Dark mode driven by: html[data-theme="dark"]
+   Notes:
+   - Cleaned + organized into sections
+   - Removed newsletter-specific styling
+   - UPDATED: removed transparency from mobile nav overlay backgrounds
+   - UPDATED (per request):
+     • Dark mode: ghost buttons use BLACK text (mobile + desktop)
+     • Mobile: About facts = 1 per row
+     • Mobile: Service cards centered (icon/text/button)
+     • Mobile: Portfolio centered + 1 per row
+     • Light mode: colorful section tints + outlines (no adjacent repeats)
+========================================================= */
+
+/* #########################################################
+   ##### THEME TOKENS (LIGHT)
+######################################################### */
 :root{
   color-scheme: light;
 
+  /* Brand */
   --orange:  #c2410c;
   --orange2: #ea580c;
   --orange3: #9a3412;
 
+  /* Surfaces */
   --bg:      #f6f7fb;
   --surface: #ffffff;
   --card:    #ffffff;
 
+  /* Text */
   --text:  #0b1220;
   --muted: #334155;
 
+  /* Borders / Radius / Shadow */
   --border: rgba(11,18,32,.14);
   --radius: 18px;
   --shadow: 0 16px 36px rgba(11,18,32,.12);
 
+  /* Links */
   --link: #9a3412;
   --linkHover: #7c2d12;
 
+  /* Focus */
   --focus: #1d4ed8;
 
+  /* Cream */
   --cream:  #f8f5f1;
   --cream2: #f2ede7;
 
+  /* Hero/Footer “sky” */
   --sky: #a9dcf998;
 
+  /* Section tints (bright + slight transparency) */
   --tint-red:    rgba(239, 68, 68, 0.16);
   --tint-orange: rgba(249, 115, 22, 0.16);
   --tint-yellow: rgba(234, 179, 8, 0.18);
@@ -38,6 +62,7 @@
   --tint-pink:   rgba(236, 72, 153, 0.14);
   --tint-teal:   rgba(20, 184, 166, 0.14);
 
+  /* Matching outlines */
   --outline-red:    rgba(153, 27, 27, 0.45);
   --outline-orange: rgba(154, 52, 18, 0.45);
   --outline-yellow: rgba(133, 77, 14, 0.45);
@@ -47,21 +72,24 @@
   --outline-pink:   rgba(157, 23, 77, 0.40);
   --outline-teal:   rgba(15, 118, 110, 0.38);
 
+  /* Defaults used by section tint system */
   --sectionTint: rgba(0,0,0,0);
   --sectionOutline: rgba(11,18,32,.14);
 
+  /* Hero text */
   --heroText: var(--text);
   --heroShadow: none;
 
+  /* Buttons (WCAG-minded) */
   --btnBg:     var(--orange2);
   --btnHover:  var(--orange3);
   --btnText:   #0b1220;
   --btnBorder: rgba(11,18,32,.28);
 }
 
-/* =========================
-   THEME TOKENS (DARK)
-========================= */
+/* #########################################################
+   ##### THEME TOKENS (DARK)
+######################################################### */
 html[data-theme="dark"]{
   color-scheme: dark;
 
@@ -96,23 +124,25 @@ html[data-theme="dark"]{
   --btnBorder: rgba(238,242,255,.18);
 }
 
-@media (prefers-reduced-motion: no-preference){
+@media (prefers-reduced-motion: no-preference) {
   html.theme-transition,
-  html.theme-transition *{
-    transition-property: color, border-color, fill, stroke;
+  html.theme-transition * {
+    transition-property:
+      color,
+      border-color,
+      fill,
+      stroke;
     transition-duration: 0.05s;
     transition-timing-function: ease-in-out;
     transition-delay: 0s !important;
   }
 }
 
-/* =========================
-   BASE / RESETS / A11Y
-========================= */
+/* #########################################################
+   ##### BASE / RESETS / A11Y
+######################################################### */
 *{ box-sizing: border-box; }
-
 html{ scroll-behavior: smooth; }
-
 body{
   margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -120,7 +150,6 @@ body{
   color: var(--text);
   line-height: 1.6;
 }
-
 img{ max-width: 100%; height: auto; }
 
 a{
@@ -128,12 +157,28 @@ a{
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-
 a:hover{ color: var(--linkHover); }
 
 .muted{ color: var(--muted); }
 
 :focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.skip-link{
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  transform: translateY(-200%);
+  background-color: var(--text);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  z-index: 10000;
+}
+.skip-link:focus{
+  transform: translateY(0);
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
@@ -153,9 +198,9 @@ a:hover{ color: var(--linkHover); }
   padding: 0 18px;
 }
 
-/* =========================
-   LAYOUT (SIDEBAR + MAIN)
-========================= */
+/* #########################################################
+   ##### LAYOUT (SIDEBAR + MAIN)
+######################################################### */
 .site{
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -164,20 +209,20 @@ a:hover{ color: var(--linkHover); }
 
 .right{ min-width: 0; }
 
+/* Desktop hidden; shown in mobile breakpoint */
 .mobilebar{ display: none; }
 
-/* =========================
-   SIDEBAR (DESKTOP)
-========================= */
+/* #########################################################
+   ##### SIDEBAR (DESKTOP)
+######################################################### */
 .left{
   border-right: 1px solid var(--border);
   background-color: var(--card);
 }
-
 html[data-theme="dark"] .left{
+  /* FIX: gradient must be 'background', not 'background-color' */
   background: linear-gradient(180deg, var(--cream2), var(--cream));
 }
-
 .left__inner{
   position: sticky;
   top: 0;
@@ -203,7 +248,6 @@ html[data-theme="dark"] .left{
   display: grid;
   gap: 6px;
 }
-
 .navlink{
   display: block;
   padding: 10px 12px;
@@ -212,11 +256,7 @@ html[data-theme="dark"] .left{
   color: var(--text);
   border: 1px solid transparent;
 }
-
-.navlink:hover{
-  background-color: color-mix(in srgb, var(--orange) 12%, transparent);
-}
-
+.navlink:hover{ background-color: color-mix(in srgb, var(--orange) 12%, transparent); }
 .navlink.is-active{
   border-color: color-mix(in srgb, var(--orange) 40%, transparent);
   background-color: color-mix(in srgb, var(--orange) 16%, transparent);
@@ -229,7 +269,6 @@ html[data-theme="dark"] .left{
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }
-
 .sideFooter__row{
   display: flex;
   gap: 10px;
@@ -242,6 +281,7 @@ html[data-theme="dark"] .left{
   color: var(--muted);
 }
 
+/* Icon links (44x44 min target) */
 .iconLink{
   width: 44px;
   height: 44px;
@@ -254,14 +294,13 @@ html[data-theme="dark"] .left{
   color: var(--text);
   transition: transform 120ms ease, background-color 120ms ease;
 }
-
 .iconLink svg{ fill: currentColor; }
-
 .iconLink:hover{
   background-color: color-mix(in srgb, var(--orange) 10%, transparent);
   transform: translateY(-1px);
 }
 
+/* Theme toggle button */
 .themeToggle{
   min-height: 44px;
   display: inline-flex;
@@ -274,75 +313,72 @@ html[data-theme="dark"] .left{
   color: var(--text);
   cursor: pointer;
 }
-
-.themeToggle:hover{
-  background-color: color-mix(in srgb, var(--orange) 10%, transparent);
-}
-
+.themeToggle:hover{ background-color: color-mix(in srgb, var(--orange) 10%, transparent); }
 html[data-theme="dark"] .themeToggle:hover{ background-color: var(--surface); }
+.themeToggle__text{ font-weight: 600; font-size: 0.95rem; }
 
-.themeToggle__text{
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-/* =========================
-   SECTIONS + TYPOGRAPHY
-========================= */
+/* #########################################################
+   ##### SECTIONS (COLORFUL LIGHT / CLEAN DARK)
+######################################################### */
 .section{
   padding: 56px 0;
   border-bottom: 1px solid var(--border);
   background-color: var(--bg);
 }
 
+/* Tint system (LIGHT MODE ONLY) */
 :root main .section{
+  /* background gradient tint + base bg */
   background:
     linear-gradient(0deg, var(--sectionTint), var(--sectionTint)),
     var(--bg);
+
+  /* bring back outlines per-section (except nav bar; nav isn't a .section) */
   border-top: 1px solid var(--sectionOutline);
   border-bottom: 1px solid var(--sectionOutline);
 }
 
+/* Section-by-section tints (NO adjacent repeats) */
 :root main .section:nth-of-type(1){
-  --sectionTint: var(--tint-red);
-  --sectionOutline: var(--outline-red);
+  --sectionTint: var(--tint-purple);
+  --sectionOutline: var(--outline-purple);
 }
-
+@media (max-width: 700px) {
+  :root main .section:nth-of-type(1){
+  --sectionTint: var(--tint-purple);
+  --sectionOutline: none;
+}
+}
 :root main .section:nth-of-type(2){
   --sectionTint: var(--tint-green);
   --sectionOutline: var(--outline-green);
 }
-
 :root main .section:nth-of-type(3){
   --sectionTint: var(--tint-blue);
   --sectionOutline: var(--outline-blue);
 }
-
 :root main .section:nth-of-type(4){
   --sectionTint: var(--tint-yellow);
   --sectionOutline: var(--outline-yellow);
 }
-
 :root main .section:nth-of-type(5){
   --sectionTint: var(--tint-purple);
   --sectionOutline: var(--outline-purple);
 }
-
 :root main .section:nth-of-type(6){
   --sectionTint: var(--tint-orange);
   --sectionOutline: var(--outline-orange);
 }
-
 :root main .section:nth-of-type(7){
   --sectionTint: var(--tint-teal);
   --sectionOutline: var(--outline-teal);
 }
-
 :root main .section:nth-of-type(8){
   --sectionTint: var(--tint-red);
   --sectionOutline: var(--outline-red);
 }
 
+/* Dark mode: simplify */
 html[data-theme="dark"] main .section{
   background: transparent;
   outline: none;
@@ -351,7 +387,6 @@ html[data-theme="dark"] main .section{
 }
 
 .sectionHead{ margin-bottom: 2rem; }
-
 .sectionHead--center{ text-align: center; }
 
 .kicker{
@@ -361,26 +396,18 @@ html[data-theme="dark"] main .section{
   letter-spacing: .2px;
 }
 
-h1,h2,h3{
-  font-family: "Playfair Display", serif;
-  line-height: 1.15;
-}
-
-h2{
-  margin: 0 0 8px;
-  font-size: clamp(26px, 2.2vw, 34px);
-}
+h1,h2,h3{ font-family: "Playfair Display", serif; line-height: 1.15; }
+h2{ margin: 0 0 8px; font-size: clamp(26px, 2.2vw, 34px); }
 
 .accent{ color: var(--link); }
 
-/* =========================
-   HERO (DESKTOP/TABLET)
-========================= */
+/* #########################################################
+   ##### HERO (DESKTOP/TABLET)
+######################################################### */
 .hero{
   position: relative;
   overflow: clip;
 }
-
 .hero__bg{
   position: absolute;
   inset: 0;
@@ -389,14 +416,14 @@ h2{
   background-position: 66% center;
   z-index: 0;
 }
-
 .hero__overlay{
   position: absolute;
   inset: 0;
+  /* FIX: was background-color:none (invalid-ish); just let it be transparent */
   background: transparent;
 }
-
 html[data-theme="dark"] .hero__overlay{
+  /* FIX: gradient must be 'background' */
   background: linear-gradient(
     90deg,
     rgba(0,0,0,0.60) 0%,
@@ -405,20 +432,26 @@ html[data-theme="dark"] .hero__overlay{
   );
 }
 
+/* Content block */
 .hero__content{
   position: relative;
   z-index: 1;
+
   min-height: clamp(600px, 90vh, 860px);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   text-align: left;
+
   max-width: 66ch;
   padding-block: clamp(44px, 7vh, 96px);
+
   transform: translateX(-32%);
 }
 
+/* Mobile-only hero logo (desktop hides) */
 .hero__mobileLogo{
   display: none;
   margin-bottom: 14px;
@@ -429,7 +462,6 @@ html[data-theme="dark"] .hero__overlay{
   box-shadow: var(--shadow);
   text-decoration: none;
 }
-
 .hero__mobileLogo img{
   display: block;
   width: min(240px, 70vw);
@@ -443,9 +475,9 @@ html[data-theme="dark"] .hero__overlay{
   }
 }
 
-/* =========================
-   HERO TYPE + BUTTONS
-========================= */
+/* #########################################################
+   ##### HERO TYPOGRAPHY + BUTTONS
+######################################################### */
 .hero .eyebrow{
   font-size: clamp(14px, 1.2vw, 16px);
   letter-spacing: 0.14em;
@@ -454,21 +486,18 @@ html[data-theme="dark"] .hero__overlay{
   margin-bottom: 6px;
   opacity: 0.9;
 }
-
 .hero__title{
   font-size: clamp(64px, 8vw, 96px);
   font-weight: 700;
   line-height: 1.05;
   margin: 4px 0 10px;
 }
-
 .hero__sub{
   font-size: clamp(22px, 2.4vw, 22px);
   line-height: 1.35;
   margin-bottom: 24px;
   max-width: 480px;
 }
-
 .hero .eyebrow,
 .hero__title,
 .hero__sub{
@@ -487,26 +516,27 @@ html[data-theme="dark"] .hero__overlay{
   align-items: center;
   justify-content: center;
   gap: 10px;
+
   padding: 14px 20px;
   border-radius: 16px;
+
   background-color: var(--btnBg);
   color: var(--btnText);
   border: 1px solid var(--btnBorder);
+
   text-decoration: none;
   font-weight: 800;
   cursor: pointer;
-  transition:
-    background-color 160ms ease,
-    transform 120ms ease,
-    box-shadow 160ms ease,
-    color 160ms ease;
-}
 
+  transition: background-color 160ms ease,
+              transform 120ms ease,
+              box-shadow 160ms ease,
+              color 160ms ease;
+}
 .btn:hover{
   background-color: var(--btnHover);
   transform: translateY(-1px);
 }
-
 .btn:focus-visible{
   outline: 3px solid var(--focus);
   outline-offset: 3px;
@@ -516,44 +546,43 @@ html[data-theme="dark"] .hero__overlay{
   background-color: var(--card);
   color: var(--link);
 }
-
 .btn--ghost:hover{
   background-color: color-mix(in srgb, var(--link) 10%, var(--card));
   color: var(--text);
 }
 
+/* ✅ REQUEST: In DARK MODE, ghost buttons should have BLACK text (mobile + desktop) */
 html[data-theme="dark"] .btn--ghost{
+  /* make surface light so black text is readable */
   background-color: #ffffff;
   color: #000000;
   border-color: rgba(0,0,0,0.18);
 }
-
 html[data-theme="dark"] .btn--ghost:hover{
   background-color: rgba(255,255,255,0.92);
   color: #000000;
 }
 
 .btn__icon{ font-size: 12px; }
-
 .center{ text-align: center; margin-top: 18px; }
 
-/* =========================
-   ABOUT
-========================= */
+/* #########################################################
+   ##### CONTENT SECTIONS (STRUCTURE YOU ALREADY USE)
+######################################################### */
+
+/* ----- About ----- */
 .aboutGrid{
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 16px;
   align-items: start;
 }
-
 .aboutMedia img{
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   background-color: var(--card);
 }
-
 .aboutText{
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
@@ -561,7 +590,6 @@ html[data-theme="dark"] .btn--ghost:hover{
   padding: 16px;
   box-shadow: var(--shadow);
 }
-
 .subhead{ margin: 12px 0 8px; font-size: 22px; }
 
 .contactList{
@@ -571,7 +599,6 @@ html[data-theme="dark"] .btn--ghost:hover{
   display: grid;
   gap: 8px;
 }
-
 .contactList__label{
   display: block;
   font-weight: 800;
@@ -579,16 +606,13 @@ html[data-theme="dark"] .btn--ghost:hover{
   font-size: 13px;
 }
 
-/* =========================
-   FACTS
-========================= */
+/* ----- Facts ----- */
 .facts{
   margin-top: 16px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
-
 .factCard{
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
@@ -597,15 +621,12 @@ html[data-theme="dark"] .btn--ghost:hover{
   box-shadow: var(--shadow);
 }
 
-/* =========================
-   SERVICES + TAGS
-========================= */
+/* ----- Services ----- */
 .grid4{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
-
 .serviceCard{
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
@@ -613,9 +634,9 @@ html[data-theme="dark"] .btn--ghost:hover{
   padding: 14px;
   box-shadow: var(--shadow);
 }
-
 .serviceCard__icon{ width: 30px; height: 30px; }
 
+/* ----- Tags (if used) ----- */
 .tags{
   display: flex;
   flex-wrap: wrap;
@@ -623,7 +644,6 @@ html[data-theme="dark"] .btn--ghost:hover{
   margin-top: 18px;
   justify-content: center;
 }
-
 .tag{
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
@@ -633,15 +653,12 @@ html[data-theme="dark"] .btn--ghost:hover{
   color: var(--muted);
 }
 
-/* =========================
-   PRICING
-========================= */
+/* ----- Pricing ----- */
 .pricingGrid{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
-
 .priceCard{
   background-color: color-mix(in srgb, var(--card) 90%, transparent);
   border: 1px solid var(--border);
@@ -650,48 +667,38 @@ html[data-theme="dark"] .btn--ghost:hover{
   box-shadow: var(--shadow);
   text-align: center;
 }
-
-.priceCard__kicker{ margin: 0 0 8px; }
-
-.priceCard__price{
-  margin: 0 0 10px;
-  font-weight: 800;
-}
-
+.priceCard__kicker{text-align: center; margin: 0 0 8px; }
+.priceCard__price{ text-align: center; margin: 0 0 10px; font-weight: 800; }
 .checkList{ margin: 0; padding-left: 18px; }
-
 .checkList li{ margin: 8px 0; }
 
-/* =========================
-   PROCESS
-========================= */
+/* ----- Process ----- */
 .process{ background: linear-gradient(180deg, var(--cream2), var(--bg)); }
-
 html:not([data-theme="dark"]) .process{
   background:
     linear-gradient(0deg, var(--sectionTint), var(--sectionTint)),
     var(--bg);
 }
-
 .processGrid{
   display: grid;
   grid-template-columns: 1.2fr .8fr;
   gap: 14px;
   align-items: center;
 }
-
 .processMedia img{
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   background-color: var(--card);
 }
-
 .steps{ padding-left: 18px; }
 
-/* =========================
-   PORTFOLIO
-========================= */
+/* #########################################################
+   ##### PORTFOLIO (3 / 2 / 1) — professional website screenshots
+   Assumes each <img> is a desktop homepage screenshot
+######################################################### */
+
+/* Filter buttons */
 .filter{
   display: flex;
   gap: 10px;
@@ -709,33 +716,36 @@ html:not([data-theme="dark"]) .process{
   cursor: pointer;
   transition: transform 120ms ease, background-color 140ms ease, border-color 140ms ease;
 }
-
 .filterBtn:hover{ transform: translateY(-1px); }
-
 .filterBtn.is-active{
   background-color: color-mix(in srgb, var(--link) 12%, var(--card));
   border-color: color-mix(in srgb, var(--link) 45%, transparent);
   color: var(--text);
 }
 
+/* Grid: 3 desktop / 2 tablet / 1 mobile */
 .portfolioGrid{
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ desktop */
   gap: 16px;
   align-items: stretch;
 }
 
+/* Filter logic compatibility */
 .column{ display: none; }
 .column.show{ display: block; }
 
+/* Card */
 .portfolioItem{
   height: 100%;
   display: flex;
   flex-direction: column;
+
   background-color: color-mix(in srgb, var(--card) 94%, transparent);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 14px;
+
   box-shadow: var(--shadow);
   transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
@@ -745,18 +755,23 @@ html:not([data-theme="dark"]) .process{
   border-color: color-mix(in srgb, var(--link) 22%, var(--border));
 }
 
+/* Screenshot frame */
 .portfolioItem img{
   width: 100%;
-  height: 220px;
-  object-fit: cover;
-  object-position: top center;
+  height: 220px;                 /* consistent screenshot size */
+  object-fit: cover;             /* crop (no stretching) */
+  object-position: top center;   /* show nav/hero first */
+
   display: block;
   border-radius: 16px;
   border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
   background-color: var(--card);
+
+  /* subtle “device/screenshot” polish */
   box-shadow: 0 10px 24px rgba(0,0,0,0.10);
 }
 
+/* Text */
 .portfolioItem h3{
   margin: 12px 0 6px;
   font-size: 1.12rem;
@@ -768,10 +783,19 @@ html:not([data-theme="dark"]) .process{
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.5;
+
+  /* keep card heights tidy even if descriptions vary */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Action pinned to bottom */
+.portfolioItem .linkBtn,
+.portfolioItem .btn{
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 #portfolio .linkBtn{
@@ -779,34 +803,72 @@ html:not([data-theme="dark"]) .process{
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   padding: 11px 14px;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, var(--btnBorder) 90%, transparent);
+
   background-color: color-mix(in srgb, var(--btnBg) 92%, transparent);
   color: var(--btnText);
   font-weight: 800;
   cursor: pointer;
   text-decoration: none;
+
   transition: transform 120ms ease, background-color 140ms ease;
 }
-
 #portfolio .linkBtn:hover{
   background-color: var(--btnHover);
   transform: translateY(-1px);
 }
-
 #portfolio .linkBtn:focus-visible{
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
 
-/* =========================
-   BLOG
-========================= */
+/* Tablet: 2 columns */
+@media (max-width: 1450px){
+  .portfolioGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ tablet */
+  }
+  .portfolioItem img{
+    height: 240px;
+  }
+}
+
+/* Mobile: 1 column + centered actions */
+@media (max-width: 700px){
+  #portfolio .sectionHead,
+  #portfolio .container{
+    text-align: center;
+  }
+  .filter{ justify-content: center; }
+
+  .portfolioGrid{
+    grid-template-columns: 1fr; /* ✅ mobile */
+  }
+  .portfolioItem{
+    text-align: center;
+    padding: 14px;
+  }
+  .portfolioItem img{
+    height: 220px;
+  }
+  .portfolioItem .linkBtn,
+  .portfolioItem .btn{
+    align-self: center;
+  }
+}
+
+
+/* ----- Blog (polished cards) ----- */
 .blogGrid{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+
+@media (max-width: 980px){
+  .blogGrid{ grid-template-columns: 1fr; }
 }
 
 .blogCard{
@@ -827,6 +889,7 @@ html:not([data-theme="dark"]) .process{
   text-decoration: none;
 }
 
+/* subtle gradient overlay for readability / polish */
 .blogCard__media::after{
   content:"";
   position:absolute;
@@ -857,6 +920,15 @@ html:not([data-theme="dark"]) .process{
   font-size: 1.25rem;
 }
 
+.blogTitle__link{
+  color: var(--text);
+  text-decoration: none;
+}
+.blogTitle__link:hover{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .blogExcerpt{
   margin: 0;
   color: var(--muted);
@@ -867,17 +939,23 @@ html:not([data-theme="dark"]) .process{
   overflow: hidden;
 }
 
+/* Make the existing .linkBtn feel like a pro CTA here */
 .blogBtn{
   margin-top: 6px;
   width: fit-content;
   border-radius: 999px;
-  padding: 11px 0px;
+  padding: 11px 14px;
   text-decoration: none;
 }
 
-/* =========================
-   TESTIMONIALS
-========================= */
+/* Nice hover lift */
+.blogCard--link:hover{
+  transform: translateY(-2px);
+  transition: transform 160ms ease;
+}
+
+
+/* ----- Testimonials ----- */
 .testimonialCard{
   display: grid;
   grid-template-columns: .6fr 1.4fr;
@@ -889,28 +967,11 @@ html:not([data-theme="dark"]) .process{
   padding: 14px;
   box-shadow: var(--shadow);
 }
-
 .quote{ margin: 0; }
 
-.rating{
-  font-size: 2.5rem;
-  margin: auto;
-  text-align: left;
-  padding: 0;
-}
-
-@media (max-width: 700px){
-  .rating{
-    text-align: center;
-    font-size: 1.8rem !important;
-  }
-}
-
-/* =========================
-   FORMS (CONTACT)
-========================= */
-label{ display: block; margin: 8px 0 6px; font-weight: 700; }
-
+/* #########################################################
+   ##### FORMS (CONTACT)
+######################################################### */
 input, textarea{
   width: 100%;
   padding: 11px 12px;
@@ -919,12 +980,11 @@ input, textarea{
   background-color: var(--card);
   color: var(--text);
 }
-
-input:focus-visible,
-textarea:focus-visible{
+input:focus-visible, textarea:focus-visible{
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+label{ display: block; margin: 8px 0 6px; font-weight: 700; }
 
 .fieldErr{
   margin: 6px 0 0;
@@ -932,17 +992,17 @@ textarea:focus-visible{
   min-height: 1.2em;
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* #########################################################
+   ##### FOOTER
+######################################################### */
 .footer{
   position: relative;
   padding: 56px 0;
   background-color: var(--sky);
   border: 1px solid var(--outline-blue);
 }
-
 html[data-theme="dark"] .footer{
+  /* FIX: gradient must be 'background' */
   background: linear-gradient(180deg, var(--bg), var(--cream2));
   border: none;
   border-top: 1px solid var(--border);
@@ -956,7 +1016,6 @@ html[data-theme="dark"] .footer{
   gap: 14px;
   align-items: start;
 }
-
 .contactForm{
   background-color: var(--card);
   border: 1px solid var(--border);
@@ -971,16 +1030,15 @@ html[data-theme="dark"] .footer{
   gap: 10px;
 }
 
-/* =========================
-   MODAL
-========================= */
+/* #########################################################
+   ##### MODAL
+######################################################### */
 .modal{
   position: fixed;
   inset: 0;
   display: none;
   z-index: 9999;
 }
-
 .modal.is-open{ display: block; }
 
 .modal__backdrop{
@@ -988,7 +1046,18 @@ html[data-theme="dark"] .footer{
   inset: 0;
   background-color: rgba(0,0,0,.55);
 }
-
+.modal__dialog{
+  position: relative;
+  max-width: 840px;
+  margin: 6vh auto;
+  width: calc(100% - 26px);
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
 .modal__close{
   position: absolute;
   top: 10px;
@@ -1001,22 +1070,29 @@ html[data-theme="dark"] .footer{
   color: var(--text);
   cursor: pointer;
 }
+.modalImg{
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin: 10px 0 12px;
+  background-color: var(--card);
+}
 
-/* =========================
-   MOBILE HERO + MOBILEBAR (<=700px)
-========================= */
+/* #########################################################
+   ##### MOBILE: HERO + NAV WRAP (<= 700px)
+######################################################### */
 @media (max-width: 700px){
   :root{
     --mobilebarH: 72px;
     --heroCream: #fbf2e8;
     --capH: clamp(220px, 34vh, 300px);
   }
-
   html[data-theme="dark"]{ --heroCream: var(--cream); }
 
   .site{ grid-template-columns: 1fr; }
   .left{ display: none; }
 
+  /* Wrap contains hero + mobilebar; make it exactly the viewport */
   .mobileHeroWrap{
     height: 100vh;
     display: flex;
@@ -1024,6 +1100,7 @@ html[data-theme="dark"] .footer{
     background-color: var(--sky) !important;
   }
 
+  /* Hero fills space above nav */
   .mobileHeroWrap .hero{
     flex: 1 1 auto;
     min-height: 0;
@@ -1034,9 +1111,11 @@ html[data-theme="dark"] .footer{
     margin: 0;
   }
 
+  /* Mobile hero simplified */
   .mobileHeroWrap .hero__bg,
   .mobileHeroWrap .hero__overlay{ display: none; }
 
+  /* Orange cap + semicircle */
   .mobileHeroWrap .hero::before{
     content:"";
     position: absolute;
@@ -1047,7 +1126,6 @@ html[data-theme="dark"] .footer{
     border-bottom-right-radius: 26px;
     z-index: 0;
   }
-
   .mobileHeroWrap .hero::after{
     content:"";
     position: absolute;
@@ -1077,20 +1155,24 @@ html[data-theme="dark"] .footer{
     transform: none;
     margin: 0 auto;
     max-width: 44ch;
+
     display: grid;
     grid-template-rows: auto 1fr;
     align-items: start;
     text-align: center;
+
     padding-top: calc(var(--capH) - 50vw + 18px);
     padding-bottom: 0;
   }
 
+  /* Show mobile logo only here */
   .mobileHeroWrap .hero__mobileLogo{
     display: inline-flex !important;
     justify-content: center;
     align-items: center;
     justify-self: center;
     align-self: start;
+
     margin: 0;
     padding: 12px 14px;
     border-radius: 18px;
@@ -1100,7 +1182,6 @@ html[data-theme="dark"] .footer{
     text-decoration: none;
     transform: translateY(50%);
   }
-
   .mobileHeroWrap .hero__mobileLogo img{
     width: 185px;
     max-width: 72vw;
@@ -1117,6 +1198,7 @@ html[data-theme="dark"] .footer{
     min-height: 0;
   }
 
+  /* Mobile type override */
   .mobileHeroWrap .hero .eyebrow{
     font-size: 1rem;
     letter-spacing: 0.14em;
@@ -1126,7 +1208,6 @@ html[data-theme="dark"] .footer{
     color: var(--text);
     text-shadow: none;
   }
-
   .mobileHeroWrap .hero__title{
     font-family: "Playfair Display", serif;
     font-weight: 800;
@@ -1139,7 +1220,6 @@ html[data-theme="dark"] .footer{
     color: var(--text);
     text-shadow: none;
   }
-
   .mobileHeroWrap .hero__sub{
     font-size: 1.2rem;
     line-height: 1.55;
@@ -1157,7 +1237,6 @@ html[data-theme="dark"] .footer{
     gap: 12px;
     margin-top: 4px;
   }
-
   .mobileHeroWrap .actions .btn{
     width: min(340px, 100%);
     padding: 12px 16px;
@@ -1165,11 +1244,11 @@ html[data-theme="dark"] .footer{
     border-radius: 16px;
   }
 
+  /* ✅ REQUEST: Dark mode ghost button black text applies here too (this keeps the lighter ghost surface) */
   .mobileHeroWrap .btn--ghost{
     background-color: color-mix(in srgb, #ffffff 85%, transparent);
     border: 1px solid rgba(11,18,32,.14);
   }
-
   html[data-theme="dark"] .mobileHeroWrap .btn--ghost{
     background-color: #ffffff;
     color: #000000;
@@ -1182,6 +1261,7 @@ html[data-theme="dark"] .footer{
     align-items: center;
     justify-content: space-between;
     gap: 0;
+
     background-color: var(--heroCream);
     border-top: 0;
     padding: 0 12px;
@@ -1202,6 +1282,7 @@ html[data-theme="dark"] .footer{
     gap: 10px;
   }
 
+  /* Hamburger button */
   .mobilebar__toggle{
     display: inline-flex;
     align-items: center;
@@ -1223,7 +1304,6 @@ html[data-theme="dark"] .footer{
     border-radius: 2px;
     transition: transform 180ms ease, background-color 180ms ease;
   }
-
   .mobilebar__toggleLines::before,
   .mobilebar__toggleLines::after{
     content:"";
@@ -1235,53 +1315,81 @@ html[data-theme="dark"] .footer{
     border-radius: 2px;
     transition: transform 180ms ease, top 180ms ease, opacity 180ms ease;
   }
-
   .mobilebar__toggleLines::before{ top: -7px; }
   .mobilebar__toggleLines::after{ top: 7px; }
 
-  #mobileMenuBtn.is-open .mobilebar__toggleLines{ transform: rotate(45deg); }
-
+  /* Hamburger -> X (JS toggles .is-open on #mobileMenuBtn) */
+  #mobileMenuBtn.is-open .mobilebar__toggleLines{
+    transform: rotate(45deg);
+  }
   #mobileMenuBtn.is-open .mobilebar__toggleLines::before{
     top: 0;
     transform: rotate(0deg);
     opacity: 0;
   }
-
   #mobileMenuBtn.is-open .mobilebar__toggleLines::after{
     top: 0;
     transform: rotate(90deg);
   }
 
+  /* Dark-mode logo surface */
   html[data-theme="dark"] .mobileHeroWrap .hero__mobileLogo{
     background-color: color-mix(in srgb, var(--card) 85%, transparent);
     border: 1px solid rgba(238,242,255,.14);
     box-shadow: 0 14px 30px rgba(0,0,0,.55);
   }
 
-  .facts{ grid-template-columns: 1fr; }
+  /* =========================================================
+     ✅ REQUEST (MOBILE ONLY): About fun facts = 1 per row
+  ========================================================= */
+  .facts{
+    grid-template-columns: 1fr;
+  }
 
-  .serviceCard{ text-align: center; }
-
+  /* =========================================================
+     ✅ REQUEST (MOBILE ONLY): Work services cards centered
+  ========================================================= */
+  .serviceCard{
+    text-align: center;
+  }
   .serviceCard__icon{
     display: block;
     margin: 0 auto 10px;
   }
+  .serviceCard .linkBtn{
+    display: inline-flex;
+    margin: 10px auto 0;
+  }
 
+  /* =========================================================
+     ✅ REQUEST (MOBILE ONLY): Portfolio centered + 1 per row
+  ========================================================= */
   #portfolio .sectionHead,
-  #portfolio .container{ text-align: center; }
-
-  .filter{ justify-content: center; }
-
-  .portfolioGrid{ grid-template-columns: 1fr; }
-
-  .portfolioItem{ text-align: center; }
-
-  .portfolioItem .linkBtn{ margin: 10px auto 0; }
+  #portfolio .container{
+    text-align: center;
+  }
+  .filter{
+    justify-content: center;
+  }
+  .portfolioGrid{
+    grid-template-columns: 1fr;
+  }
+  .portfolioItem{
+    text-align: center;
+  }
+  .portfolioItem img{
+    margin: 0 auto 10px;
+    display: block;
+  }
+  .portfolioItem .linkBtn{
+    margin: 10px auto 0;
+    display: inline-flex;
+  }
 }
 
-/* =========================
-   MOBILEBAR LOCK STATES (JS)
-========================= */
+/* #########################################################
+   ##### MOBILEBAR FIXED STATES (JS-DRIVEN)
+######################################################### */
 .mobilebar.is-lockedBottom{
   position: fixed;
   left: 0;
@@ -1290,7 +1398,6 @@ html[data-theme="dark"] .footer{
   top: auto;
   z-index: 999;
 }
-
 .mobilebar.is-lockedTop{
   position: fixed;
   left: 0;
@@ -1300,16 +1407,14 @@ html[data-theme="dark"] .footer{
   z-index: 999;
 }
 
-/* =========================
-   RESPONSIVE GRIDS
-========================= */
+/* #########################################################
+   ##### RESPONSIVE GRIDS
+######################################################### */
 @media (max-width: 1450px){
   .grid4{ grid-template-columns: repeat(2, 1fr); }
   .facts{ grid-template-columns: repeat(2, 1fr); }
-  .portfolioGrid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .portfolioItem img{ height: 240px; }
+  .portfolioGrid{ grid-template-columns: repeat(2, 1fr); }
 }
-
 @media (max-width: 980px){
   .aboutGrid{ grid-template-columns: 1fr; }
   .processGrid{ grid-template-columns: 1fr; }
@@ -1320,76 +1425,42 @@ html[data-theme="dark"] .footer{
   .twoCol{ grid-template-columns: 1fr; }
 }
 
-/* =========================
-   TABLET HERO BANNER (700–1450)
-========================= */
-@media (max-width: 1450px) and (min-width: 700px){
-  .hero__content{
-    transform: none;
-    max-width: 70ch;
-    margin: 0 auto;
-    align-items: center;
-    text-align: center;
-  }
-
-  .hero__mid{
-    background: rgba(255,255,255,0.72);
-    border: 1px solid rgba(11,18,32,0.12);
-    border-radius: 20px;
-    padding: 22px 22px 20px;
-    box-shadow: 0 16px 36px rgba(11,18,32,.14);
-    max-width: 56ch;
-    width: min(92%, 680px);
-  }
-
-  .hero .eyebrow,
-  .hero__title,
-  .hero__sub{
-    color: var(--text);
-    text-shadow: none;
-  }
-
-  .hero .actions{ justify-content: center; }
+/* #########################################################
+   ##### REDUCED MOTION
+######################################################### */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *{ transition: none !important; animation: none !important; }
 }
 
-@media (max-width: 1450px) and (min-width: 700px){
-  html[data-theme="dark"] .hero__mid{
-    background: rgba(15, 23, 42, 0.72);
-    border-color: rgba(238,242,255,0.14);
-  }
+/* ===== FULLSCREEN MOBILE MENU (uses existing left sidebar markup) ===== */
+@media (max-width: 700px) {
+  /* Default: hide sidebar on mobile */
+  .left { display: none; }
 
-  html[data-theme="dark"] .hero .eyebrow,
-  html[data-theme="dark"] .hero__title,
-  html[data-theme="dark"] .hero__sub{
-    color: #fff;
-  }
-}
-
-/* =========================
-   FULLSCREEN MOBILE MENU
-========================= */
-.menuClose{ display: none; }
-
-@media (max-width: 700px){
-  body.menu-visible .menuClose,
-  body.menu-open .menuClose{ display: flex; }
-
-  body.menu-visible .left{
+  /* Stage 1: menu is "mounted" (present for animation) */
+  body.menu-visible .left {
     display: block !important;
     position: fixed;
     inset: 0;
     z-index: 9999;
+
+    /* slide in from left */
     transform: translateX(-100%);
     transition: transform 0.35s ease;
+
+    /* optional: prevents tapping while offscreen */
     pointer-events: none;
   }
 
-  body.menu-visible.menu-open .left{
+  /* Stage 2: menu is open */
+  body.menu-visible.menu-open .left {
     transform: translateX(0);
     pointer-events: auto;
   }
 
-  body.menu-visible .left__inner{
+  /* Layout: logo top, nav center, footer bottom (centered) */
+  body.menu-visible .left__inner {
     height: 100%;
     display: flex !important;
     flex-direction: column;
@@ -1399,41 +1470,45 @@ html[data-theme="dark"] .footer{
     text-align: center;
   }
 
-  html[data-theme="dark"] body.menu-visible .left__inner,
-  html[data-theme="dark"] body.menu-open .left__inner{
+  /* UPDATED: remove transparency for fullscreen menu backgrounds */
+  html[data-theme="dark"] body.menu-visible .left__inner {
     background-color: #000;
     color: #fff;
   }
 
-  html[data-theme="light"] body.menu-visible .left__inner,
-  html[data-theme="light"] body.menu-open .left__inner{
+  html[data-theme="light"] body.menu-visible .left__inner {
     background-color: #fff;
     color: #111;
   }
 
-  body.menu-visible .left__inner .logo .siteLogo{
+  /* Bigger logo in the menu */
+  body.menu-visible .left__inner .logo .siteLogo {
     width: 240px;
     max-width: 85vw;
     height: auto;
   }
 
-  body.menu-visible nav[aria-label="Primary"]{
+  /* Centered nav list */
+  body.menu-visible nav[aria-label="Primary"] {
     width: 100%;
     max-width: 520px;
     margin: 0 auto;
     flex: 1 1 auto;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: 12px 0;
   }
 
-  body.menu-visible nav[aria-label="Primary"] .navlist{
+  body.menu-visible nav[aria-label="Primary"] .navlist {
     list-style: none;
     margin: 0;
     padding: 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1444,51 +1519,42 @@ html[data-theme="dark"] .footer{
   body.menu-visible nav[aria-label="Primary"] .navlink{
     width: 100%;
     max-width: 520px;
+
     box-sizing: border-box;
     padding: 8px 14px;
+
     font-size: clamp(16px, 4.2vw, 20px);
     line-height: 1.15;
+
     overflow-wrap: anywhere;
     word-break: break-word;
-    color: inherit;
-  }
-
-  body.menu-visible nav[aria-label="Primary"] .navlink:hover,
-  body.menu-open nav[aria-label="Primary"] .navlink:hover{
-    background-color: rgba(127,127,127,0.12);
   }
 
   body.menu-visible .left,
-  body.menu-visible .left__inner{ overflow-x: hidden; }
+  body.menu-visible .left__inner{
+    overflow-x: hidden;
+  }
 
-  body.menu-visible .sideFooter{
+  body.menu-visible nav[aria-label="Primary"] .navlink:hover {
+    background-color: rgba(127,127,127,0.12);
+  }
+
+  body.menu-visible .sideFooter {
     width: 100%;
     max-width: 520px;
     margin: 0 auto;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
   }
 
-  body.menu-visible .sideFooter__row{
+  body.menu-visible .sideFooter__row {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
   }
 
-  body.menu-visible .themeToggle{
-    padding: 10px 12px;
-    gap: 8px;
-  }
-
-  body.menu-visible .themeToggle__text{ display: none; }
-
-  body.menu-visible .menuClose,
-  body.menu-open .menuClose{
+  /* Bottom-right X button (bigger) */
+  body.menu-visible .menuClose {
     position: fixed;
     right: 18px;
     bottom: 18px;
@@ -1508,33 +1574,365 @@ html[data-theme="dark"] .footer{
     z-index: 10000;
   }
 
-  body.menu-visible .menuClose:hover,
-  body.menu-open .menuClose:hover{
+  body.menu-visible .menuClose:hover {
     background-color: rgba(127,127,127,0.28);
   }
 
-  body.menu-visible .menuClose:focus-visible,
-  body.menu-open .menuClose:focus-visible{
+  body.menu-visible .menuClose:focus-visible {
     outline: 3px solid currentColor;
     outline-offset: 3px;
   }
 }
 
-/* =========================
-   MOBILE SHAPE TOGGLE
-========================= */
-@media (max-width: 700px){
-  .mobileHeroWrap.noHalfCircle .hero::before,
-  .mobileHeroWrap.noHalfCircle .hero::after{
-    content: none !important;
-    display: none !important;
+@media (max-width: 700px) {
+  body.menu-open .menuClose {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+
+    width: 56px;
+    height: 56px;
+
+    font-size: 34px;
+    line-height: 1;
+
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(127, 127, 127, 0.18);
+    backdrop-filter: blur(6px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    z-index: 10000;
+  }
+
+  body.menu-open .menuClose:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  body.menu-open .menuClose:hover {
+    background-color: rgba(127, 127, 127, 0.28);
+  }
+
+  /* UPDATED: remove transparency while menu is open */
+  html[data-theme="dark"] body.menu-open .left__inner {
+    background-color: #000;
+    color: #fff;
+  }
+
+  html[data-theme="light"] body.menu-open .left__inner {
+    background-color: #fff;
+    color: #111;
+  }
+
+  body.menu-open nav[aria-label="Primary"] .navlink {
+    color: inherit;
+  }
+
+  body.menu-open nav[aria-label="Primary"] .navlink:hover {
+    background-color: rgba(127, 127, 127, 0.12);
   }
 }
 
-/* =========================
-   REDUCED MOTION
-========================= */
-@media (prefers-reduced-motion: reduce){
-  html{ scroll-behavior: auto; }
-  *{ transition: none !important; animation: none !important; }
+/* Disable hamburger → X animation */
+.mobilebar__toggle.is-open .mobilebar__toggleLines,
+.mobilebar__toggle.is-open .mobilebar__toggleLines::before,
+.mobilebar__toggle.is-open .mobilebar__toggleLines::after {
+  transform: none !important;
+  opacity: 1 !important;
 }
+
+/* Prevent transition effects */
+.mobilebar__toggleLines,
+.mobilebar__toggleLines::before,
+.mobilebar__toggleLines::after {
+  transition: none !important;
+}
+
+/* Hide the mobile menu close button on desktop */
+.menuClose{
+  display: none;
+}
+
+/* Show it only on mobile */
+@media (max-width: 700px){
+  body.menu-visible .menuClose,
+  body.menu-open .menuClose{
+    display: flex;
+  }
+}
+
+@media (max-width: 700px){
+  /* Put theme toggle + icons in one centered row */
+  body.menu-visible .sideFooter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  body.menu-visible .sideFooter__row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Make the theme toggle compact so it doesn't steal width */
+  body.menu-visible .themeToggle{
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  /* Hide the "Dark mode/Light mode" text ONLY in mobile menu to save space */
+  body.menu-visible .themeToggle__text{
+    display: none;
+  }
+}
+
+.rating {
+  font-size: 2.5rem;
+  margin:auto;
+  text-align: left;
+  padding: 0;
+}
+
+@media (max-width: 700px){
+  .rating {
+    text-align: center;
+    font-size: 1.8rem !important;
+  }
+}
+
+/* #########################################################
+   ##### HERO (TABLET): centered + soft white banner behind text
+######################################################### */
+@media (max-width: 1450px) and (min-width: 700px){
+
+  /* Center the whole hero content block */
+  .hero__content{
+    transform: none;              /* ✅ remove the left shift */
+    max-width: 70ch;
+    margin: 0 auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Add a translucent banner behind the text/buttons */
+  .hero__mid{
+    background: rgba(255,255,255,0.72);  /* ✅ white w/ transparency */
+    border: 1px solid rgba(11,18,32,0.12);
+    border-radius: 20px;
+    padding: 22px 22px 20px;
+    box-shadow: 0 16px 36px rgba(11,18,32,.14);
+
+    /* keep it from getting too wide */
+    max-width: 56ch;
+    width: min(92%, 680px);
+  }
+
+  /* Make text readable on the white banner */
+  .hero .eyebrow,
+  .hero__title,
+  .hero__sub{
+    color: var(--text);           /* ✅ use normal text color */
+    text-shadow: none;
+  }
+
+  /* Center the buttons inside the banner */
+  .hero .actions{
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1450px) and (min-width: 700px){
+  html[data-theme="dark"] .hero__mid{
+    background: rgba(15, 23, 42, 0.72);  /* dark translucent */
+    border-color: rgba(238,242,255,0.14);
+  }
+  html[data-theme="dark"] .hero .eyebrow,
+  html[data-theme="dark"] .hero__title,
+  html[data-theme="dark"] .hero__sub{
+    color: #fff;
+  }
+}
+
+@media (max-width: 700px){
+  .container.hero__content{
+    position: relative;
+    z-index: 2;
+  }
+
+.container.hero__content::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--heroCream);
+
+  /* top-only rounding */
+  border-top-left-radius: 360px;
+  border-top-right-radius: 360px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  transform: translateY(60px);
+
+  z-index: -1;
+}
+
+}
+
+
+
+
+
+/* =========================================================
+   MOBILE NAV + HERO — REMOVE ALL BORDERS / OUTLINES
+   Safe to paste at END of styles.css
+========================================================= */
+@media (max-width: 700px){
+
+  /* ===============================
+     MOBILE NAV BAR
+  =============================== */
+  .mobilebar{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobilebar *,
+  .mobilebar *::before,
+  .mobilebar *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar button:focus,
+  .mobilebar button:focus-visible,
+  .mobilebar a:focus,
+  .mobilebar a:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar__toggle,
+  .mobilebar__toggleLines{
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===============================
+     HERO CONTENT (NO EDGES)
+  =============================== */
+  .hero__content{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  .hero__content::before,
+  .hero__content::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .hero__content *,
+  .hero__content *::before,
+  .hero__content *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }/* =========================================================
+   MOBILE NAV + HERO — REMOVE ALL BORDERS / OUTLINES
+   Safe to paste at END of styles.css
+========================================================= */
+@media (max-width: 700px){
+
+  /* ===============================
+     MOBILE NAV BAR
+  =============================== */
+  .mobilebar{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobilebar *,
+  .mobilebar *::before,
+  .mobilebar *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar button:focus,
+  .mobilebar button:focus-visible,
+  .mobilebar a:focus,
+  .mobilebar a:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .mobilebar__toggle,
+  .mobilebar__toggleLines{
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* ===============================
+     HERO CONTENT (NO EDGES)
+  =============================== */
+  .hero__content{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+
+  .hero__content::before,
+  .hero__content::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .hero__content *,
+  .hero__content *::before,
+  .hero__content *::after{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Kill focus rings inside hero on mobile */
+  .hero__content a:focus,
+  .hero__content a:focus-visible,
+  .hero__content button:focus,
+  .hero__content button:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+  /* Kill focus rings inside hero on mobile */
+  .hero__content a:focus,
+  .hero__content a:focus-visible,
+  .hero__content button:focus,
+  .hero__content button:focus-visible{
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
