@@ -12,23 +12,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-  /* =========================================================
-     WCAG / AA Baseline
-     - Good focus styles
-     - Respects prefers-reduced-motion
-     - Semantic layout: header/main/footer + skip link
-     - Centered layout + “--- text ---” dividers darker + wider
-     - Green hero again
-  ========================================================= */
-
   :root{
     --bg: #F5F4ED;
     --bg2:#E9E7DE;
     --text:#1E2203;
 
-    /* Green theme */
     --accent:#2F5D3A;
-    --accent2:#2F5D3A; /* links green to match hero */
+    --accent2:#2F5D3A;
 
     --card:#FFFFFF;
     --border:#B7A976;
@@ -50,10 +40,9 @@
     color: var(--text);
     line-height: 1.6;
     overflow-x: hidden;
-    text-align: center; /* ✅ center everything by default */
+    text-align: center;
   }
 
-  /* Ensure common blocks are centered */
   header, main, footer, section, figure { width: 100%; }
   figure { margin-left: auto; margin-right: auto; }
   img { max-width: 100%; height: auto; }
@@ -78,7 +67,7 @@
     box-shadow: 0 0 0 4px rgba(11,87,208,.25);
   }
 
-  /* Focus states */
+  /* Focus states (keep accessible rings) */
   a, button, input, [tabindex]:not([tabindex="-1"]) { outline: none; }
   a:focus-visible,
   button:focus-visible,
@@ -96,7 +85,6 @@
   }
   a:hover { text-decoration: underline; }
 
-  /* Layout wrapper */
   .wrap{
     width: 100%;
     max-width: var(--max);
@@ -105,7 +93,7 @@
   }
 
   /* =========================================================
-     Intro / Hero (GREEN again)
+     Intro / Hero
   ========================================================= */
   .intro-section{
     min-height: 100vh;
@@ -113,12 +101,7 @@
     display: grid;
     place-items: center;
 
-    /* ✅ greener hero overlay while keeping background image */
-    background:
-      /* radial-gradient(1200px 500px at 50% 20%, rgba(47,93,58,.22), rgba(245,244,237,0) 60%), */
-      /* linear-gradient(to bottom, rgba(232,244,235,.92), rgba(233,231,222,.92)), */
-      url('images/faint-leaf-pattern.jpg');
-
+    background: url('images/faint-leaf-pattern.jpg');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
@@ -145,7 +128,7 @@
     font-weight: 700;
     letter-spacing: .18em;
     text-transform: uppercase;
-    color: #1E2203; /* darker for contrast */
+    color: #1E2203;
     margin: 0 0 2rem;
   }
 
@@ -163,12 +146,11 @@
     font-size: 1.08rem;
   }
 
-  /* Accessible “search” display */
   .search-demo{
     margin: 0 auto;
     width: min(720px, 92vw);
     background: var(--card);
-    border: 2px solid rgba(73, 133, 87, 0.897); /* green-ish */
+    border: 2px solid rgba(73, 133, 87, 0.897);
     border-radius: 999px;
     box-shadow: var(--shadow);
     padding: .75rem .9rem;
@@ -192,7 +174,7 @@
     border: 0;
     background: transparent;
     color: var(--text);
-    text-align: center; /* ✅ centered typing */
+    text-align: center;
   }
   .search-demo input[readonly]{ cursor: default; }
 
@@ -230,7 +212,6 @@
     font-size: 1.25rem;
   }
 
-  /* Scroll indicator */
   .scroll-indicator{
     position: absolute;
     bottom: 22px;
@@ -255,14 +236,9 @@
   }
 
   /* =========================================================
-     Main content + sections (CENTERED)
+     Main content
   ========================================================= */
-  main{
-    padding: 3rem 0 2rem;
-  }
-
-  .content{ padding: 0; }
-
+  main{ padding: 3rem 0 2rem; }
   .content-section{
     margin: 0 auto;
     padding: 3rem 0;
@@ -270,14 +246,13 @@
   }
   .content-section:first-child{ border-top: 0; }
 
-  /* ✅ “--- text ---” headers darker, centered, with wider lines */
   .section-divider{
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
     font-weight: 800;
-    color: #1E2203; /* darker */
+    color: #1E2203;
     letter-spacing: .02em;
     margin: 0 auto 1.25rem;
     font-size: 1.2rem;
@@ -286,9 +261,9 @@
   .section-divider::before,
   .section-divider::after{
     content:"";
-    height: 2px; /* thicker */
-    width: clamp(90px, 20vw, 240px); /* wider */
-    background: rgba(30,34,3,.65); /* darker line */
+    height: 2px;
+    width: clamp(90px, 20vw, 240px);
+    background: rgba(30,34,3,.65);
     border-radius: 999px;
   }
 
@@ -319,7 +294,6 @@
     margin-right: auto;
   }
 
-  /* Images */
   .img-frame{
     display: block;
     margin: 0 auto;
@@ -361,7 +335,7 @@
   .carousel-head{
     display:flex;
     align-items:center;
-    justify-content:center; /* ✅ center header row */
+    justify-content:center;
     gap: 1rem;
     flex-wrap: wrap;
     margin-bottom: .75rem;
@@ -405,6 +379,7 @@
     gap: 14px;
     padding: 0 14px;
     left: 0;
+    will-change: transform, left;
   }
   #carousel img{
     width: 140px;
@@ -415,7 +390,6 @@
     background: #fff;
   }
 
-  /* Map images */
   .beech-map{
     width: min(860px, 92vw);
     border-radius: 14px;
@@ -424,13 +398,17 @@
     margin: 0 auto;
   }
 
-  /* Social */
+  /* Social (converted to real list) */
   .social-icons-container{
     display: flex;
     justify-content: center;
     gap: .75rem;
     flex-wrap: wrap;
     margin-top: .75rem;
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
   .social-icon{
     display: inline-flex;
@@ -442,6 +420,7 @@
     color: #fff;
     text-decoration: none;
     border: 2px solid rgba(0,0,0,.12);
+    background: transparent;
   }
   .social-icon .material-icons{ font-size: 22px; }
   .facebook{ background:#2F4B8E; }
@@ -450,7 +429,6 @@
   .linkedin{ background:#0B5FA5; }
   .youtube{ background:#B00020; }
 
-  /* Footer */
   footer{
     border-top: 1px solid rgba(0,0,0,.12);
     padding: 2rem 0 3rem;
@@ -464,17 +442,11 @@
     max-width: 80ch;
   }
 
-  /* =========================================================
-     Motion: respect reduced-motion
-  ========================================================= */
   @media (prefers-reduced-motion: reduce){
     html { scroll-behavior: auto; }
     * { animation: none !important; transition: none !important; }
   }
 
-  /* =========================================================
-     Responsive
-  ========================================================= */
   @media (max-width: 768px){
     .uvm-label{ margin-bottom: 1.25rem; }
     #carousel img{ width: 110px; height: 110px; }
@@ -497,47 +469,46 @@
     }
   }
 
-        .backToDan {
-        position: fixed;
-        left: 12px;
-        top: 32px;
-        transform: translateY(-50%);
-        z-index: 999999;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        background: #ffffff;
-        border: 2px solid #ff6a00;
-        border-radius: 999px;
-        text-decoration: none;
-        color: #0b2f4a;
-        box-shadow: 0 10px 26px rgba(0,0,0,0.14);
-      }
-      .backToDan:focus {
-        outline: 3px solid rgba(255,106,0,0.35);
-        outline-offset: 3px;
-      }
-      .backToDan .arrow {
-        font-weight: 900;
-        font-size: 16px;
-        line-height: 1;
-      }
-      .backToDan img {
-        width: 26px;
-        height: 26px;
-        object-fit: contain;
-        display: block;
-      }
+  .backToDan {
+    position: fixed;
+    left: 12px;
+    top: 32px;
+    transform: translateY(-50%);
+    z-index: 999999;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 2px solid #ff6a00;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #0b2f4a;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+  }
+  .backToDan:focus-visible {
+    outline: 3px solid rgba(255,106,0,0.35);
+    outline-offset: 3px;
+  }
+  .backToDan .arrow {
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 1;
+  }
+  .backToDan img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+  }
 </style>
 </head>
 
 <body>
-
   <a class="backToDan" href="https://webdev-by-dan.com" aria-label="Back to Web Dev by Dan">
-      <span class="arrow">&lt;</span>
-      <img src="images/logo-dan.png" alt="" aria-hidden="true" />
-    </a>
+    <span class="arrow" aria-hidden="true">&lt;</span>
+    <img src="images/logo-dan.png" alt="" aria-hidden="true" />
+  </a>
 
   <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -547,11 +518,8 @@
       <div class="uvm-label">Presents</div>
 
       <h1 id="pageTitle" class="hero-title">Understanding Beech Leaf Disease</h1>
-      <p class="hero-subtitle">
-        A visual data story by Daniel Scheuermann.
-      </p>
+      <p class="hero-subtitle">A visual data story by Daniel Scheuermann.</p>
 
-      <!-- Accessible “search” demo (readonly input so SRs read it naturally) -->
       <div class="search-demo" role="search" aria-label="Search demonstration">
         <label for="searchDemoInput">Search demonstration</label>
         <input id="searchDemoInput" type="text" inputmode="search" readonly value="" aria-readonly="true">
@@ -571,7 +539,6 @@
   </header>
 
   <main id="main" class="wrap">
-    <!-- SECTION: Background on American Beech -->
     <section class="content-section" aria-labelledby="s1">
       <div class="section-divider" aria-hidden="true">Meet the American Beech Tree</div>
 
@@ -588,7 +555,6 @@
       </p>
     </section>
 
-    <!-- SECTION: What is BLD -->
     <section class="content-section" aria-labelledby="s2">
       <div class="section-divider" aria-hidden="true">What Is Beech Leaf Disease?</div>
 
@@ -615,7 +581,6 @@
       </figure>
     </section>
 
-    <!-- SECTION: Symptoms -->
     <section class="content-section" aria-labelledby="s3">
       <div class="section-divider" aria-hidden="true">Symptoms</div>
 
@@ -642,7 +607,6 @@
       </figure>
     </section>
 
-    <!-- SECTION: The Cost -->
     <section class="content-section" aria-labelledby="s4">
       <div class="section-divider" aria-hidden="true">The Cost</div>
 
@@ -652,7 +616,6 @@
         (removal of hazardous trees, monitoring, and restoration planning).
       </p>
 
-      <!-- Carousel with pause/play (WCAG: user control over moving content) -->
       <div class="carousel-wrap" aria-labelledby="carouselTitle">
         <div class="carousel-head">
           <div>
@@ -694,7 +657,6 @@
       </figure>
     </section>
 
-    <!-- SECTION: Areas at Risk -->
     <section class="content-section" aria-labelledby="s5">
       <div class="section-divider" aria-hidden="true">Areas at Risk</div>
 
@@ -748,7 +710,6 @@
       </p>
     </section>
 
-    <!-- SECTION: Where is it Going? -->
     <section class="content-section" aria-labelledby="s6">
       <div class="section-divider" aria-hidden="true">Where Is It Going?</div>
 
@@ -777,7 +738,6 @@
       </p>
     </section>
 
-    <!-- SECTION: How You Can Help -->
     <section class="content-section" aria-labelledby="s7">
       <div class="section-divider" aria-hidden="true">How You Can Help</div>
 
@@ -787,24 +747,34 @@
         Raise awareness with neighbors and local communities—use clear photos and location context when appropriate.
       </p>
 
-      <!-- If you don't have real share links yet, keep them as buttons (not dead anchors) -->
-      <div class="social-icons-container" role="list" aria-label="Social sharing options">
-        <button type="button" class="social-icon facebook" role="listitem" aria-label="Share on Facebook (not configured)">
-          <span class="material-icons" aria-hidden="true">thumb_up</span>
-        </button>
-        <button type="button" class="social-icon twitter" role="listitem" aria-label="Share on X / Twitter (not configured)">
-          <span class="material-icons" aria-hidden="true">chat</span>
-        </button>
-        <button type="button" class="social-icon instagram" role="listitem" aria-label="Share on Instagram (not configured)">
-          <span class="material-icons" aria-hidden="true">camera_alt</span>
-        </button>
-        <button type="button" class="social-icon linkedin" role="listitem" aria-label="Share on LinkedIn (not configured)">
-          <span class="material-icons" aria-hidden="true">work</span>
-        </button>
-        <button type="button" class="social-icon youtube" role="listitem" aria-label="Share on YouTube (not configured)">
-          <span class="material-icons" aria-hidden="true">smart_display</span>
-        </button>
-      </div>
+      <!-- ✅ Real list instead of ARIA list roles -->
+      <ul class="social-icons-container" aria-label="Social sharing options">
+        <li>
+          <button type="button" class="social-icon facebook" aria-label="Share on Facebook (not configured)">
+            <span class="material-icons" aria-hidden="true">thumb_up</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="social-icon twitter" aria-label="Share on X / Twitter (not configured)">
+            <span class="material-icons" aria-hidden="true">chat</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="social-icon instagram" aria-label="Share on Instagram (not configured)">
+            <span class="material-icons" aria-hidden="true">camera_alt</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="social-icon linkedin" aria-label="Share on LinkedIn (not configured)">
+            <span class="material-icons" aria-hidden="true">work</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="social-icon youtube" aria-label="Share on YouTube (not configured)">
+            <span class="material-icons" aria-hidden="true">smart_display</span>
+          </button>
+        </li>
+      </ul>
 
       <h2 style="margin-top:2rem;">2) Report it</h2>
       <p>
@@ -812,7 +782,6 @@
       </p>
     </section>
 
-    <!-- SECTION: Citations -->
     <section class="content-section" aria-labelledby="citations">
       <div class="section-divider" aria-hidden="true">Citations</div>
       <h2 id="citations">Sources</h2>
@@ -852,108 +821,114 @@
     /* =========================================================
        Reduced motion helper
     ========================================================= */
-    const prefersReducedMotion = window.matchMedia &&
+    const prefersReducedMotion =
+      window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   </script>
 
   <script>
     /* =========================================================
-       Carousel Script (with Pause + reduced motion)
-       WCAG: Provide user control over moving content.
+       Carousel Script (Pause + reduced motion)
     ========================================================= */
-    const carousel = document.getElementById("carousel");
-    const container = document.getElementById("container");
-    const toggleBtn = document.getElementById("carouselToggle");
+    (function () {
+      const carousel = document.getElementById("carousel");
+      const container = document.getElementById("container");
+      const toggleBtn = document.getElementById("carouselToggle");
+      if (!carousel || !container || !toggleBtn) return;
 
-    let speed = 0.8;
-    let paused = prefersReducedMotion; // auto-pause if reduced motion
-    let rafId = null;
+      const gap = 14;     // matches CSS gap
+      const speed = 0.8;  // px per frame
+      let paused = Boolean(prefersReducedMotion);
+      let rafId = null;
 
-    function stepCarousel() {
-      if (paused) return;
-
-      carousel.style.left = (carousel.offsetLeft - speed) + "px";
-
-      const firstImage = carousel.querySelector("img");
-      if (!firstImage) return;
-
-      const containerRect = container.getBoundingClientRect();
-      const firstRect = firstImage.getBoundingClientRect();
-
-      if (firstRect.right < containerRect.left) {
-        carousel.appendChild(firstImage);
-        const gap = 14; // matches CSS gap
-        const imageTotalWidth = firstImage.offsetWidth + gap;
-        carousel.style.left = (carousel.offsetLeft + imageTotalWidth) + "px";
+      function setButtonState() {
+        toggleBtn.setAttribute("aria-pressed", String(paused));
+        toggleBtn.textContent = paused ? "Play" : "Pause";
       }
 
-      rafId = requestAnimationFrame(stepCarousel);
-    }
+      function step() {
+        if (paused) return;
 
-    function startCarousel() {
-      if (paused) return;
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(stepCarousel);
-    }
+        carousel.style.left = (carousel.offsetLeft - speed) + "px";
 
-    function stopCarousel() {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
+        const firstImage = carousel.querySelector("img");
+        if (!firstImage) return;
 
-    toggleBtn.addEventListener("click", () => {
-      paused = !paused;
-      toggleBtn.setAttribute("aria-pressed", String(paused));
-      toggleBtn.textContent = paused ? "Play" : "Pause";
-      if (paused) stopCarousel();
-      else startCarousel();
-    });
+        const containerRect = container.getBoundingClientRect();
+        const firstRect = firstImage.getBoundingClientRect();
 
-    // Initialize button label correctly
-    toggleBtn.setAttribute("aria-pressed", String(paused));
-    toggleBtn.textContent = paused ? "Play" : "Pause";
+        if (firstRect.right < containerRect.left) {
+          carousel.appendChild(firstImage);
+          const imageTotalWidth = firstImage.offsetWidth + gap;
+          carousel.style.left = (carousel.offsetLeft + imageTotalWidth) + "px";
+        }
 
-    // Start if allowed
-    if (!paused) startCarousel();
+        rafId = requestAnimationFrame(step);
+      }
+
+      function start() {
+        if (paused) return;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(step);
+      }
+
+      function stop() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        paused = !paused;
+        setButtonState();
+        if (paused) stop();
+        else start();
+      });
+
+      // init
+      setButtonState();
+      if (!paused) start();
+    })();
   </script>
 
   <script>
     /* =========================================================
        Typing Demo + Search Result
-       - Writes into readonly input (more accessible than a span)
-       - Stops animation for prefers-reduced-motion
     ========================================================= */
-    const input = document.getElementById("searchDemoInput");
-    const resultBox = document.getElementById("searchResult");
-    const scrollIndicator = document.getElementById("scroll-indicator");
+    (function () {
+      const input = document.getElementById("searchDemoInput");
+      const resultBox = document.getElementById("searchResult");
+      const scrollIndicator = document.getElementById("scroll-indicator");
+      if (!input || !resultBox || !scrollIndicator) return;
 
-    const demoText = "what is beech leaf disease?";
-    let idx = 0;
+      const demoText = "what is beech leaf disease?";
+      let idx = 0;
 
-    function typeIntoInput() {
-      if (prefersReducedMotion) {
-        input.value = demoText;
+      function reveal() {
         resultBox.classList.add("visible");
-        scrollIndicator.classList.add("visible");
-        return;
+        setTimeout(() => scrollIndicator.classList.add("visible"), 900);
       }
 
-      if (idx < demoText.length) {
-        input.value += demoText.charAt(idx);
-        idx++;
-        setTimeout(typeIntoInput, 70);
-      } else {
-        setTimeout(() => {
+      function typeIntoInput() {
+        if (prefersReducedMotion) {
+          input.value = demoText;
           resultBox.classList.add("visible");
-          setTimeout(() => scrollIndicator.classList.add("visible"), 900);
-        }, 350);
-      }
-    }
+          scrollIndicator.classList.add("visible");
+          return;
+        }
 
-    window.addEventListener("load", () => {
-      // Start slightly after load so SR/AT has a stable page
-      setTimeout(typeIntoInput, 250);
-    });
+        if (idx < demoText.length) {
+          input.value += demoText.charAt(idx);
+          idx++;
+          setTimeout(typeIntoInput, 70);
+        } else {
+          setTimeout(reveal, 350);
+        }
+      }
+
+      window.addEventListener("load", () => {
+        setTimeout(typeIntoInput, 250);
+      });
+    })();
   </script>
 </body>
 </html>

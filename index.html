@@ -1,30 +1,34 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Web Dev by Dan | Website Design & Development</title>
-  <meta name="description" content="Web Dev by Dan — custom websites, design, hosting, SEO." />
-  <link rel="icon" type="image/x-icon" href="./img/logo/icon.png" />
+    <title>Web Dev by Dan | Website Design &amp; Development</title>
+    <meta
+      name="description"
+      content="Web Dev by Dan — custom websites, design, hosting, SEO."
+    />
+    <link rel="icon" type="image/x-icon" href="./img/logo/icon.png" />
 
-  <!-- ######## FONTS ######## -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- ######## STYLES ######## -->
-  <link rel="stylesheet" href="css/styles.css" />
-</head>
+    <!-- STYLES -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
 
-<body>
-  <!-- ######## MODAL (A11Y) ######## -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal__backdrop" data-modal-close></div>
+  <body>
+    <!-- MODAL -->
+    <div class="modal" id="modal" aria-hidden="true">
+      <div class="modal__backdrop" data-modal-close></div>
+
       <button
         class="modal__close"
         type="button"
@@ -33,722 +37,820 @@
       >
         ×
       </button>
+
       <div class="modal__content" id="modalContent"></div>
     </div>
-  </div>
 
-  <div class="site" id="top">
+    <div class="site" id="top">
+      <!-- SIDEBAR -->
+      <aside class="left" aria-label="Sidebar">
+        <div class="left__inner">
+          <button
+            class="menuClose"
+            type="button"
+            data-menu-close
+            aria-label="Close menu"
+          >
+            ×
+          </button>
 
-    <!-- ######## SIDEBAR (DESKTOP) ######## -->
-    <aside class="left" aria-label="Sidebar">
-      <div class="left__inner">
-
-        <button class="menuClose" type="button" data-menu-close aria-label="Close menu">
-          ×
-        </button>
-
-        <!-- # Logo -->
-        <a class="logo" href="#home" aria-label="Home">
-          <img
-            class="siteLogo"
-            src="img/logo/Web-Graphics-05.png"
-            data-src-light="img/logo/Web-Graphics-05.png"
-            data-src-dark="img/logo/Web-Graphics-06.png"
-            alt="Web Dev by Dan"
-          />
-        </a>
-
-        <!-- # Primary Nav -->
-        <nav class="sideNav" aria-label="Primary">
-          <ul class="navlist" id="sideNav">
-            <li><a class="navlink is-active" href="#home">Home</a></li>
-            <li><a class="navlink" href="#about">About</a></li>
-            <li><a class="navlink" href="#service">Service</a></li>
-            <li><a class="navlink" href="#pricing">Pricing</a></li>
-            <li><a class="navlink" href="#process">The Process</a></li>
-            <li><a class="navlink" href="#portfolio">Portfolio</a></li>
-            <li><a class="navlink" href="#blog">Blog</a></li>
-            <li><a class="navlink" href="#footer">Contact</a></li>
-          </ul>
-        </nav>
-
-        <!-- # Footer Controls -->
-        <div class="sideFooter">
-
-          <!-- ✅ FIX: Theme toggle + social links are in THE SAME ROW -->
-          <div class="sideFooter__row" aria-label="Theme and social links">
-            <!-- # Theme Toggle Button -->
-            <button
-              class="themeToggle"
-              type="button"
-              data-theme-toggle
-              aria-label="Enable dark mode"
-              aria-pressed="false"
-            >
-              <span class="themeToggle__icon" aria-hidden="true">🌙</span>
-              <span class="themeToggle__text">Dark mode</span>
-            </button>
-
-            <!-- # Social Links -->
-            <a
-              class="iconLink"
-              href="https://github.com/scheuermann-daniel"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <!-- GitHub SVG -->
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"
-                />
-              </svg>
-              <span class="sr-only">GitHub</span>
-            </a>
-
-            <a
-              class="iconLink"
-              href="https://www.linkedin.com/in/dscheuer03"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <!-- LinkedIn SVG -->
-              <svg
-                viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path
-                  d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"
-                />
-              </svg>
-              <span class="sr-only">LinkedIn</span>
-            </a>
-          </div>
-
-          <!-- # Copyright -->
-          <p class="copyright">© <span id="year"></span> by Daniel Scheuermann.</p>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ######## MAIN CONTENT ######## -->
-    <main class="right" id="main" tabindex="-1">
-
-      <!-- ######## MOBILE HERO + MOBILE BAR WRAP ######## -->
-      <div class="mobileHeroWrap">
-
-        <!-- ######## HERO ######## -->
-        <section
-          class="section hero"
-          id="home"
-          aria-labelledby="homeTitle"
-          style="background-color: var(--sky); --bgimg: url('../img/hero/Hero_04.png');"
-        >
-          <!-- # Background image -->
-          <div class="hero__bg" aria-hidden="true"></div>
-
-          <!-- # Contrast overlay -->
-          <div class="hero__overlay" aria-hidden="true"></div>
-
-          <!-- # Content -->
-          <div class="container hero__content">
-
-            <!-- # Mobile-only logo (CSS shows on mobile) -->
-            <a class="hero__mobileLogo" href="#home" aria-label="Web Dev by Dan – Home">
-              <img
-                class="siteLogo"
-                src="img/logo/Web-Graphics-05.png"
-                data-src-light="img/logo/Web-Graphics-05.png"
-                data-src-dark="img/logo/Web-Graphics-06.png"
-                alt="Web Dev by Dan"
-                width="220"
-                height="60"
-                decoding="async"
-              />
-            </a>
-
-            <!-- # Centered block (mobile layout targets this) -->
-            <div class="hero__mid">
-              <p class="eyebrow">Nice to meet you, I'm</p>
-              <h1 class="hero__title" id="homeTitle">Dan</h1>
-
-              <p class="hero__sub">
-                I'm a Vermont based web developer experienced in making accessible, fast, and creative websites.
-
-              <div class="actions">
-                <a class="btn" href="#footer">
-                  Let’s Chat <span class="btn__icon" aria-hidden="true">▶</span>
-                </a>
-                <a class="btn btn--ghost" href="#about">Learn more</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ######## MOBILE BAR (BOTTOM / TOP LOCKED BY JS) ######## -->
-        <header class="mobilebar" role="banner">
-          <!-- # Brand -->
-          <a class="mobilebar__brand" href="#home" aria-label="Web Dev by Dan – Home">
+          <a class="logo" href="#home" aria-label="Home">
             <img
               class="siteLogo"
               src="img/logo/Web-Graphics-05.png"
               data-src-light="img/logo/Web-Graphics-05.png"
               data-src-dark="img/logo/Web-Graphics-06.png"
               alt="Web Dev by Dan"
-              width="160"
-              height="44"
-              decoding="async"
             />
           </a>
 
-          <div class="mobilebar__actions">
+          <nav class="sideNav" aria-label="Primary">
+            <ul class="navlist" id="sideNav">
+              <li><a class="navlink is-active" href="#home">Home</a></li>
+              <li><a class="navlink" href="#about">About</a></li>
+              <li><a class="navlink" href="#service">Service</a></li>
+              <li><a class="navlink" href="#pricing">Pricing</a></li>
+              <li><a class="navlink" href="#process">The Process</a></li>
+              <li><a class="navlink" href="#portfolio">Portfolio</a></li>
+              <li><a class="navlink" href="#blog">Blog</a></li>
+              <li><a class="navlink" href="#footer">Contact</a></li>
+            </ul>
+          </nav>
 
-            <!-- # Theme Toggle Button (icon-only on mobile) -->
-            <button
-              class="themeToggle"
-              type="button"
-              data-theme-toggle
-              aria-label="Enable dark mode"
-              aria-pressed="false"
-            >
-              <span class="themeToggle__icon" aria-hidden="true">🌙</span>
-              <span class="sr-only">Toggle dark mode</span>
-            </button>
+          <div class="sideFooter">
+            <div class="sideFooter__row" aria-label="Theme and social links">
+              <button
+                class="themeToggle"
+                type="button"
+                data-theme-toggle
+                aria-label="Enable dark mode"
+                aria-pressed="false"
+              >
+                <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+                <span class="themeToggle__text">Dark mode</span>
+              </button>
 
-            <!-- # Hamburger Toggle Button -->
-            <button
-              class="mobilebar__toggle"
-              type="button"
-              aria-label="Open menu"
-              aria-controls="mobileMenu"
-              aria-expanded="false"
-              id="mobileMenuBtn"
-            >
-              <span class="mobilebar__toggleLines" aria-hidden="true"></span>
-            </button>
-
-          </div>
-        </header>
-      </div>
-      </section>
-
-      <!-- ######## ABOUT ######## -->
-      <section class="section" id="about" aria-labelledby="aboutTitle">
-        <div class="container">
-          <header class="sectionHead">
-            <p class="kicker">Introductions</p>
-            <h2 id="aboutTitle">About Me</h2>
-          </header>
-
-          <div class="aboutGrid">
-            <div class="aboutMedia">
-              <img src="img/about/1.png" alt="Portrait of Dan" loading="lazy" />
-            </div>
-
-            <div class="aboutText">
-              <h2><span class="accent">Summary</span></h2>
-              <p>
-                Hi, I’m Dan. I'm a web developer with a hope of helping small businesses succeed online.
-                I blend technical programming skills with creative designs to build unique websites that reflect your brand.
-                Let’s bring your vision to life!
-              </p>
-
-              <h3 class="subhead">Based in <span class="accent">Burlington, Vermont.</span></h3>
-
-              <ul class="contactList">
-                <li>
-                  <span class="contactList__label">Phone</span>
-                  <a href="tel:+18608345235">+1 (860) 834 5235</a>
-                </li>
-                <li>
-                  <span class="contactList__label">Email</span>
-                  <a href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <h2 style="text-align: center; margin:auto; margin-top: 36px;"><span class="accent">Some Fun Facts</span></h2>
-          <!-- Mobile-only override: 1 fact per row -->
-          <style>
-            @media (max-width: 700px){
-              .facts{
-                grid-template-columns: 1fr !important;
-              }
-            }
-          </style>
-
-          <div class="facts" aria-label="Quick facts">
-            <article class="factCard">
-              <h3>🌱 Nature Lover</h3>
-              <p>I've hiked all 4000+ mountains in Vermont and actively try to help prevent invasive species.</p>
-            </article>
-
-            <article class="factCard">
-              <h3>📊 Data Expert</h3>
-              <p>In 2025, I earned my Master's degree in Data Science from the University of Vermont.</p>
-            </article>
-
-            <article class="factCard">
-              <h3>☕ Coffee Enthusiast</h3>
-              <p>In my free time, I love spending time at the local coffee shop, with Muddy Waters being my favorite.</p>
-            </article>
-
-            <article class="factCard">
-              <h3>🌎 World Traveller</h3>
-              <p>After graduation, I went on a 3 month roadtrip, living out of my car and spanning the US and Canada.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## SERVICE ######## -->
-      <section class="section" id="service" aria-labelledby="serviceTitle">
-        <div class="container">
-          <header class="sectionHead sectionHead--center">
-            <p class="kicker">Why Choose Me</p>
-            <h2 id="serviceTitle">Work Services</h2>
-          </header>
-
-          <div class="grid4">
-            <!-- # Service 1 -->
-            <article class="serviceCard">
-              <img class="serviceCard__icon" src="img/svg/laptop.svg" alt="" />
-              <h3>Web Development</h3>
-              <p>Bring your business to life with custom website design &amp; development!</p>
-            </article>
-
-            <!-- # Service 2 -->
-            <article class="serviceCard">
-              <img class="serviceCard__icon" src="img/svg/mouse.svg" alt="" />
-              <h3>Graphic Design</h3>
-              <p>With logo &amp; graphic design, your business will truly stand out!</p>
-            </article>
-
-            <!-- # Service 3 -->
-            <article class="serviceCard">
-              <img class="serviceCard__icon" src="img/svg/monitor.svg" alt="" />
-              <h3>Domain Hosting</h3>
-              <p>Get the domain which best fits your business and forget your hosting worries!</p>
-            </article>
-
-            <!-- # Service 4 -->
-            <article class="serviceCard">
-              <img class="serviceCard__icon" src="img/svg/layer.svg" alt="" />
-              <h3>SEO Optimization</h3>
-              <p>Get your business to the top of search engines with SEO optimization!</p>
-          </div>
-
-          <div class="center">
-            <a class="btn" href="#footer">Let’s Chat</a>
-          </div>
-
-          <div class="tags" aria-label="Service qualities" style="margin-top: 24px">
-            <span class="tag">Custom-Coded</span>
-            <span class="tag">Responsive</span>
-            <span class="tag">Mobile-First</span>
-            <span class="tag">Accessible</span>
-            <span class="tag">Unique</span>
-            <span class="tag">Intuitive</span>
-            <span class="tag">Professional</span>
-            <span class="tag">Dynamic</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## PRICING ######## -->
-      <section class="section" id="pricing" aria-labelledby="pricingTitle">
-        <div class="container">
-          <header class="sectionHead sectionHead--center">
-            <h2 id="pricingTitle">Price Table</h2>
-            <p>Websites are customizable and prices depend on scope of project.</p>
-          </header>
-
-          <div class="pricingGrid">
-            <article class="priceCard">
-              <h3 class="priceCard__kicker">One-Time</h3>
-              <p class="priceCard__price">One Payment of <span class="accent">$3200</span></p>
-              <ul class="checkList">
-                <li><span aria-hidden="true">✓</span> $50 / Month Hosting Fee</li>
-                <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
-                <li><span aria-hidden="true">✓</span> Standard 10 Page Website</li>
-                <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
-                <li><span aria-hidden="true">✓</span> Customized SEO</li>
-              </ul>
-            </article>
-
-            <article class="priceCard">
-              <h3 class="priceCard__kicker">Monthly</h3>
-              <p class="priceCard__price"><span class="accent">$150</span> Monthly</p>
-              <ul class="checkList">
-                <li><span aria-hidden="true">✓</span> $150 / Month Hosting Fee</li>
-                <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
-                <li><span aria-hidden="true">✓</span> Standard 5 Page Website</li>
-                <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
-                <li><span aria-hidden="true">✓</span> Customized SEO</li>
-              </ul>
-            </article>
-          </div>
-
-          <div class="center">
-            <a class="btn" href="#footer">Let’s Chat</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## PROCESS ######## -->
-      <section class="section process" id="process" aria-labelledby="processTitle">
-        <div class="container">
-          <div class="processGrid">
-            <div>
-              <header class="sectionHead">
-                <p class="kicker" style="font-size: 1.05rem;">
-                  Take a look at
-                </p>
-                <h2 id="processTitle" style="font-size: clamp(30px, 3vw, 38px);">
-                  The Process
-                </h2>
-              </header>
-
-              <p style="font-size: 1.15rem; line-height: 1.7; max-width: 52ch;">
-                Creating a great website doesn’t have to be overwhelming. I guide you through a clear and collaborative
-                process, from our first conversation to the final launch.
-              </p>
-
-              <ol class="steps" style="font-size: 1.1rem; line-height: 1.8;">
-                <li>
-                  <strong style="font-size: 1.15rem;">Initial Meetup &amp; Planning</strong> — 20%
-                </li>
-                <li>
-                  <strong style="font-size: 1.15rem;">Website Design &amp; Feedback</strong> — 40%
-                </li>
-                <li>
-                  <strong style="font-size: 1.15rem;">Web Development</strong> — 75%
-                </li>
-                <li>
-                  <strong style="font-size: 1.15rem;">Final Feedback &amp; Launch</strong> — 100%
-                </li>
-              </ol>
-            </div>
-
-            <div class="processMedia">
-              <img
-                src="img/skills/TheProcess.png"
-                alt="Web development process illustration"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## PORTFOLIO ######## -->
-
-      <style>
-        @media (max-width: 700px){
-          .portfolioGrid{
-            grid-template-columns: 1fr !important;
-          }
-        }
-      </style>
-          
-      <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
-        <div class="container">
-          <header class="sectionHead">
-            <p class="kicker">Check out my past work!</p>
-            <h2 id="portfolioTitle">Dan’s Portfolio</h2>
-          </header>
-
-          <div class="filter" role="group" aria-label="Portfolio filters" id="myBtnContainer">
-            <button class="filterBtn is-active" type="button" data-filter="all">Show all</button>
-            <button class="filterBtn" type="button" data-filter="mockups">Mockups</button>
-            <button class="filterBtn" type="button" data-filter="projects">Projects</button>
-            <button class="filterBtn" type="button" data-filter="pastwork">Past Work</button>
-          </div>
-
-          <!-- ✅ ONE grid container that holds ALL cards -->
-          <div class="portfolioGrid" id="portfolioGrid">
-            <!-- BEECH LEAF DISEASE -->
-            <article class="portfolioItem column projects show">
-              <img src="img/portfolio/1.png" alt="Beech Leaf Disease Preview" loading="lazy" />
-              <h3>Beech Leaf Disease: A Data Story</h3>
-              <p>A site explaining the beech leaf disease, where it's at, and where it's going.</p>
-
-              <a style="text-decoration: none; color:black" href="content\BLD-Data-Story\index.html">
-                <button class="linkBtn" type="button" data-modal="#p2">
-                View details
-                </button>
-              </a>
-            </article>
-
-            <!-- PEQUABUCK -->
-            <article class="portfolioItem column mockups show">
-              <img src="img/portfolio/2.png" alt="Pequabuck River Watershed Association Preview" loading="lazy" />
-              <h3>PRWA Non-Profit</h3>
-              <p>Nonprofit website for PRWA, highlighting new design methods.</p>
-
-              <a style="text-decoration: none; color:black" href="content\PRWA\index.html">
-                <button class="linkBtn" type="button" data-modal="#p2">
-                View details
-                </button>
-              </a>
-            </article>
-
-            <!-- FEMC - Indicators Dashboard -->
-            <article class="portfolioItem column pastwork show">
-              <img src="img/portfolio/3.png" alt="Pequabuck River Watershed Association Preview" loading="lazy" />
-              <h3>Northeast Indicators Dashboard</h3>
-              <p>A data project transforming Northeast ecological data from 3rd party, verified sites to create a dashboard to monitor Northeast forest health.</p>
-
-              <a style="text-decoration: none; color:black" href="https://www.uvm.edu/femc/CI4/indicators/vt">
-                <button class="linkBtn" type="button" data-modal="#p2">
-                View details
-                </button>
-              </a>
-            </article>
-
-            <!-- FEMC - Disturbance -->
-            <article class="portfolioItem column pastwork show">
-              <img src="img/portfolio/4.png" alt="Pequabuck River Watershed Association Preview" loading="lazy" />
-              <h3>Northeast Disturbance Tracker</h3>
-              <p>A data project transferring government fire data to an easily readable, interactive dashboard with maps, graphs, and charts.</p>
-
-              <a style="text-decoration: none; color:black" href="https://www.uvm.edu/femc/CI4/disturbance/subtype/fire">
-                <button class="linkBtn" type="button" data-modal="#p2">
-                View details
-                </button>
-              </a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## TESTIMONIALS ######## -->
-
-      <style>
-        @media (max-width: 700px){
-          .testimonialCard {
-            text-align: center;
-            padding: 0;
-            margin: 0;
-          }
-          .quote {
-            margin:auto;
-            padding:0;
-            width: 95%;
-          }
-          blockquote {
-            margin:0;
-            padding:0;
-          }
-          .quote-author {
-            margin-bottom:20px;
-          }
-        }
-      </style>
-      <section class="section" id="testimonials" aria-labelledby="testimonialsTitle">
-        <div class="container">
-          <header class="sectionHead sectionHead--center">
-            <p class="kicker">What Clients Say</p>
-            <h2 id="testimonialsTitle">Testimonials</h2>
-          </header>
-
-          <div class="testimonialCard">
-            <div class="testimonialMedia">
-              <img src="img/testimonials/Testimonials.png" alt="" loading="lazy" />
-            </div>
-
-            <blockquote class="quote">
-              <h2 class="rating" style="transform: translateX(-12px);">⭐⭐⭐⭐⭐</h2>
-              <p style="font-size: 1.4em;">Working with Dan was an absolute pleasure! 
-                He was attentive, responsive, and really listened to what I was saying.</p>
-              <footer class="quote-author">
-                <strong>Dylan Koval</strong><br />
-                <span class="muted">Technical Writer</span>
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-      </section>
-
-      <!-- ######## BLOG ######## -->
-      <section class="section" id="blog" aria-labelledby="blogTitle">
-        <div class="container">
-          <header class="sectionHead">
-            <p class="kicker">Curious About Web Dev?</p>
-            <h2 id="blogTitle">Blog Posts</h2>
-          </header>
-
-          <div class="blogGrid">
-            <!-- Blog Card 1 -->
-            <article class="blogCard">
-              <div
-                class="blogCard__media"
-                style="background-image: url('img/news/website-news.jpg');"
-                aria-hidden="true"
-              ></div>
-
-              <div class="blogCard__body">
-                <p class="blogMeta">MDN Web Docs • Responsive Design</p>
-
-                <h3 class="blogTitle">
-                  Responsive Web Design (RWD): Core Techniques
-                </h3>
-
-                <p class="blogExcerpt">
-                  A practical introduction to responsive layouts, media queries,
-                  and building websites that work across devices.
-                </p>
-
-                <a
-                  class="linkBtn blogBtn"
-                  href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design"
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <a
+                class="iconLink"
+                href="https://github.com/scheuermann-daniel"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
                 >
-                  Read article ↗
-                </a>
-              </div>
-            </article>
+                  <path
+                    d="M12 .5C5.73.5.75 5.7.75 12.1c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.2-1.7-1.2-1.7-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 .1 1.5-.7 1.8-1.1-.9-.1-1.9-.5-1.9-2.3 0-.5.2-1 .5-1.4-.1-.1-.2-.7.1-1.5 0 0 .4-.1 1.4.5.4-.1.9-.2 1.4-.2.5 0 1 .1 1.4.2 1-.7 1.4-.5 1.4-.5.3.8.2 1.4.1 1.5.3.4.5.9.5 1.4 0 1.8-1 2.2-1.9 2.3.3.3.6.8.6 1.6v2.5c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.25 5.7 18.27.5 12 .5z"
+                  />
+                </svg>
+                <span class="sr-only">GitHub</span>
+              </a>
 
-            <!-- Blog Card 2 -->
-            <article class="blogCard">
-              <div
-                class="blogCard__media"
-                style="background-image: url('img/news/colors-news.jpg');"
-                aria-hidden="true"
-              ></div>
-
-              <div class="blogCard__body">
-                <p class="blogMeta">web.dev • Accessibility</p>
-
-                <h3 class="blogTitle">
-                  Accessibility Fundamentals for Web Developers
-                </h3>
-
-                <p class="blogExcerpt">
-                  Learn how to design and build inclusive websites that work for
-                  everyone, including users with disabilities.
-                </p>
-
-                <a
-                  class="linkBtn blogBtn"
-                  href="https://web.dev/articles/accessibility"
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <a
+                class="iconLink"
+                href="https://www.linkedin.com/in/dscheuer03"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                  focusable="false"
                 >
-                  Read article ↗
-                </a>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
+                  <path
+                    d="M20.45 20.45h-3.55v-5.6c0-1.34-.03-3.07-1.87-3.07-1.88 0-2.17 1.46-2.17 2.97v5.7H9.34V9h3.41v1.56h.05c.47-.9 1.62-1.85 3.34-1.85 3.57 0 4.23 2.35 4.23 5.4v6.34zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.21 0 22.23 0z"
+                  />
+                </svg>
+                <span class="sr-only">LinkedIn</span>
+              </a>
+            </div>
 
-      <!-- ######## FOOTER + CONTACT (NETLIFY) ######## -->
-      <footer class="footer" id="footer">
-        <div class="container footerGrid">
-
-          <!-- # Contact Copy -->
-          <div>
-            <h2>Want to work together? <span class="accent">Let’s Chat!</span></h2>
-            <p class="muted">Send a message — submissions are stored in Netlify Forms.</p>
-
-            <p class="muted">
-              Based in <span class="accent">Burlington, Vermont.</span><br />
-              <a href="tel:+18608345235">+1 (860) 834 5235</a><br />
-              <a href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a>
+            <p class="copyright">
+              © <span id="year"></span> by Daniel Scheuermann.
             </p>
           </div>
+        </div>
+      </aside>
 
-          <!-- # Netlify Form -->
-          <form
-            class="contactForm"
-            id="contactForm"
-            name="contact"
-            method="POST"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
-            novalidate
-            netlify
+      <!-- MAIN -->
+      <main class="right" id="main" tabindex="-1">
+        <!-- MOBILE HERO + MOBILE BAR -->
+        <div class="mobileHeroWrap">
+          <!-- HERO -->
+          <section
+            class="section hero"
+            id="home"
+            aria-labelledby="homeTitle"
+            style="
+              background-color: var(--sky);
+              --bgimg: url('../img/hero/Hero_04.png');
+            "
           >
-            <input type="hidden" name="form-name" value="contact" />
+            <div class="hero__bg" aria-hidden="true"></div>
+            <div class="hero__overlay" aria-hidden="true"></div>
 
-            <!-- # Honeypot (anti-spam) -->
-            <p class="sr-only">
-              <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
-            </p>
-
-            <div class="twoCol">
-              <div>
-                <label for="name">Full Name</label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  autocomplete="name"
-                  required
-                  aria-describedby="nameErr"
+            <div class="container hero__content">
+              <a
+                class="hero__mobileLogo"
+                href="#home"
+                aria-label="Web Dev by Dan – Home"
+              >
+                <img
+                  class="siteLogo"
+                  src="img/logo/Web-Graphics-05.png"
+                  data-src-light="img/logo/Web-Graphics-05.png"
+                  data-src-dark="img/logo/Web-Graphics-06.png"
+                  alt="Web Dev by Dan"
+                  width="220"
+                  height="60"
+                  decoding="async"
                 />
-                <p class="fieldErr" id="nameErr" aria-live="polite"></p>
-              </div>
+              </a>
 
-              <div>
-                <label for="email">Your Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  inputmode="email"
-                  autocomplete="email"
-                  required
-                  aria-describedby="emailErr"
-                />
-                <p class="fieldErr" id="emailErr" aria-live="polite"></p>
-              </div>
-            </div>
+              <div class="hero__mid">
+                <p class="eyebrow">Nice to meet you, I'm</p>
+                <h1 class="hero__title" id="homeTitle">Dan</h1>
 
-            <div class="twoCol">
-              <div>
-                <label for="subject">Subject <span class="muted">(optional)</span></label>
-                <input id="subject" name="subject" type="text" />
-              </div>
+                <p class="hero__sub">
+                  I'm a Vermont based web developer experienced in making
+                  accessible, fast, and creative websites.
+                </p>
 
-              <div>
-                <label for="phone">Phone <span class="muted">(optional)</span></label>
-                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+                <div class="actions">
+                  <a class="btn" href="#footer">
+                    Let’s Chat
+                    <span class="btn__icon" aria-hidden="true">▶</span>
+                  </a>
+                  <a class="btn btn--ghost" href="#about">Learn more</a>
+                </div>
               </div>
             </div>
+          </section>
 
-            <div>
-              <label for="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="6"
-                required
-                aria-describedby="msgErr"
-              ></textarea>
-              <p class="fieldErr" id="msgErr" aria-live="polite"></p>
+          <!-- MOBILE BAR -->
+          <header class="mobilebar" role="banner">
+            <a
+              class="mobilebar__brand"
+              href="#home"
+              aria-label="Web Dev by Dan – Home"
+            >
+              <img
+                class="siteLogo"
+                src="img/logo/Web-Graphics-05.png"
+                data-src-light="img/logo/Web-Graphics-05.png"
+                data-src-dark="img/logo/Web-Graphics-06.png"
+                alt="Web Dev by Dan"
+                width="160"
+                height="44"
+                decoding="async"
+              />
+            </a>
+
+            <div class="mobilebar__actions">
+              <button
+                class="themeToggle"
+                type="button"
+                data-theme-toggle
+                aria-label="Enable dark mode"
+                aria-pressed="false"
+              >
+                <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+                <span class="sr-only">Toggle dark mode</span>
+              </button>
+
+              <button
+                class="mobilebar__toggle"
+                type="button"
+                aria-label="Open menu"
+                aria-controls="mobileMenu"
+                aria-expanded="false"
+                id="mobileMenuBtn"
+              >
+                <span class="mobilebar__toggleLines" aria-hidden="true"></span>
+              </button>
             </div>
-
-            <button class="btn" type="submit">Submit Now</button>
-            <p class="formMsg" id="contactMsg" aria-live="polite"></p>
-          </form>
+          </header>
         </div>
-      </footer>
-    </main>
-  </div>
 
-  <!-- ######## SCRIPTS ######## -->
-  <script src="js/app.js" defer></script>
-</body>
+        <!-- ABOUT -->
+        <section class="section" id="about" aria-labelledby="aboutTitle">
+          <div class="container">
+            <header class="sectionHead">
+              <p class="kicker">Introductions</p>
+              <h2 id="aboutTitle">About Me</h2>
+            </header>
+
+            <div class="aboutGrid">
+              <div class="aboutMedia">
+                <img src="img/about/1.png" alt="Portrait of Dan" loading="lazy" />
+              </div>
+
+              <div class="aboutText">
+                <h2><span class="accent">Summary</span></h2>
+                <p>
+                  Hi, I’m Dan. I'm a web developer with a hope of helping small
+                  businesses succeed online. I blend technical programming skills
+                  with creative designs to build unique websites that reflect your
+                  brand. Let’s bring your vision to life!
+                </p>
+
+                <h3 class="subhead">
+                  Based in <span class="accent">Burlington, Vermont.</span>
+                </h3>
+
+                <ul class="contactList">
+                  <li>
+                    <span class="contactList__label">Phone</span>
+                    <a href="tel:+18608345235">+1 (860) 834 5235</a>
+                  </li>
+                  <li>
+                    <span class="contactList__label">Email</span>
+                    <a href="mailto:webdev.by.dan@gmail.com"
+                      >webdev.by.dan@gmail.com</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <h2 style="text-align: center; margin: auto; margin-top: 36px">
+              <span class="accent">Some Fun Facts</span>
+            </h2>
+
+            <style>
+              @media (max-width: 700px) {
+                .facts {
+                  grid-template-columns: 1fr !important;
+                }
+              }
+            </style>
+
+            <div class="facts" aria-label="Quick facts">
+              <article class="factCard">
+                <h3>🌱 Nature Lover</h3>
+                <p>
+                  I've hiked all 4000+ mountains in Vermont and actively try to
+                  help prevent invasive species.
+                </p>
+              </article>
+
+              <article class="factCard">
+                <h3>📊 Data Expert</h3>
+                <p>
+                  In 2025, I earned my Master's degree in Data Science from the
+                  University of Vermont.
+                </p>
+              </article>
+
+              <article class="factCard">
+                <h3>☕ Coffee Enthusiast</h3>
+                <p>
+                  In my free time, I love spending time at the local coffee shop,
+                  with Muddy Waters being my favorite.
+                </p>
+              </article>
+
+              <article class="factCard">
+                <h3>🌎 World Traveller</h3>
+                <p>
+                  After graduation, I went on a 3 month roadtrip, living out of
+                  my car and spanning the US and Canada.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- SERVICE -->
+        <section class="section" id="service" aria-labelledby="serviceTitle">
+          <div class="container">
+            <header class="sectionHead sectionHead--center">
+              <p class="kicker">Why Choose Me</p>
+              <h2 id="serviceTitle">Work Services</h2>
+            </header>
+
+            <div class="grid4">
+              <article class="serviceCard">
+                <img class="serviceCard__icon" src="img/svg/laptop.svg" alt="" />
+                <h3>Web Development</h3>
+                <p>
+                  Bring your business to life with custom website design &amp;
+                  development!
+                </p>
+              </article>
+
+              <article class="serviceCard">
+                <img class="serviceCard__icon" src="img/svg/mouse.svg" alt="" />
+                <h3>Graphic Design</h3>
+                <p>
+                  With logo &amp; graphic design, your business will truly stand
+                  out!
+                </p>
+              </article>
+
+              <article class="serviceCard">
+                <img class="serviceCard__icon" src="img/svg/monitor.svg" alt="" />
+                <h3>Domain Hosting</h3>
+                <p>
+                  Get the domain which best fits your business and forget your
+                  hosting worries!
+                </p>
+              </article>
+
+              <article class="serviceCard">
+                <img class="serviceCard__icon" src="img/svg/layer.svg" alt="" />
+                <h3>SEO Optimization</h3>
+                <p>
+                  Get your business to the top of search engines with SEO
+                  optimization!
+                </p>
+              </article>
+            </div>
+
+            <div class="center">
+              <a class="btn" href="#footer">Let’s Chat</a>
+            </div>
+
+            <div class="tags" aria-label="Service qualities" style="margin-top: 24px">
+              <span class="tag">Custom-Coded</span>
+              <span class="tag">Responsive</span>
+              <span class="tag">Mobile-First</span>
+              <span class="tag">Accessible</span>
+              <span class="tag">Unique</span>
+              <span class="tag">Intuitive</span>
+              <span class="tag">Professional</span>
+              <span class="tag">Dynamic</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRICING -->
+        <section class="section" id="pricing" aria-labelledby="pricingTitle">
+          <div class="container">
+            <header class="sectionHead sectionHead--center">
+              <h2 id="pricingTitle">Price Table</h2>
+              <p>Websites are customizable and prices depend on scope of project.</p>
+            </header>
+
+            <div class="pricingGrid">
+              <article class="priceCard">
+                <h3 class="priceCard__kicker">One-Time</h3>
+                <p class="priceCard__price">
+                  One Payment of <span class="accent">$3200</span>
+                </p>
+                <ul class="checkList">
+                  <li><span aria-hidden="true">✓</span> $50 / Month Hosting Fee</li>
+                  <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
+                  <li><span aria-hidden="true">✓</span> Standard 10 Page Website</li>
+                  <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
+                  <li><span aria-hidden="true">✓</span> Customized SEO</li>
+                </ul>
+              </article>
+
+              <article class="priceCard">
+                <h3 class="priceCard__kicker">Monthly</h3>
+                <p class="priceCard__price">
+                  <span class="accent">$150</span> Monthly
+                </p>
+                <ul class="checkList">
+                  <li><span aria-hidden="true">✓</span> $150 / Month Hosting Fee</li>
+                  <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
+                  <li><span aria-hidden="true">✓</span> Standard 5 Page Website</li>
+                  <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
+                  <li><span aria-hidden="true">✓</span> Customized SEO</li>
+                </ul>
+              </article>
+            </div>
+
+            <div class="center">
+              <a class="btn" href="#footer">Let’s Chat</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROCESS -->
+        <section class="section process" id="process" aria-labelledby="processTitle">
+          <div class="container">
+            <div class="processGrid">
+              <div>
+                <header class="sectionHead">
+                  <p class="kicker" style="font-size: 1.05rem">Take a look at</p>
+                  <h2
+                    id="processTitle"
+                    style="font-size: clamp(30px, 3vw, 38px)"
+                  >
+                    The Process
+                  </h2>
+                </header>
+
+                <p style="font-size: 1.15rem; line-height: 1.7; max-width: 52ch">
+                  Creating a great website doesn’t have to be overwhelming. I guide
+                  you through a clear and collaborative process, from our first
+                  conversation to the final launch.
+                </p>
+
+                <ol class="steps" style="font-size: 1.1rem; line-height: 1.8">
+                  <li>
+                    <strong style="font-size: 1.15rem"
+                      >Initial Meetup &amp; Planning</strong
+                    >
+                    — 20%
+                  </li>
+                  <li>
+                    <strong style="font-size: 1.15rem"
+                      >Website Design &amp; Feedback</strong
+                    >
+                    — 40%
+                  </li>
+                  <li>
+                    <strong style="font-size: 1.15rem">Web Development</strong> —
+                    75%
+                  </li>
+                  <li>
+                    <strong style="font-size: 1.15rem"
+                      >Final Feedback &amp; Launch</strong
+                    >
+                    — 100%
+                  </li>
+                </ol>
+              </div>
+
+              <div class="processMedia">
+                <img
+                  src="img/skills/TheProcess.png"
+                  alt="Web development process illustration"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <style>
+          @media (max-width: 700px) {
+            .portfolioGrid {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        </style>
+
+        <section class="section" id="portfolio" aria-labelledby="portfolioTitle">
+          <div class="container">
+            <header class="sectionHead">
+              <p class="kicker">Check out my past work!</p>
+              <h2 id="portfolioTitle">Dan’s Portfolio</h2>
+            </header>
+
+            <div
+              class="filter"
+              role="group"
+              aria-label="Portfolio filters"
+              id="myBtnContainer"
+            >
+              <button class="filterBtn is-active" type="button" data-filter="all">
+                Show all
+              </button>
+              <button class="filterBtn" type="button" data-filter="mockups">
+                Mockups
+              </button>
+              <button class="filterBtn" type="button" data-filter="projects">
+                Projects
+              </button>
+              <button class="filterBtn" type="button" data-filter="pastwork">
+                Past Work
+              </button>
+            </div>
+
+            <div class="portfolioGrid" id="portfolioGrid">
+              <article class="portfolioItem column projects show">
+                <img
+                  src="img/portfolio/1.png"
+                  alt="Beech Leaf Disease Preview"
+                  loading="lazy"
+                />
+                <h3>Beech Leaf Disease: A Data Story</h3>
+                <p>
+                  A site explaining the beech leaf disease, where it's at, and
+                  where it's going.
+                </p>
+
+                <a
+                  style="text-decoration: none; color: black"
+                  href="content\BLD-Data-Story\index.html"
+                >
+                  <button class="linkBtn" type="button" data-modal="#p2">
+                    View details
+                  </button>
+                </a>
+              </article>
+
+              <article class="portfolioItem column mockups show">
+                <img
+                  src="img/portfolio/2.png"
+                  alt="Pequabuck River Watershed Association Preview"
+                  loading="lazy"
+                />
+                <h3>PRWA Non-Profit</h3>
+                <p>Nonprofit website for PRWA, highlighting new design methods.</p>
+
+                <a
+                  style="text-decoration: none; color: black"
+                  href="content\PRWA\index.html"
+                >
+                  <button class="linkBtn" type="button" data-modal="#p2">
+                    View details
+                  </button>
+                </a>
+              </article>
+
+              <article class="portfolioItem column pastwork show">
+                <img
+                  src="img/portfolio/3.png"
+                  alt="Pequabuck River Watershed Association Preview"
+                  loading="lazy"
+                />
+                <h3>Northeast Indicators Dashboard</h3>
+                <p>
+                  A data project transforming Northeast ecological data from 3rd
+                  party, verified sites to create a dashboard to monitor Northeast
+                  forest health.
+                </p>
+
+                <a
+                  style="text-decoration: none; color: black"
+                  href="https://www.uvm.edu/femc/CI4/indicators/vt"
+                >
+                  <button class="linkBtn" type="button" data-modal="#p2">
+                    View details
+                  </button>
+                </a>
+              </article>
+
+              <article class="portfolioItem column pastwork show">
+                <img
+                  src="img/portfolio/4.png"
+                  alt="Pequabuck River Watershed Association Preview"
+                  loading="lazy"
+                />
+                <h3>Northeast Disturbance Tracker</h3>
+                <p>
+                  A data project transferring government fire data to an easily
+                  readable, interactive dashboard with maps, graphs, and charts.
+                </p>
+
+                <a
+                  style="text-decoration: none; color: black"
+                  href="https://www.uvm.edu/femc/CI4/disturbance/subtype/fire"
+                >
+                  <button class="linkBtn" type="button" data-modal="#p2">
+                    View details
+                  </button>
+                </a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <style>
+          @media (max-width: 700px) {
+            .testimonialCard {
+              text-align: center;
+              padding: 0;
+              margin: 0;
+            }
+            .quote {
+              margin: auto;
+              padding: 0;
+              width: 95%;
+            }
+            blockquote {
+              margin: 0;
+              padding: 0;
+            }
+            .quote-author {
+              margin-bottom: 20px;
+            }
+          }
+        </style>
+
+        <section
+          class="section"
+          id="testimonials"
+          aria-labelledby="testimonialsTitle"
+        >
+          <div class="container">
+            <header class="sectionHead sectionHead--center">
+              <p class="kicker">What Clients Say</p>
+              <h2 id="testimonialsTitle">Testimonials</h2>
+            </header>
+
+            <div class="testimonialCard">
+              <div class="testimonialMedia">
+                <img src="img/testimonials/Testimonials.png" alt="" loading="lazy" />
+              </div>
+
+              <blockquote class="quote">
+                <h2 class="rating" style="transform: translateX(-12px)">⭐⭐⭐⭐⭐</h2>
+                <p style="font-size: 1.4em">
+                  Working with Dan was an absolute pleasure! He was attentive,
+                  responsive, and really listened to what I was saying.
+                </p>
+                <footer class="quote-author">
+                  <strong>Dylan Koval</strong><br />
+                  <span class="muted">Technical Writer</span>
+                </footer>
+              </blockquote>
+            </div>
+          </div>
+        </section>
+
+        <!-- BLOG -->
+        <section class="section" id="blog" aria-labelledby="blogTitle">
+          <div class="container">
+            <header class="sectionHead">
+              <p class="kicker">Curious About Web Dev?</p>
+              <h2 id="blogTitle">Blog Posts</h2>
+            </header>
+
+            <div class="blogGrid">
+              <article class="blogCard">
+                <div
+                  class="blogCard__media"
+                  style="background-image: url('img/news/website-news.jpg')"
+                  aria-hidden="true"
+                ></div>
+
+                <div class="blogCard__body">
+                  <p class="blogMeta">MDN Web Docs • Responsive Design</p>
+
+                  <h3 class="blogTitle">
+                    Responsive Web Design (RWD): Core Techniques
+                  </h3>
+
+                  <p class="blogExcerpt">
+                    A practical introduction to responsive layouts, media queries,
+                    and building websites that work across devices.
+                  </p>
+
+                  <a
+                    class="linkBtn blogBtn"
+                    href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Read article ↗
+                  </a>
+                </div>
+              </article>
+
+              <article class="blogCard">
+                <div
+                  class="blogCard__media"
+                  style="background-image: url('img/news/colors-news.jpg')"
+                  aria-hidden="true"
+                ></div>
+
+                <div class="blogCard__body">
+                  <p class="blogMeta">web.dev • Accessibility</p>
+
+                  <h3 class="blogTitle">
+                    Accessibility Fundamentals for Web Developers
+                  </h3>
+
+                  <p class="blogExcerpt">
+                    Learn how to design and build inclusive websites that work for
+                    everyone, including users with disabilities.
+                  </p>
+
+                  <a
+                    class="linkBtn blogBtn"
+                    href="https://web.dev/articles/accessibility"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Read article ↗
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- FOOTER / CONTACT -->
+        <footer class="footer" id="footer">
+          <div class="container footerGrid">
+            <div>
+              <h2>
+                Want to work together? <span class="accent">Let’s Chat!</span>
+              </h2>
+              <p class="muted">Send a message — submissions are stored in Netlify Forms.</p>
+
+              <p class="muted">
+                Based in <span class="accent">Burlington, Vermont.</span><br />
+                <a href="tel:+18608345235">+1 (860) 834 5235</a><br />
+                <a href="mailto:webdev.by.dan@gmail.com">webdev.by.dan@gmail.com</a>
+              </p>
+            </div>
+
+            <form
+              class="contactForm"
+              id="contactForm"
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              novalidate
+              netlify
+            >
+              <input type="hidden" name="form-name" value="contact" />
+
+              <p class="sr-only">
+                <label
+                  >Don’t fill this out if you’re human:
+                  <input name="bot-field"
+                /></label>
+              </p>
+
+              <div class="twoCol">
+                <div>
+                  <label for="name">Full Name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    required
+                    aria-describedby="nameErr"
+                  />
+                  <p class="fieldErr" id="nameErr" aria-live="polite"></p>
+                </div>
+
+                <div>
+                  <label for="email">Your Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="email"
+                    required
+                    aria-describedby="emailErr"
+                  />
+                  <p class="fieldErr" id="emailErr" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <div class="twoCol">
+                <div>
+                  <label for="subject"
+                    >Subject <span class="muted">(optional)</span></label
+                  >
+                  <input id="subject" name="subject" type="text" />
+                </div>
+
+                <div>
+                  <label for="phone"
+                    >Phone <span class="muted">(optional)</span></label
+                  >
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    inputmode="tel"
+                    autocomplete="tel"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="6"
+                  required
+                  aria-describedby="msgErr"
+                ></textarea>
+                <p class="fieldErr" id="msgErr" aria-live="polite"></p>
+              </div>
+
+              <button class="btn" type="submit">Submit Now</button>
+              <p class="formMsg" id="contactMsg" aria-live="polite"></p>
+            </form>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/app.js" defer></script>
+  </body>
 </html>

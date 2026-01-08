@@ -1,34 +1,11 @@
 /* =========================================================
-   app.js
-   - Theme toggle + image swap
-   - Site interactions
-   - Mobile fullscreen menu (ONLY closes via X button)
-   - Active nav highlighting
-   - Portfolio filter
-   - Accessible modal
-   - Contact form validation
-   - Mobile sticky bar (bottom/flow/top)
-
-   Fixes added:
-   - Use stable viewport height (visualViewport or documentElement.clientHeight)
-   - Guard against iOS rubber-band / drag-bounce so sticky doesn’t “dip” or flicker
-   - Measure nav height with offsetHeight (more stable than getBoundingClientRect while fixed)
-   - Add HYST buffer in both directions to reduce threshold flicker
-   - Listen to visualViewport resize/scroll (mobile URL bar changes)
-   - ✅ NEW: On initial load (hero view), if the navbar’s “natural spot” is below the viewport,
-           force bottom-sticky immediately (no need to scroll first).
-   - ✅ NEW: On mobile, when clicking #anchor links, subtract mobilebar height so headings aren’t hidden.
-========================================================= */
-
-/* =========================================================
-   THEME TOGGLE + IMAGE SWAP (robust click handling)
+   THEME TOGGLE + IMAGE SWAP
 ========================================================= */
 (function () {
-  const STORAGE_KEY = "theme"; // "light" | "dark"
+  const STORAGE_KEY = "theme";
   const root = document.documentElement;
 
-  const toggles = () =>
-    Array.from(document.querySelectorAll("[data-theme-toggle]"));
+  const toggles = () => Array.from(document.querySelectorAll("[data-theme-toggle]"));
 
   function withThemeTransition() {
     root.classList.add("theme-transition");
@@ -55,43 +32,31 @@
     document
       .querySelectorAll("img[data-src-light][data-src-dark]")
       .forEach((img) => {
-        const nextSrc = isDark
-          ? img.getAttribute("data-src-dark")
-          : img.getAttribute("data-src-light");
+        const nextSrc = isDark ? img.getAttribute("data-src-dark") : img.getAttribute("data-src-light");
+        if (nextSrc && img.getAttribute("src") !== nextSrc) img.setAttribute("src", nextSrc);
 
-        if (nextSrc && img.getAttribute("src") !== nextSrc) {
-          img.setAttribute("src", nextSrc);
-        }
-
-        // Optional: <img data-srcset-light data-srcset-dark>
+        // optional srcset swap on <img>
         const lightSet = img.getAttribute("data-srcset-light");
         const darkSet = img.getAttribute("data-srcset-dark");
         if (lightSet && darkSet) {
           const nextSet = isDark ? darkSet : lightSet;
-          if (img.getAttribute("srcset") !== nextSet) {
-            img.setAttribute("srcset", nextSet);
-          }
+          if (img.getAttribute("srcset") !== nextSet) img.setAttribute("srcset", nextSet);
         }
       });
 
-    // <source data-srcset-light data-srcset-dark> inside <picture>
+    // <source data-srcset-light data-srcset-dark>
     document
       .querySelectorAll("source[data-srcset-light][data-srcset-dark]")
       .forEach((source) => {
-        const nextSet = isDark
-          ? source.getAttribute("data-srcset-dark")
-          : source.getAttribute("data-srcset-light");
-
-        if (nextSet && source.getAttribute("srcset") !== nextSet) {
-          source.setAttribute("srcset", nextSet);
-        }
+        const nextSet = isDark ? source.getAttribute("data-srcset-dark") : source.getAttribute("data-srcset-light");
+        if (nextSet && source.getAttribute("srcset") !== nextSet) source.setAttribute("srcset", nextSet);
 
         // Force picture refresh (some browsers cache selection)
         const pic = source.closest("picture");
         const img = pic && pic.querySelector("img");
         if (img) {
           img.style.display = "none";
-          img.offsetHeight; // reflow
+          img.offsetHeight;
           img.style.display = "";
         }
       });
@@ -104,10 +69,7 @@
 
     toggles().forEach((btn) => {
       btn.setAttribute("aria-pressed", String(isDark));
-      btn.setAttribute(
-        "aria-label",
-        isDark ? "Disable dark mode" : "Enable dark mode"
-      );
+      btn.setAttribute("aria-label", isDark ? "Disable dark mode" : "Enable dark mode");
 
       const icon = btn.querySelector(".themeToggle__icon");
       if (icon) icon.textContent = isDark ? "☀️" : "🌙";
@@ -125,9 +87,7 @@
     swapThemeAssets(theme);
 
     clearTimeout(setTheme._t);
-    setTheme._t = setTimeout(() => {
-      root.classList.remove("theme-transition");
-    }, 250);
+    setTheme._t = setTimeout(() => root.classList.remove("theme-transition"), 250);
   }
 
   // Init
@@ -145,23 +105,18 @@
     setTheme(current === "dark" ? "light" : "dark");
   });
 
-  // OS theme changes (if no stored pref)
-  const mql = window.matchMedia
-    ? window.matchMedia("(prefers-color-scheme: dark)")
-    : null;
-
+  // OS theme changes (only if user hasn’t stored a pref)
+  const mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
   if (mql) {
     mql.addEventListener("change", () => {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored !== "light" && stored !== "dark") {
-        setTheme(mql.matches ? "dark" : "light");
-      }
+      if (stored !== "light" && stored !== "dark") setTheme(mql.matches ? "dark" : "light");
     });
   }
 })();
 
 /* =========================================================
-   SITE INTERACTIONS (NEAT)
+   SITE INTERACTIONS
 ========================================================= */
 (function () {
   "use strict";
@@ -169,31 +124,50 @@
   const qs = (sel, root) => (root || document).querySelector(sel);
   const qsa = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
+  const MOBILE_MQ = window.matchMedia("(max-width: 700px)"); // ✅ matches your CSS breakpoint
+  const MENU_ANIM_MS = 350;
+  const FOCUS_DELAY_MS = 50;
+
+  const nav = qs(".mobileHeroWrap .mobilebar");
+  const getNavH = () => (nav ? nav.offsetHeight : 0);
+
+  const getY = (el) => {
+    const r = el.getBoundingClientRect();
+    return (window.pageYOffset || window.scrollY || 0) + r.top;
+  };
+
+  const smoothScrollWithOffset = (target) => {
+    const y = Math.max(0, Math.round(getY(target) - getNavH()));
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
+  const focusTarget = (target) => {
+    window.setTimeout(() => {
+      if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    }, FOCUS_DELAY_MS);
+  };
+
   /* ===== Year ===== */
   const yearEl = qs("#year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   /* =========================================================
-     MOBILE FULLSCREEN MENU (re-uses EXISTING desktop sidebar)
+     MOBILE FULLSCREEN MENU
   ========================================================= */
   const menuBtn = qs("#mobileMenuBtn");
   const closeBtn = qs("[data-menu-close]");
-  const mq = window.matchMedia("(max-width: 900px)");
-  const ANIM_MS = 350;
+  const menuRoot = qs("aside.left, .left");
 
-  function isMenuOpen() {
-    return document.body.classList.contains("menu-open");
-  }
+  const isMenuOpen = () => document.body.classList.contains("menu-open");
 
   function openMenu() {
-    if (!mq.matches) return;
-
+    if (!MOBILE_MQ.matches) return;
     document.body.classList.add("menu-visible");
-    requestAnimationFrame(() => {
-      document.body.classList.add("menu-open");
-    });
+    requestAnimationFrame(() => document.body.classList.add("menu-open"));
 
     document.body.style.overflow = "hidden";
+
     if (menuBtn) {
       menuBtn.setAttribute("aria-expanded", "true");
       menuBtn.setAttribute("aria-label", "Menu open");
@@ -213,7 +187,7 @@
 
     window.setTimeout(() => {
       document.body.classList.remove("menu-visible");
-    }, ANIM_MS);
+    }, MENU_ANIM_MS);
   }
 
   if (menuBtn) {
@@ -236,9 +210,7 @@
     });
   }
 
-  mq.addEventListener("change", () => {
-    closeMenu();
-  });
+  MOBILE_MQ.addEventListener("change", () => closeMenu());
 
   /* =========================================================
      ACTIVE NAV HIGHLIGHTING
@@ -263,39 +235,34 @@
   window.addEventListener("scroll", setActiveLink, { passive: true });
   window.addEventListener("load", setActiveLink);
 
-  /* ===== Portfolio filter (FORCE HIDE/SHOW — FIXED) ===== */
+  /* =========================================================
+     PORTFOLIO FILTER
+  ========================================================= */
   (() => {
     const portfolio = qs("#portfolio");
     const filterWrap = qs("#myBtnContainer", portfolio || document);
     const grid = qs("#portfolioGrid", portfolio || document);
     if (!filterWrap || !grid) return;
 
-    // Prevent double-binding if this script runs more than once
     if (filterWrap.dataset.bound === "1") return;
     filterWrap.dataset.bound = "1";
 
-    // Only portfolio cards inside the portfolio grid
     const items = Array.from(grid.querySelectorAll(".portfolioItem"));
 
     function setVisible(el, isVisible) {
-      // Hard-hide/show so CSS can't accidentally keep it visible
       el.hidden = !isVisible;
       el.style.display = isVisible ? "" : "none";
-
-      // Optional: keep your old class logic too (won't hurt)
       el.classList.toggle("show", isVisible);
     }
 
     function applyFilter(filter) {
       const cat = (filter || "all").toLowerCase().trim();
-
       items.forEach((item) => {
         const match = cat === "all" ? true : item.classList.contains(cat);
         setVisible(item, match);
       });
     }
 
-    // Init based on whichever button is active, else "all"
     const activeBtn =
       filterWrap.querySelector("button[data-filter].is-active") ||
       filterWrap.querySelector("button[data-filter]");
@@ -306,16 +273,17 @@
       const btn = e.target.closest("button[data-filter]");
       if (!btn) return;
 
-      // Active state
-      filterWrap
-        .querySelectorAll("button[data-filter]")
-        .forEach((b) => b.classList.toggle("is-active", b === btn));
+      filterWrap.querySelectorAll("button[data-filter]").forEach((b) => {
+        b.classList.toggle("is-active", b === btn);
+      });
 
       applyFilter(btn.getAttribute("data-filter"));
     });
   })();
 
-  /* ===== Accessible modal ===== */
+  /* =========================================================
+     ACCESSIBLE MODAL
+  ========================================================= */
   const modal = qs("#modal");
   const modalContent = qs("#modalContent");
   let lastFocus = null;
@@ -365,6 +333,7 @@
 
     lastFocus = document.activeElement;
     modalContent.innerHTML = html;
+
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -402,7 +371,9 @@
     }
   });
 
-  /* ===== Contact form validation (Netlify handles submit) ===== */
+  /* =========================================================
+     CONTACT FORM VALIDATION
+  ========================================================= */
   const contactForm = qs("#contactForm");
   const contactMsg = qs("#contactMsg");
   const mapErr = { name: "#nameErr", email: "#emailErr", message: "#msgErr" };
@@ -414,9 +385,7 @@
     input.setAttribute("aria-invalid", msg ? "true" : "false");
   }
 
-  function isEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  }
+  const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
   if (contactForm) {
     contactForm.addEventListener("submit", (e) => {
@@ -454,7 +423,7 @@
       if (!ok) {
         e.preventDefault();
         const firstInvalid = qs('[aria-invalid="true"]', contactForm);
-        firstInvalid && firstInvalid.focus();
+        if (firstInvalid) firstInvalid.focus();
 
         if (contactMsg) {
           contactMsg.textContent = "Please fix the highlighted fields.";
@@ -466,10 +435,51 @@
       if (contactMsg) contactMsg.textContent = "Sending…";
     });
   }
+
+  /* =========================================================
+     MOBILE: ANCHOR CLICKS
+     - If menu is open and click a menu link: close, then scroll with offset
+     - Otherwise (mobile): scroll with offset
+========================================================= */
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!MOBILE_MQ.matches) return;
+
+      const link = e.target.closest("a[href^='#']");
+      if (!link) return;
+
+      const href = link.getAttribute("href") || "";
+      const id = href.slice(1);
+      if (!id) return;
+
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      const clickedInsideMenu = menuRoot ? menuRoot.contains(link) : false;
+
+      // Only intercept if it's a real in-page section anchor.
+      e.preventDefault();
+
+      if (isMenuOpen() && clickedInsideMenu) {
+        closeMenu();
+        window.setTimeout(() => {
+          smoothScrollWithOffset(target);
+          focusTarget(target);
+        }, MENU_ANIM_MS + 10);
+        return;
+      }
+
+      // Normal mobile anchor behavior (not menu-open)
+      smoothScrollWithOffset(target);
+      focusTarget(target);
+    },
+    true
+  );
 })();
 
 /* =========================================================
-   BOTTOM -> FLOW -> TOP STICKY NAV (WITH HYSTERESIS)
+   BOTTOM -> FLOW -> TOP STICKY NAV (MOBILEBAR)
 ========================================================= */
 (() => {
   const nav = document.querySelector(".mobileHeroWrap .mobilebar");
@@ -482,6 +492,7 @@
     return document.documentElement.clientHeight;
   }
 
+  // Placeholder to prevent layout jump when nav becomes fixed
   const ph = document.createElement("div");
   ph.className = "mobilebar-placeholder";
   ph.style.height = `${nav.offsetHeight}px`;
@@ -506,7 +517,6 @@
     const vh = getVH();
     const navRect = nav.getBoundingClientRect();
     const EPS = 1;
-
     if (navRect.bottom > vh + EPS) setMode("bottom");
     else setMode("flow");
   }
@@ -567,6 +577,7 @@
   };
 
   window.addEventListener("scroll", onScroll, { passive: true });
+
   window.addEventListener(
     "resize",
     () => {
@@ -595,150 +606,15 @@
 })();
 
 /* =========================================================
-   MOBILE MENU: close first, then smooth-scroll to anchor
-   ✅ UPDATED: subtract mobilebar height so section headers aren’t hidden
-========================================================= */
-(() => {
-  const mq = window.matchMedia("(max-width: 900px)");
-  const ANIM_MS = 350; // must match your menu close transition duration
-  const EPS_FOCUS_MS = 50;
-
-  const menuRoot = document.querySelector("aside.left, .left");
-  if (!menuRoot) return;
-
-  const nav = document.querySelector(".mobileHeroWrap .mobilebar");
-  const getNavH = () => (nav ? nav.offsetHeight : 0);
-
-  const isMenuOpen = () => document.body.classList.contains("menu-open");
-
-  const closeMenu = () => {
-    document.body.classList.remove("menu-open");
-    document.body.style.overflow = "";
-    document.documentElement.removeAttribute("data-menu-open");
-
-    const menuBtn = document.getElementById("mobileMenuBtn");
-    if (menuBtn) {
-      menuBtn.setAttribute("aria-expanded", "false");
-      menuBtn.setAttribute("aria-label", "Open menu");
-      menuBtn.classList.remove("is-open");
-    }
-
-    window.setTimeout(() => {
-      document.body.classList.remove("menu-visible");
-    }, ANIM_MS);
-  };
-
-  const getY = (el) => {
-    const r = el.getBoundingClientRect();
-    return (window.pageYOffset || window.scrollY || 0) + r.top;
-  };
-
-  const smoothScrollWithOffset = (target) => {
-    const y = Math.max(0, Math.round(getY(target) - getNavH()));
-    window.scrollTo({ top: y, behavior: "smooth" });
-  };
-
-  document.addEventListener(
-    "click",
-    (e) => {
-      if (!mq.matches) return;
-      if (!isMenuOpen()) return;
-
-      const link = e.target.closest("a[href^='#']");
-      if (!link) return;
-      if (!menuRoot.contains(link)) return;
-
-      const hash = link.getAttribute("href") || "";
-      const id = hash.slice(1);
-      if (!id) return;
-
-      const target = document.getElementById(id);
-      if (!target) return;
-
-      e.preventDefault();
-
-      closeMenu();
-
-      window.setTimeout(() => {
-        smoothScrollWithOffset(target);
-
-        window.setTimeout(() => {
-          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-          target.focus({ preventScroll: true });
-        }, EPS_FOCUS_MS);
-      }, ANIM_MS + 10);
-    },
-    true
-  );
-})();
-
-/* =========================================================
-   MOBILE (< = 780px): anchor clicks scroll to section
-   ✅ FIXED: subtract (not add) mobilebar height; removed the accidental +2000
-========================================================= */
-(() => {
-  const mq = window.matchMedia("(max-width: 780px)");
-  const nav = document.querySelector(".mobileHeroWrap .mobilebar");
-
-  const getNavH = () => (nav ? nav.offsetHeight : 0);
-
-  const getY = (el) => {
-    const r = el.getBoundingClientRect();
-    return (window.pageYOffset || window.scrollY || 0) + r.top;
-  };
-
-  function scrollToWithOffset(target) {
-    const y = Math.max(0, Math.round(getY(target) - getNavH()));
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-
-  document.addEventListener(
-    "click",
-    (e) => {
-      if (!mq.matches) return;
-
-      const link = e.target.closest("a[href^='#']");
-      if (!link) return;
-
-      const href = link.getAttribute("href") || "";
-      const id = href.slice(1);
-      if (!id) return;
-
-      const target = document.getElementById(id);
-      if (!target) return;
-
-      // Let the menu handler (above) take precedence when it prevents default.
-      if (e.defaultPrevented) return;
-
-      e.preventDefault();
-      scrollToWithOffset(target);
-
-      setTimeout(() => {
-        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-        target.focus({ preventScroll: true });
-      }, 450);
-    },
-    true
-  );
-})();
-
-/* =========================================================
-   FIX: Remove the mobile hero half-circle ONLY in dark mode
-   - Adds class .noHalfCircle to .mobileHeroWrap when:
-       (1) mobile viewport (<=700px) AND (2) data-theme="dark"
-   - Injects CSS that disables .mobileHeroWrap .hero::after
+   Dark-mode-only: remove mobile hero half-circle
 ========================================================= */
 (() => {
   const STYLE_ID = "no-half-circle-style";
   const WRAP_SEL = ".mobileHeroWrap";
-  const HERO_SEL = ".mobileHeroWrap .hero";
   const MQ = window.matchMedia("(max-width: 700px)");
-
   const root = document.documentElement;
 
-  function isDark() {
-    return root.getAttribute("data-theme") === "dark";
-  }
+  const isDark = () => root.getAttribute("data-theme") === "dark";
 
   function ensureStyle() {
     let style = document.getElementById(STYLE_ID);
@@ -746,7 +622,6 @@
       style = document.createElement("style");
       style.id = STYLE_ID;
       style.textContent = `
-        /* Kill the half-circle on mobile ONLY when JS adds .noHalfCircle */
         @media (max-width: 700px){
           .mobileHeroWrap.noHalfCircle .hero::after{
             content: none !important;
@@ -763,18 +638,12 @@
     if (!wrap) return;
 
     const shouldKill = MQ.matches && isDark();
-
-    // Toggle class
     wrap.classList.toggle("noHalfCircle", shouldKill);
-
-    // Ensure CSS exists (safe even if already added)
     if (shouldKill) ensureStyle();
   }
 
-  // Initial
   setState();
 
-  // Watch theme attribute changes
   const mo = new MutationObserver((muts) => {
     for (const m of muts) {
       if (m.type === "attributes" && m.attributeName === "data-theme") {
@@ -785,7 +654,6 @@
   });
   mo.observe(root, { attributes: true });
 
-  // Watch viewport changes
   MQ.addEventListener("change", setState);
   window.addEventListener("resize", setState, { passive: true });
   if (window.visualViewport) {

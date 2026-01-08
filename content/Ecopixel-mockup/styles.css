@@ -1,7 +1,3 @@
-/* ================================
-   ECOPIXEL — LIGHT THEME (WCAG AA)
-================================ */
-
 :root{
   /* Core colors */
   --bg: #ffffff;
@@ -100,10 +96,6 @@ body{
   gap: 0.75rem;
 }
 
-/* ================================
-   Brand
-================================ */
-
 .brand{
   display: inline-flex;
   align-items: center;
@@ -124,10 +116,6 @@ body{
 .brand__name{
   font-size: 1.05rem;
 }
-
-/* ================================
-   Mobile Toggle
-================================ */
 
 .nav__toggle{
   margin-left: auto;
@@ -163,10 +151,6 @@ body{
 .nav__toggle-lines::before{ top: 0; }
 .nav__toggle-lines::after{ bottom: 0; }
 
-/* ================================
-   Nav Links
-================================ */
-
 .nav__links{
   display: none;
   flex-direction: column;
@@ -199,10 +183,6 @@ body{
 .menu__link:hover{
   background: var(--surface-alt);
 }
-
-/* ================================
-   CTA Buttons
-================================ */
 
 .nav__cta{
   display: flex;
@@ -240,10 +220,6 @@ body{
   background: var(--brand-soft);
 }
 
-/* ================================
-   Desktop Layout
-================================ */
-
 @media (min-width: 56rem){
   .nav__toggle{ display: none; }
 
@@ -264,10 +240,6 @@ body{
   }
 }
 
-/* ================================
-   Reduced Motion
-================================ */
-
 @media (prefers-reduced-motion: reduce){
   *{
     transition: none !important;
@@ -275,25 +247,15 @@ body{
   }
 }
 
-
-/* ================================
-   HERO (TNC-style: image + right box)
-   - ~80vh hero
-   - right-side white box
-   - box dips below hero (~10%)
-   - green bottom border, tiny radius
-================================ */
-
 .heroTnc{
   position: relative;
   height: 80vh;
-  min-height: 34rem;          /* prevents tiny heroes on short screens */
-  max-height: 56rem;          /* prevents absurdly tall on huge screens */
-  overflow: visible;          /* allow the box to dip below */
+  min-height: 34rem;      
+  max-height: 56rem;         
+  overflow: visible;       
   border-bottom: 4px solid black;
 }
 
-/* Slight blur on banner image only */
 .heroTnc__media{
   position: absolute;
   inset: 0;
@@ -304,7 +266,6 @@ body{
   overflow: hidden;
 }
 
-/* Blurred overlay copy */
 .heroTnc__media::before{
   content:"";
   position:absolute;
@@ -314,10 +275,9 @@ body{
   background-size: inherit;
   background-position: inherit;
   filter: blur(0.05px);
-  transform: scale(1.03); /* prevents edge clipping */
+  transform: scale(1.03); 
 }
 
-/* Keep your dark gradient on top */
 .heroTnc__media::after{
   content:"";
   position:absolute;
@@ -340,28 +300,25 @@ body{
   padding: 0 1rem;
 
   display: flex;
-  align-items: center;        /* center the box vertically within the hero */
-  justify-content: flex-end;  /* push box to the right */
+  align-items: center;        
+  justify-content: flex-end;  
 }
 
-/* The right-side square block */
 .heroTnc__box{
   width: min(34rem, 90vw);
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 6px;                 /* tiny radius like the reference */
-  border-bottom: 6px solid var(--brand);   /* green bottom border */
+  border-radius: 6px;                
+  border-bottom: 6px solid var(--brand);   
   box-shadow: var(--shadow-md);
 
   padding: clamp(1.25rem, 2vw, 2rem);
   text-align: center;
 
-  /* Make it dip below hero ~10% (like the screenshot) */
   transform: translateY(25%);
 }
 
-/* Logo at top of the box */
 .heroTnc__logo{
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -371,7 +328,6 @@ body{
   margin-bottom: 1.1rem;
 }
 
-/* Big bold headline */
 .heroTnc__title{
   margin: 0;
   font-size: clamp(1.75rem, 2.7vw, 2.75rem);
@@ -379,7 +335,6 @@ body{
   letter-spacing: -0.02em;
 }
 
-/* Subtext */
 .heroTnc__sub{
   margin: 0.85rem auto 0;
   max-width: 38ch;
@@ -387,14 +342,12 @@ body{
   font-size: 1.05rem;
 }
 
-/* CTA */
 .heroTnc__actions{
   margin-top: 1.5rem;
   display: flex;
   justify-content: center;
 }
 
-/* Bottom “past work” row inside the box */
 .heroTnc__pastwork{
   margin-top: 1.75rem;
   padding-top: 1rem;
@@ -422,7 +375,6 @@ body{
   justify-content: center;
 }
 
-/* Mobile: keep the box centered and readable */
 @media (max-width: 56rem){
   .heroTnc{
     height: 78vh;
@@ -439,17 +391,11 @@ body{
   }
 }
 
-/* ================================
-   HERO: LEFT “DESKTOP” SHOWCASE
-================================ */
-
-/* Override: hero inner now needs room for left + right */
 .heroTnc__inner{
   justify-content: space-between;
   gap: clamp(1rem, 2vw, 2rem);
 }
 
-/* LEFT column container */
 .heroTnc__showcase{
   flex: 1 1 52%;
   display: flex;
@@ -562,11 +508,6 @@ body{
   }
 }
 
-/* ================================
-   NEXT SECTION: SOLUTIONS GRID
-   (1 big intro + 2x2 linked tiles)
-================================ */
-
 .solutions{
   background: #ffffff;
   padding: clamp(2.75rem, 5vw, 4.5rem) 0;
@@ -678,13 +619,6 @@ body{
     max-width: 42rem;
   }
 }
-
-/* ================================
-   SECTION: WHAT WE PROVIDE
-   - green banner of fixed height
-   - cards overlap banner bottom
-   - modern cards w/ green bottom border
-================================ */
 
 .provide{
   background: var(--bg);
@@ -1173,11 +1107,10 @@ body{
   padding: 0.25rem 0.25rem 0.9rem;
 }
 
-/* Post tile */
 .blogPost{
   scroll-snap-align: start;
   display: grid;
-  grid-template-rows: 210px 1fr; /* BIGGER image area */
+  grid-template-rows: 210px 1fr; 
   border-radius: 14px;
   text-decoration: none;
   color: var(--text);
@@ -1189,7 +1122,6 @@ body{
   min-height: 100%;
 }
 
-/* Image area with 2px white padding (frame) */
 .blogPost__media{
   background:
     radial-gradient(700px 240px at 20% 30%, rgba(34,197,94,0.18), transparent 60%),
@@ -1202,16 +1134,14 @@ body{
   background-clip: padding-box;
 }
 
-/* If you swap to <img>, this will keep it cropped nicely */
 .blogPost__media img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 10px; /* slight inner rounding */
+  border-radius: 10px; 
 }
 
-/* Placeholder fill if no <img> yet */
 .blogPost__media::before{
   content:"";
   display:block;
@@ -1288,7 +1218,6 @@ body{
   background: rgba(255,255,255,1);
 }
 
-/* White scrollbar track with green thumb */
 .blogBar__rail{
   scrollbar-color: #0f6a3b #ffffff; /* Firefox */
   scrollbar-width: thin;
@@ -1306,7 +1235,7 @@ body{
 .blogBar__rail::-webkit-scrollbar-thumb{
   background: #0f6a3b;
   border-radius: 999px;
-  border: 3px solid #ffffff; /* makes it look like a “clicker” on white */
+  border: 3px solid #ffffff;
 }
 
 /* Responsive tweaks */
@@ -1482,27 +1411,17 @@ body{
   }
 }
 
-
-/* ================================
-   TABLET RESPONSIVE FIXES (AA-safe)
-   - Hero: banner ~40vh + centered box
-   - Solutions: title on top + 2x2 grid
-   - Provide: reduce gap between header and cards
-   - Assumes showcase hidden on tablet/mobile
-================================ */
-
 /* ----------------
    HERO — tablet: shorter + centered box
 ----------------- */
 @media (min-width:900px) and (max-width: 1100px){
   .heroTnc{
-    height: 32vh;              /* ~40% of viewport */
+    height: 32vh;            
     min-height: 26rem;
     max-height: 34rem;
     overflow: visible;
   }
 
-  /* center content (showcase is off) */
   .heroTnc__inner{
     justify-content: center !important;
   }
@@ -1513,7 +1432,7 @@ body{
 
   .heroTnc__box{
     width: min(40rem, 92vw);
-    transform: translateY(18%); /* still “dips” a bit */
+    transform: translateY(18%);
     margin: 0 auto;
   }
 
@@ -1546,18 +1465,14 @@ body{
   }
 }
 
-/* ----------------
-   SOLUTIONS — tablet layout:
-   intro on top, 2x2 below
------------------ */
 @media (min-width: 700px) and (max-width: 1100px){
   .solutions{
-    margin-top: 5rem; /* reduce excessive jump after shorter hero */
+    margin-top: 5rem; 
     text-align: center;
   }
 
   .solutions__inner{
-    grid-template-columns: 1fr;   /* intro above grid */
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
@@ -1566,7 +1481,7 @@ body{
   }
 
   .solutions__grid{
-    grid-template-columns: 1fr 1fr; /* 2 across */
+    grid-template-columns: 1fr 1fr; 
     column-gap: 1.5rem;
     row-gap: 2rem;
   }
@@ -1580,9 +1495,6 @@ body{
   }
 }
 
-/* ----------------
-   SOLUTIONS — prevent awkward single-column on narrow tablets
------------------ */
 @media (min-width: 34rem) and (max-width: 40rem){
   .solutions__inner{
     grid-template-columns: 1fr;
@@ -1595,17 +1507,10 @@ body{
   }
 }
 
-/* ----------------
-   WHAT WE PROVIDE — tighten header → cards spacing
------------------ */
-
-/* Reduce padding above heading a bit */
 .provide__head{
-  /* keep centered + wide, just tighten vertical rhythm */
   padding-top: clamp(2.25rem, 4vw, 3.25rem);
 }
 
-/* Make the header text block itself less “airy” */
 .provide__title{
   margin-bottom: 0.5rem;
 }
@@ -1614,7 +1519,6 @@ body{
   margin-top: 0.85rem;
 }
 
-/* Tablet: even tighter so cards sit right under */
 @media (min-width: 900px) and (max-width: 1100px){
   .provide__banner{
     height: clamp(20rem, 12rem, 12rem);
@@ -1629,8 +1533,6 @@ body{
   }
 }
 
-
-/* Tablet: even tighter so cards sit right under */
 @media (min-width: 700px) and (max-width: 900px){
   .provide__banner{
     height: clamp(20rem, 16rem, 16rem);
@@ -1646,10 +1548,6 @@ body{
 
 }
 
-/* ----------------
-   OPTIONAL: If your hide-showcase toggle leaves layout space,
-   make sure the hero still centers cleanly.
------------------ */
 @media (max-width: 62rem){
   .heroTnc__showcase{
     display: none !important;
@@ -1666,8 +1564,8 @@ body{
 ================================ */
 
 .nav__toggle{
-  display: inline-flex;        /* visible by default */
-  margin-left: auto;           /* push to right */
+  display: inline-flex;    
+  margin-left: auto;           
   align-items: center;
   justify-content: center;
 
@@ -1690,7 +1588,6 @@ body{
   pointer-events: auto;
 }
 
-/* Hover / focus states */
 .nav__toggle:hover{
   background: var(--surface-alt);
 }
@@ -1700,7 +1597,6 @@ body{
   outline-offset: 3px;
 }
 
-/* Icon inside toggle (SVG or FA) */
 .nav__toggle svg,
 .nav__toggle i{
   width: 22px;
@@ -1710,7 +1606,6 @@ body{
   color: currentColor;
 }
 
-/* Hide toggle on desktop (when full nav is visible) */
 @media (min-width: 56rem){
   .nav__toggle{
     display: none;
@@ -1729,7 +1624,7 @@ body{
     width: 100%;
 
     position: absolute;
-    top: 100%;              /* sit directly below header */
+    top: 100%;       
     left: 0;
     right: 0;
 
@@ -1746,13 +1641,11 @@ body{
     z-index: 40;
   }
 
-  /* When open */
   .nav__links.is-open{
     display: flex;
     flex-direction: column;
   }
 
-  /* Menu list */
   .menu{
     flex-direction: column;
     width: 100%;
@@ -1764,7 +1657,6 @@ body{
     border-radius: 10px;
   }
 
-  /* CTA buttons stack full width */
   .nav__cta{
     margin-top: 0.5rem;
     width: 100%;
@@ -1775,7 +1667,6 @@ body{
     width: 100%;
   }
 
-  /* Header must anchor dropdown */
   .site-header{
     position: sticky;
   }

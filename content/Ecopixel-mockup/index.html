@@ -12,9 +12,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
 
-    <!-- ✅ Inline accessibility + AA contrast fixes (no content changes) -->
     <style>
-      /* 1) Skip link: ensure it’s visible on focus and lands cleanly */
       .skip-link {
         position: absolute;
         left: 0.75rem;
@@ -34,9 +32,8 @@
         box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85);
       }
 
-      /* 2) Provide section contrast: keep text white, darken banner bg + add subtle text shadow */
       .provide__banner {
-        background-color: #0b3a3a; /* darker teal so white passes AA */
+        background-color: #0b3a3a; 
         color: #ffffff;
       }
       .provide__banner .provide__title,
@@ -45,7 +42,6 @@
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.55);
       }
 
-      /* 3) Optional: if any section uses translucent overlays, keep text readable */
       .provide__banner * {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -141,14 +137,11 @@
       </nav>
     </header>
 
-    <!-- ✅ Main landmark + anchor targets to fix WAVE "broken skip link" + "broken same-page links" -->
     <main id="main" tabindex="-1">
-      <!-- ========= HERO ========= -->
       <section class="heroTnc" aria-labelledby="heroTnc-title" id="demo">
         <div class="heroTnc__media" aria-hidden="true"></div>
 
         <div class="heroTnc__inner">
-          <!-- LEFT: “desktop” rectangle + score overlays -->
           <style>
             @media (max-width: 1100px) {
               .heroTnc__showcase {
@@ -182,12 +175,8 @@
             </div>
           </div>
 
-          <!-- RIGHT: white feature box -->
           <div class="heroTnc__box" role="region" aria-label="Ecopixel introduction">
             <div class="heroTnc__logo">
-              <!-- ✅ Fix “nearby images have same alt” alert:
-                   keep brand logo alt on the primary brand (nav),
-                   make the second instance decorative since the text immediately follows. -->
               <img
                 src="images/ecopixel-logo.svg"
                 alt=""
@@ -226,7 +215,6 @@
         </div>
       </section>
 
-      <!-- ========= NEXT SECTION: SOLUTIONS GRID ========= -->
       <section class="solutions" aria-labelledby="solutionsTitle" id="solutions">
         <div class="solutions__inner">
           <header class="solutions__intro">
@@ -278,7 +266,6 @@
         </div>
       </section>
 
-      <!-- ========= WHAT WE PROVIDE ========= -->
       <section class="provide" aria-labelledby="provideTitle" id="benefits">
         <div class="provide__banner">
           <div class="provide__inner">
@@ -332,7 +319,6 @@
         </div>
       </section>
 
-      <!-- ========= TESTIMONIALS ========= -->
       <section class="testimonials" aria-labelledby="testimonialsTitle" id="resources">
         <div class="testimonials__inner">
           <header class="testimonials__head">
@@ -383,7 +369,6 @@
         </div>
       </section>
 
-      <!-- ========= BLOG BAR ========= -->
       <section class="blogBar" aria-labelledby="blogBarTitle">
         <div class="blogBar__inner">
           <header class="blogBar__head">
@@ -453,7 +438,6 @@
         </div>
       </section>
 
-      <!-- ✅ Hidden anchor targets to clear WAVE “broken same-page link” alerts -->
       <div id="quote" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true"></div>
       <div id="work" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true"></div>
       <div id="about" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true"></div>
@@ -470,7 +454,6 @@
       <div id="blog-woodstock" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true"></div>
     </main>
 
-    <!-- ========= FOOTER ========= -->
     <footer class="siteFooter" role="contentinfo">
       <div class="siteFooter__inner">
         <nav class="siteFooter__col" aria-labelledby="footerSolutions">
