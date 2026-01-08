@@ -1115,17 +1115,24 @@ html[data-theme="dark"] .footer{
   .mobileHeroWrap .hero__bg,
   .mobileHeroWrap .hero__overlay{ display: none; }
 
-  /* Orange cap + semicircle */
-  .mobileHeroWrap .hero::before{
-    content:"";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: var(--capH);
-    background-color: var(--btnBg);
-    border-bottom-left-radius: 26px;
-    border-bottom-right-radius: 26px;
-    z-index: 0;
-  }
+ /* Orange cap + semicircle (LIGHT MODE ONLY) */
+.mobileHeroWrap .hero::before{
+  content:"";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--capH);
+  background-color: var(--btnBg);
+  border-bottom-left-radius: 26px;
+  border-bottom-right-radius: 26px;
+  z-index: 0;
+}
+
+/* 🔥 DARK MODE: remove cap entirely */
+html[data-theme="dark"] .mobileHeroWrap .hero::before{
+  content: none;
+}
+
+
   .mobileHeroWrap .hero::after{
     content:"";
     position: absolute;
@@ -1935,4 +1942,3 @@ html[data-theme="dark"] .footer{
     box-shadow: none !important;
   }
 }
-
