@@ -277,19 +277,31 @@
           </div>
 
           <h2 style="text-align: center; margin:auto; margin-top: 36px;"><span class="accent">Some Fun Facts</span></h2>
+          <!-- Mobile-only override: 1 fact per row -->
+          <style>
+            @media (max-width: 700px){
+              .facts{
+                grid-template-columns: 1fr !important;
+              }
+            }
+          </style>
+
           <div class="facts" aria-label="Quick facts">
             <article class="factCard">
               <h3>🌱 Nature Lover</h3>
               <p>I've hiked all 4000+ mountains in Vermont and actively try to help prevent invasive species.</p>
             </article>
+
             <article class="factCard">
               <h3>📊 Data Expert</h3>
               <p>In 2025, I earned my Master's degree in Data Science from the University of Vermont.</p>
             </article>
+
             <article class="factCard">
               <h3>☕ Coffee Enthusiast</h3>
               <p>Dan loves spending his time at the local coffee shop, with Muddy Waters being his favorite.</p>
             </article>
+
             <article class="factCard">
               <h3>🌎 World Traveller</h3>
               <p>After graduation, I went on a 3 month roadtrip (with my girlfriend) spanning the US and Canada.</p>
