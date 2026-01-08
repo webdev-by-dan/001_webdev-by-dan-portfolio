@@ -1,10 +1,8 @@
 /* =========================================================
    app.js
    - Match calendar height to left column
-   - Toggle "My design" vs "Original"
-   - Load local original.html
-   - Allow FULL iframe interaction
-   - Force ALL <a> href="" inside iframe
+   - ✅ Removed: Original/My Design toggle + iframe handling
+   - ✅ Ensure page links are clickable (no JS blanking hrefs, no blocked clicks)
 ========================================================= */
 
 /* =========================================================
@@ -28,88 +26,43 @@
 })();
 
 /* =========================================================
-   View toggle + iframe handling
+   Make sure links are clickable on THIS page
+   - removes any accidental click-blocking overlays
+   - ensures body scroll isn't left locked
 ========================================================= */
 (function () {
-  const btnMy = document.getElementById("btnMyDesign");
-  const btnOrig = document.getElementById("btnOriginal");
-  const designView = document.getElementById("designView");
-  const originalView = document.getElementById("originalView");
-  const frame = document.getElementById("originalFrame");
+  function enableInteraction() {
+    // 1) If something left the page unscrollable, unlock it
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
 
-  if (!btnMy || !btnOrig || !designView || !originalView || !frame) return;
+    // 2) Kill common “transparent overlay” blockers if they exist
+    const blockers = [
+      "#iframeClickBlocker",
+      ".iframeClickBlocker",
+      "#originalView",         // leftover from old toggle builds
+      "#originalFrameWrap",    // leftover wrapper that might be overlaying
+      "#navPanel",             // some templates use an overlay panel
+      "#titleBar .toggle"      // can accidentally cover the top on mobile
+    ];
 
-  /* Load local original.html (same-origin required) */
-  frame.src = "original.html";
-
-  function setPressed(active, inactive) {
-    active.classList.add("isActive");
-    active.setAttribute("aria-pressed", "true");
-    inactive.classList.remove("isActive");
-    inactive.setAttribute("aria-pressed", "false");
-  }
-
- function showMyDesign() {
-    setPressed(btnMy, btnOrig);
-    designView.style.display = "";
-    originalView.style.display = "none";
-    designView.setAttribute("aria-hidden", "false");
-    originalView.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = ""; // prevent stuck no-scroll
-    window.scrollTo(0, 0);
-  }
-
-  function showOriginal() {
-    setPressed(btnOrig, btnMy);
-    designView.style.display = "none";
-    originalView.style.display = "block";
-    designView.setAttribute("aria-hidden", "true");
-    originalView.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = ""; // prevent stuck no-scroll
-    window.scrollTo(0, 0);
-  }
-
-  btnMy.addEventListener("click", showMyDesign);
-  btnOrig.addEventListener("click", showOriginal);
-
-  /* =======================================================
-     FORCE ALL iframe links to href=""
-     (no click blocking, no overlays)
-  ======================================================= */
-  function forceIframeLinksBlank() {
-    let doc;
-    try {
-      doc = frame.contentDocument || frame.contentWindow.document;
-    } catch {
-      return; // cross-origin or file:// restriction
-    }
-    if (!doc) return;
-
-    const blankLinks = () => {
-      doc.querySelectorAll("a").forEach(a => {
-        a.setAttribute("href", "");
+    blockers.forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => {
+        // Only neutralize elements that are actually covering/catching taps
+        const cs = window.getComputedStyle(el);
+        if (cs.position === "fixed" || cs.position === "absolute") {
+          el.style.pointerEvents = "none";
+        }
       });
-    };
-
-    // Initial run
-    blankLinks();
-
-    // Keep enforcing if original.html scripts mutate DOM
-    const observer = new MutationObserver(blankLinks);
-    observer.observe(doc.documentElement, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ["href"]
     });
 
-    // Catch late loads
-    setTimeout(blankLinks, 100);
-    setTimeout(blankLinks, 500);
+    // 3) Don’t let any script blank out hrefs anymore (your old iframe code did this)
+    // Nothing to do here now—just a reminder: DO NOT run “set href=''” anywhere.
   }
 
-  frame.addEventListener("load", forceIframeLinksBlank);
+  document.addEventListener("DOMContentLoaded", enableInteraction);
+  window.addEventListener("load", enableInteraction);
 
-  /* Initial state */
-  showMyDesign();
+  // If something toggles classes later (menus, etc.), re-apply safely
+  window.addEventListener("resize", enableInteraction, { passive: true });
 })();

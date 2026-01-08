@@ -84,20 +84,6 @@
         object-fit: contain;
         display: block;
       }
-
-      /* Views */
-      #originalView { display: none; }
-      #originalFrameWrap {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        background: #f6f7f9;
-      }
-      #originalFrame {
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
       /* Give top-right controls some breathing room on small screens */
       @media (max-width: 520px) {
         .siteControls { top: 10px; right: 10px; }
@@ -123,7 +109,7 @@
     <!-- ORIGINAL SITE VIEW (iframe) -->
     <div id="originalView" aria-hidden="true" style="position: absolute; top: 0; margin:auto; width: 100%;">
     <div id="originalFrameWrap">
-        <iframe id="originalFrame" src="original.html" title="Original site preview"></iframe>
+        <a href="prwact.org" title="Original site"></a>
     </div>
     </div>
 
