@@ -721,3 +721,95 @@
     true
   );
 })();
+
+/* =========================================================
+   HERO CONTENT — FOLLOW NAV RIGHT EDGE + 24px (≤1100px)
+   Measures hero position with shift cleared to avoid "static" lock.
+========================================================= */
+(() => {
+  const MAX_WIDTH = 1100;
+  const GAP = 24;
+
+  const hero = document.querySelector(".hero__content");
+  if (!hero) return;
+
+  function isVisible(el) {
+    if (!el) return false;
+    const cs = getComputedStyle(el);
+    if (cs.display === "none" || cs.visibility === "hidden") return false;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0;
+  }
+
+  function getAnchorNav() {
+    // Prefer desktop sidebar if visible
+    const sidebar = document.querySelector("aside.left");
+    if (isVisible(sidebar)) return sidebar;
+
+    // Fallback to mobile bar
+    const mobilebar = document.querySelector(".mobileHeroWrap .mobilebar, .mobilebar");
+    if (isVisible(mobilebar)) return mobilebar;
+
+    return null;
+  }
+
+  let ticking = false;
+
+  function sync() {
+    ticking = false;
+
+    const vw = window.innerWidth;
+
+    // Reset on >1100px
+    if (vw > MAX_WIDTH) {
+      hero.style.setProperty("--heroShiftX", "0px");
+      return;
+    }
+
+    const nav = getAnchorNav();
+    if (!nav) {
+      hero.style.setProperty("--heroShiftX", "0px");
+      return;
+    }
+
+    // 1) Clear shift to get base hero position (critical!)
+    hero.style.setProperty("--heroShiftX", "0px");
+
+    // 2) Measure with no shift applied
+    const navRect = nav.getBoundingClientRect();
+    const heroBaseRect = hero.getBoundingClientRect();
+
+    // 3) Compute shift so hero left = nav right + GAP
+    const targetLeft = navRect.right + GAP;
+    const shiftX = Math.round(targetLeft - heroBaseRect.left);
+
+    // Optional clamp so it never shifts leftwards
+    hero.style.setProperty("--heroShiftX", `${Math.max(0, shiftX)}px`);
+  }
+
+  function requestSync() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(sync);
+  }
+
+  // Run once after initial paint
+  requestSync();
+
+  // Follow changes
+  window.addEventListener("resize", requestSync, { passive: true });
+  window.addEventListener("scroll", requestSync, { passive: true });
+
+  // Observe nav size changes (sidebar collapse / mobile changes)
+  const ro = new ResizeObserver(requestSync);
+  const sidebar = document.querySelector("aside.left");
+  const mobilebar = document.querySelector(".mobileHeroWrap .mobilebar, .mobilebar");
+  if (sidebar) ro.observe(sidebar);
+  if (mobilebar) ro.observe(mobilebar);
+
+  // iOS / mobile viewport changes
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", requestSync, { passive: true });
+    window.visualViewport.addEventListener("scroll", requestSync, { passive: true });
+  }
+})();

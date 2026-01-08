@@ -468,7 +468,7 @@ html[data-theme="dark"] .hero__overlay{
   height: auto;
 }
 
-@media (max-width: 1100px){
+@media (max-width: 1450px){
   .hero__content{
     transform: translateX(-18%);
     max-width: 60ch;
@@ -826,7 +826,7 @@ html:not([data-theme="dark"]) .process{
 }
 
 /* Tablet: 2 columns */
-@media (max-width: 1100px){
+@media (max-width: 1450px){
   .portfolioGrid{
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ tablet */
   }
@@ -1410,7 +1410,7 @@ html[data-theme="dark"] .footer{
 /* #########################################################
    ##### RESPONSIVE GRIDS
 ######################################################### */
-@media (max-width: 1100px){
+@media (max-width: 1450px){
   .grid4{ grid-template-columns: repeat(2, 1fr); }
   .facts{ grid-template-columns: repeat(2, 1fr); }
   .portfolioGrid{ grid-template-columns: repeat(2, 1fr); }
@@ -1712,7 +1712,7 @@ html[data-theme="dark"] .footer{
 /* #########################################################
    ##### HERO (TABLET): centered + soft white banner behind text
 ######################################################### */
-@media (max-width: 1100px) and (min-width: 700px){
+@media (max-width: 1450px) and (min-width: 700px){
 
   /* Center the whole hero content block */
   .hero__content{
@@ -1750,7 +1750,7 @@ html[data-theme="dark"] .footer{
   }
 }
 
-@media (max-width: 1100px) and (min-width: 700px){
+@media (max-width: 1450px) and (min-width: 700px){
   html[data-theme="dark"] .hero__mid{
     background: rgba(15, 23, 42, 0.72);  /* dark translucent */
     border-color: rgba(238,242,255,0.14);
