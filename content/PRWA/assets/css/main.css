@@ -2398,7 +2398,7 @@ input, select, textarea {
 
 			#nav li:hover a, #nav li:hover span {
 				background: #2b6cb0;
-				color: #fff;
+				color: black;
 			}
 
 			#nav li.active a, #nav li.active span {
