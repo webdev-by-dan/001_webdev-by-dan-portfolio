@@ -944,7 +944,7 @@ html:not([data-theme="dark"]) .process{
   margin-top: 6px;
   width: fit-content;
   border-radius: 999px;
-  padding: 11px 14px;
+  padding: 11px 0px;
   text-decoration: none;
 }
 
@@ -1933,5 +1933,13 @@ html[data-theme="dark"] .footer{
   .hero__content button:focus-visible{
     outline: none !important;
     box-shadow: none !important;
+  }
+}
+
+@media (max-width: 700px){
+  .mobileHeroWrap.noHalfCircle .hero::before,
+  .mobileHeroWrap.noHalfCircle .hero::after{
+    content: none !important;
+    display: none !important;
   }
 }

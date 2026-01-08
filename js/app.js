@@ -723,93 +723,72 @@
 })();
 
 /* =========================================================
-   HERO CONTENT — FOLLOW NAV RIGHT EDGE + 24px (≤1100px)
-   Measures hero position with shift cleared to avoid "static" lock.
+   FIX: Remove the mobile hero half-circle ONLY in dark mode
+   - Adds class .noHalfCircle to .mobileHeroWrap when:
+       (1) mobile viewport (<=700px) AND (2) data-theme="dark"
+   - Injects CSS that disables .mobileHeroWrap .hero::after
 ========================================================= */
 (() => {
-  const MAX_WIDTH = 1100;
-  const GAP = 24;
+  const STYLE_ID = "no-half-circle-style";
+  const WRAP_SEL = ".mobileHeroWrap";
+  const HERO_SEL = ".mobileHeroWrap .hero";
+  const MQ = window.matchMedia("(max-width: 700px)");
 
-  const hero = document.querySelector(".hero__content");
-  if (!hero) return;
+  const root = document.documentElement;
 
-  function isVisible(el) {
-    if (!el) return false;
-    const cs = getComputedStyle(el);
-    if (cs.display === "none" || cs.visibility === "hidden") return false;
-    const r = el.getBoundingClientRect();
-    return r.width > 0 && r.height > 0;
+  function isDark() {
+    return root.getAttribute("data-theme") === "dark";
   }
 
-  function getAnchorNav() {
-    // Prefer desktop sidebar if visible
-    const sidebar = document.querySelector("aside.left");
-    if (isVisible(sidebar)) return sidebar;
-
-    // Fallback to mobile bar
-    const mobilebar = document.querySelector(".mobileHeroWrap .mobilebar, .mobilebar");
-    if (isVisible(mobilebar)) return mobilebar;
-
-    return null;
-  }
-
-  let ticking = false;
-
-  function sync() {
-    ticking = false;
-
-    const vw = window.innerWidth;
-
-    // Reset on >1100px
-    if (vw > MAX_WIDTH) {
-      hero.style.setProperty("--heroShiftX", "0px");
-      return;
+  function ensureStyle() {
+    let style = document.getElementById(STYLE_ID);
+    if (!style) {
+      style = document.createElement("style");
+      style.id = STYLE_ID;
+      style.textContent = `
+        /* Kill the half-circle on mobile ONLY when JS adds .noHalfCircle */
+        @media (max-width: 700px){
+          .mobileHeroWrap.noHalfCircle .hero::after{
+            content: none !important;
+            display: none !important;
+          }
+        }
+      `;
+      document.head.appendChild(style);
     }
+  }
 
-    const nav = getAnchorNav();
-    if (!nav) {
-      hero.style.setProperty("--heroShiftX", "0px");
-      return;
+  function setState() {
+    const wrap = document.querySelector(WRAP_SEL);
+    if (!wrap) return;
+
+    const shouldKill = MQ.matches && isDark();
+
+    // Toggle class
+    wrap.classList.toggle("noHalfCircle", shouldKill);
+
+    // Ensure CSS exists (safe even if already added)
+    if (shouldKill) ensureStyle();
+  }
+
+  // Initial
+  setState();
+
+  // Watch theme attribute changes
+  const mo = new MutationObserver((muts) => {
+    for (const m of muts) {
+      if (m.type === "attributes" && m.attributeName === "data-theme") {
+        setState();
+        break;
+      }
     }
+  });
+  mo.observe(root, { attributes: true });
 
-    // 1) Clear shift to get base hero position (critical!)
-    hero.style.setProperty("--heroShiftX", "0px");
-
-    // 2) Measure with no shift applied
-    const navRect = nav.getBoundingClientRect();
-    const heroBaseRect = hero.getBoundingClientRect();
-
-    // 3) Compute shift so hero left = nav right + GAP
-    const targetLeft = navRect.right + GAP;
-    const shiftX = Math.round(targetLeft - heroBaseRect.left);
-
-    // Optional clamp so it never shifts leftwards
-    hero.style.setProperty("--heroShiftX", `${Math.max(0, shiftX)}px`);
-  }
-
-  function requestSync() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(sync);
-  }
-
-  // Run once after initial paint
-  requestSync();
-
-  // Follow changes
-  window.addEventListener("resize", requestSync, { passive: true });
-  window.addEventListener("scroll", requestSync, { passive: true });
-
-  // Observe nav size changes (sidebar collapse / mobile changes)
-  const ro = new ResizeObserver(requestSync);
-  const sidebar = document.querySelector("aside.left");
-  const mobilebar = document.querySelector(".mobileHeroWrap .mobilebar, .mobilebar");
-  if (sidebar) ro.observe(sidebar);
-  if (mobilebar) ro.observe(mobilebar);
-
-  // iOS / mobile viewport changes
+  // Watch viewport changes
+  MQ.addEventListener("change", setState);
+  window.addEventListener("resize", setState, { passive: true });
   if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", requestSync, { passive: true });
-    window.visualViewport.addEventListener("scroll", requestSync, { passive: true });
+    window.visualViewport.addEventListener("resize", setState, { passive: true });
   }
 })();
