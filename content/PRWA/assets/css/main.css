@@ -3137,16 +3137,6 @@ input, select, textarea {
   height: calc(100vh - 64px);
 }
 
-/* Block clicks ONLY over the iframe area */
-#iframeClickBlocker {
-  position: absolute;
-  inset: 0;
-  background: transparent;
-  pointer-events: auto;
-  touch-action: pan-y;
-  z-index: 1;
-}
-
 #originalFrame {
   position: relative;
   z-index: 0;
@@ -3238,4 +3228,11 @@ ul.contact li a:before {
 #banner .content .button:hover {
   color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0.92);
+}
+#originalView[aria-hidden="true"] {
+  pointer-events: none !important;
+}
+
+#originalView[aria-hidden="false"] {
+  pointer-events: auto !important;
 }

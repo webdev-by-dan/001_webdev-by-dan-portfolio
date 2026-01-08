@@ -49,10 +49,13 @@
     inactive.setAttribute("aria-pressed", "false");
   }
 
-  function showMyDesign() {
+ function showMyDesign() {
     setPressed(btnMy, btnOrig);
     designView.style.display = "";
     originalView.style.display = "none";
+    designView.setAttribute("aria-hidden", "false");
+    originalView.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = ""; // prevent stuck no-scroll
     window.scrollTo(0, 0);
   }
 
@@ -60,6 +63,9 @@
     setPressed(btnOrig, btnMy);
     designView.style.display = "none";
     originalView.style.display = "block";
+    designView.setAttribute("aria-hidden", "true");
+    originalView.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = ""; // prevent stuck no-scroll
     window.scrollTo(0, 0);
   }
 
