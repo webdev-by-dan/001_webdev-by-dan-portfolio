@@ -2398,7 +2398,7 @@ input, select, textarea {
 
 			#nav li:hover a, #nav li:hover span {
 				background: #2b6cb0;
-				color: black;
+				color: #fff;
 			}
 
 			#nav li.active a, #nav li.active span {
@@ -2408,7 +2408,7 @@ input, select, textarea {
 
 			#nav li.current a {
 				background: #3182ce;
-				color: #fff;
+				color: black;
 			}
 
 	.dropotron {
