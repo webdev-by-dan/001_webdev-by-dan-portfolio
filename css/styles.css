@@ -754,7 +754,6 @@ html[data-theme="dark"] .btn--ghost:hover{
   font-size: clamp(42px, 4.2vw, 58px);
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--orange);
 }
 
 .planPriceSub{
