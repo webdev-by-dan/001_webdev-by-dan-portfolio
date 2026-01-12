@@ -295,7 +295,7 @@
               <article class="factCard">
                 <h3>🌱 Nature Lover</h3>
                 <p>
-                  I've hiked all 4000+ mountains in Vermont and actively try to
+                  I've hiked all 4000+ foot mountains in Vermont and actively try to
                   help prevent invasive species.
                 </p>
               </article>
@@ -390,41 +390,152 @@
           </div>
         </section>
 
-        <!-- PRICING -->
+        <!-- PRICING (REPLACE your entire existing <section id="pricing">...</section> with this) -->
         <section class="section" id="pricing" aria-labelledby="pricingTitle">
           <div class="container">
             <header class="sectionHead sectionHead--center">
-              <h2 id="pricingTitle">Price Table</h2>
+              <h2 id="pricingTitle">Pricing</h2>
               <p>Websites are customizable and prices depend on scope of project.</p>
             </header>
 
-            <div class="pricingGrid">
-              <article class="priceCard">
-                <h3 class="priceCard__kicker">One-Time</h3>
-                <p class="priceCard__price">
-                  One Payment of <span class="accent">$3200</span>
-                </p>
-                <ul class="checkList">
-                  <li><span aria-hidden="true">✓</span> $50 / Month Hosting Fee</li>
-                  <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
-                  <li><span aria-hidden="true">✓</span> Standard 10 Page Website</li>
-                  <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
-                  <li><span aria-hidden="true">✓</span> Customized SEO</li>
+            <div class="pricingCards" role="list">
+              <!-- LUMP SUM -->
+              <article class="planCard" role="listitem" aria-labelledby="planLumpTitle">
+                <h3 class="planTitle" id="planLumpTitle">LUMP SUM</h3>
+
+                <ul class="planList" aria-label="Lump sum plan features">
+                  <li class="planItem is-on">
+                    <span class="planText">Design And Development</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">$25/mo Hosting</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">$100 fee Per Page after 5</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">+$50/mo Unlimited Edits Add-on</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">+$250 To Add A Blog</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-off">
+                    <span class="planText">24/7 Support</span>
+                    <span class="planIcon" aria-hidden="true">⦸</span>
+                  </li>
+                  <li class="planItem is-off">
+                    <span class="planText">Lifetime Updates</span>
+                    <span class="planIcon" aria-hidden="true">⦸</span>
+                  </li>
                 </ul>
+
+                <div class="planPriceRow" aria-label="Price">
+                  <div class="planPrice">
+                    <span class="planPriceMain">$3800</span>
+                    <span class="planPriceSub">+$25/mo Hosting</span>
+                  </div>
+
+                  <a class="planBtn" href="#footer">Get Started</a>
+                </div>
               </article>
 
-              <article class="priceCard">
-                <h3 class="priceCard__kicker">Monthly</h3>
-                <p class="priceCard__price">
-                  <span class="accent">$150</span> Monthly
-                </p>
-                <ul class="checkList">
-                  <li><span aria-hidden="true">✓</span> $150 / Month Hosting Fee</li>
-                  <li><span aria-hidden="true">✓</span> $40 / Hour Edits</li>
-                  <li><span aria-hidden="true">✓</span> Standard 5 Page Website</li>
-                  <li><span aria-hidden="true">✓</span> Custom Graphic Designs</li>
-                  <li><span aria-hidden="true">✓</span> Customized SEO</li>
+              <!-- MONTHLY (FEATURED) -->
+              <article
+                class="planCard planCard--featured"
+                role="listitem"
+                aria-labelledby="planMonthlyTitle"
+              >
+                <h3 class="planTitle" id="planMonthlyTitle">MONTHLY</h3>
+
+                <ul class="planList" aria-label="Monthly plan features">
+                  <li class="planItem is-on">
+                    <span class="planText">Design And Development</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Includes Hosting</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">$100 fee Per Page After 5</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">+$250 To Add A Blog</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Unlimited Edits</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">24/7 Support</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Lifetime Updates</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
                 </ul>
+
+                <div class="planPriceRow" aria-label="Price">
+                  <div class="planPrice">
+                    <span class="planPriceMain">$175</span>
+                    <span class="planPriceSub">Per Month</span>
+                  </div>
+
+                  <a class="planBtn planBtn--featured" href="#footer">Get Started</a>
+                </div>
+              </article>
+
+              <!-- ECOMMERCE -->
+              <article class="planCard" role="listitem" aria-labelledby="planEcomTitle">
+                <h3 class="planTitle" id="planEcomTitle">ECOMMERCE</h3>
+
+                <ul class="planList" aria-label="Ecommerce plan features">
+                  <li class="planItem is-on">
+                    <span class="planText">Custom Shopify Store</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Configure Any And All Apps</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Integrated Shipping</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Shopify Tutorial Walkthrough</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-on">
+                    <span class="planText">Fully Editable In Shopify CMS</span>
+                    <span class="planIcon" aria-hidden="true">✓</span>
+                  </li>
+                  <li class="planItem is-off">
+                    <span class="planText">+$50/mo Unlimited Edits</span>
+                    <span class="planIcon" aria-hidden="true">⦸</span>
+                  </li>
+                  <li class="planItem is-off">
+                    <span class="planText">24/7 Support</span>
+                    <span class="planIcon" aria-hidden="true">⦸</span>
+                  </li>
+                </ul>
+
+                <div class="planPriceRow" aria-label="Price">
+                  <div class="planPrice">
+                    <span class="planPriceMain">$8k</span>
+                    <span class="planPriceSub">Starting</span>
+                  </div>
+
+                  <a class="planBtn" href="#footer">Get Started</a>
+                </div>
               </article>
             </div>
 
