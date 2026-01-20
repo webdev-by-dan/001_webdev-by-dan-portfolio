@@ -959,6 +959,63 @@ body{
   bottom: -1.55rem;
 }
 
+/* ================================
+   TESTIMONIALS (mobile overflow fixes)
+================================ */
+
+/* Prevent any accidental horizontal scroll caused by positioned decor */
+.testimonials{
+  overflow-x: clip; /* use hidden if you need broader compatibility */
+}
+
+/* Stage: arrows + card */
+.testimonials__stage{
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto; /* minmax prevents overflow */
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* Card (must be above stars) */
+.tCard{
+  width: min(52rem, 100%);
+  max-width: 100%;
+  min-width: 0;            /* critical in grid/flex contexts */
+  margin: 0 auto;
+  position: relative;
+  z-index: 99999;
+  overflow: visible;
+}
+
+/* Mobile adjustments */
+@media (max-width: 720px){
+  /* collapse to one column so arrows can't force page width */
+  .testimonials__stage{
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  /* hide the arrow buttons on mobile */
+  .tNav{
+    display: none !important;
+  }
+
+  /* tighten card padding a bit if desired */
+  .tCard{
+    width: 100%;
+  }
+
+  /* keep decorative quote marks from hanging off-screen */
+  .tCard__quote::before{
+    left: 0.25rem;
+    top: -1.1rem;
+  }
+  .tCard__quote::after{
+    right: 0.25rem;
+    bottom: -1.35rem;
+  }
+}
+
 /* Footer */
 .tCard__footer{
   margin-top: 1.35rem;
